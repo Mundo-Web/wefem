@@ -12,19 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->id()->unsigned();
+            $table->id();
             $table->string('name');
-            $table->string('slug')->nullable();
-            $table->string('extract')->nullable();
             $table->string('description')->nullable();
-            $table->string('url_image')->nullable();
-            $table->string('name_image')->nullable();
-            
-            $table->boolean('destacar')->default(false);
-
+            $table->string('imagen')->nullable();
             $table->boolean('visible')->default(true);
-            $table->boolean('status')->default(true);
-            $table->timestamps();    
+
+            $table->timestamps();
         });
     }
 

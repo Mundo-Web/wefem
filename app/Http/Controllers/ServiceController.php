@@ -27,18 +27,9 @@ class ServiceController extends Controller
     public function index()
     {
         //
-        $servicios = Service::where("status", "=", true)->get();
+        $servicios = Service::all();
 
         return view('pages.service.index', compact('servicios'));
-    }
-
-
-    public function mostrarFront()
-    {
-        $servicios = Service::where("status", "=", true)->get();
-        $logos = ClientLogos::where("status", "=", true)->get();
-        $generales = General::where('id', '=', 1 )->get();
-        return view('public.index', compact('servicios', 'logos', 'generales'));
     }
 
     /**
@@ -57,62 +48,35 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
+            'title' => 'required|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
+            //'icono' => 'required|file|mimes:svg', // Aceptar solo SVG, con un tamaño máximo de 2 MB
+            'descripcion_breve' => 'required|string',
+            'beneficios' => 'required|string',
+            'descripcion_extensa' => 'required|string',
+
         ]);
 
         //tamaño imagenes 808x445 
         $service = new Service();
 
 
-        if ($request->hasFile("imagen")) {
-
-            $manager = new ImageManager(new Driver());
-
-            $nombreImagen = Str::random(10) . '_' . $request->file('imagen')->getClientOriginalName();
-
-            $img =  $manager->read($request->file('imagen'));
-
-            //seteamos el tamaño de que deben de tener las imagenes que se suban
-            $qwidth = 808;
-            $qheight = 445;
-
-            // Obtener las dimensiones de la imagen que se esta subiendo
-            $width = $img->width();
-            $height = $img->height();
-
-            if ($width > $height) {
-                //dd('Horizontal');
-                //si es horizontal igualamos el alto de la imagen a alto que queremos
-                $img->resize(height: 445)->crop(808, 445);
-            } else {
-                //dd('Vertical');
-                //En caso sea vertical la imagen
-                //igualamos el ancho y cropeamos
-                $img->resize(width: 808)->crop(808, 445);
-            }
-
-
+        if ($request->hasFile("icono")) {
+            $file = $request->file('icono');
+            $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
             $ruta = 'storage/images/servicios/';
 
-           
+            // Mover el archivo directamente sin procesarlo
+            $file->move($ruta, $nombreImagen);
 
-            
-            if (!file_exists($ruta)) {
-                mkdir($ruta, 0777, true); // Se crea la ruta con permisos de lectura, escritura y ejecución
-            }
-            
-            $img->save($ruta.$nombreImagen);
-
-            $service->url_image = $ruta;
-            $service->name_image = $nombreImagen;
+            $service->icono = $ruta . $nombreImagen;
         }
 
-        $service->link = $request->link;
         $service->title = $request->title;
-        $service->description = $request->description;
-        $service->status = 1;
-        $service->visible = 1;
-
+        $service->subtitle = $request->subtitle;
+        $service->beneficios = $request->beneficios;
+        $service->descripcion_breve = $request->descripcion_breve;
+        $service->descripcion_extensa = $request->descripcion_extensa;
 
         $service->save();
 
@@ -146,53 +110,29 @@ class ServiceController extends Controller
 
         $service = Service::findOrfail($id);
         $service->title = $request->title;
-        $service->description = $request->description;
-        $service->link = $request->link;
-       
-
-        if ($request->hasFile("imagen")) {
-
-            $manager = new ImageManager(new Driver());
+        $service->subtitle = $request->subtitle;
+        $service->beneficios = $request->beneficios;
+        $service->descripcion_breve = $request->descripcion_breve;
+        $service->descripcion_extensa = $request->descripcion_extensa;
 
 
-            $ruta = storage_path() . '/app/public/images/servicios/' . $service->name_image;
-
-            // dd($ruta);
-            if (File::exists($ruta)) {
-                File::delete($ruta);
+        // Si el usuario sube un nuevo icono
+        if ($request->hasFile("icono")) {
+            // Elimina el archivo anterior si existe
+            if (File::exists(public_path($service->icono))) {
+                File::delete(public_path($service->icono));
             }
 
-            $rutanueva = storage_path() . 'storage/images/servicios/';
-            $nombreImagen = Str::random(10) . '_' . $request->file('imagen')->getClientOriginalName();
+            // Obtiene el nuevo archivo
+            $file = $request->file('icono');
+            $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
+            $ruta = 'storage/images/servicios/';
 
-            $img =  $manager->read($request->file('imagen'));
+            // Mueve el archivo a la carpeta deseada
+            $file->move(public_path($ruta), $nombreImagen);
 
-            $width = $img->width();
-            $height = $img->height();
-
-            $qwidth = 808;
-            $qheight = 445;
-
-            if ($width > $height) {
-                //dd('Horizontal');
-                //si es horizontal igualamos el alto de la imagen a alto que queremos
-                $img->resize(height: 445)->crop(808, 445);
-            } else {
-                //dd('Vertical');
-                //En caso sea vertical la imagen
-                //igualamos el ancho y cropeamos
-                $img->resize(width: 808)->crop(808, 445);
-            }
-            
-            if (!file_exists($rutanueva)) {
-                mkdir($rutanueva, 0777, true); // Se crea la ruta con permisos de lectura, escritura y ejecución
-            }
-            
-            $img->save($rutanueva . $nombreImagen);
-
-
-            $service->url_image = $rutanueva;
-            $service->name_image = $nombreImagen;
+            // Actualiza el campo icono con la nueva ruta
+            $service->icono = $ruta . $nombreImagen;
         }
 
 
@@ -235,10 +175,8 @@ class ServiceController extends Controller
         $id = $request->id;
         //Busco el servicio con id como parametro
         $service = Service::findOrfail($id);
-        //Modifico el status a false
-        $service->status = false;
-        //Guardo 
-        $service->save();
+
+        $service->delete();
 
         // Devuelvo una respuesta JSON u otra respuesta según necesites
         return response()->json(['message' => 'Servicio eliminado.']);
@@ -248,20 +186,24 @@ class ServiceController extends Controller
 
     public function updateVisible(Request $request)
     {
-        // Lógica para manejar la solicitud AJAX
-        //return response()->json(['mensaje' => 'Solicitud AJAX manejada con éxito']);
         $id = $request->id;
+        $visible = $request->visible;
 
-        $field = $request->field;
-
-        $status = $request->status;
-
+        // Encontrar el servicio
         $service = Service::findOrFail($id);
 
-        $service->$field = $status;
-
+        // Actualizar la visibilidad
+        $service->visible = $visible;
         $service->save();
 
-        return response()->json(['message' => 'Servicio eliminado.']);
+        // Obtener el título del servicio para enviar en la respuesta
+        $titleService = $service->title;
+
+        // Retornar la respuesta JSON con el mensaje y el título del servicio
+        return response()->json([
+            'message' =>
+            $service->visible == 1 ? 'Servicio Visible.' : 'Servicio No Visible.',
+            'titleService' => $titleService
+        ]);
     }
 }

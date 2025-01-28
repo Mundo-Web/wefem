@@ -7,6 +7,12 @@ import { Chart } from "chart.js";
 import flatpickr from "flatpickr";
 
 // Import Sweetaler2
+/*Usaremos Alpine para interactuar en el fronted */
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();
 
 // Import AOS
 import "aos/dist/aos.css";

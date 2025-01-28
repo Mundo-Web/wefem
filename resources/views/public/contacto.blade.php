@@ -6,185 +6,241 @@
 
 
 @section('content')
-<main class="bg-cover bg-center pt-16 xl:pt-5"  style="background-image:url({{asset('images/img/texturanosotros.png')}})">
-
-  <section class="flex flex-row justify-start items-center px-[5%] xl:px-[10%] pt-10 lg:pt-16 gap-6 relative">
-      <div class="flex flex-col gap-1 max-w-xl text-left">
-        <h3 class="font-gotham_bold text-white text-lg " data-aos="fade-down">{{$textoscontacto->subtitle1section ?? "Ingrese texto"}}</h3>
-        <h2 class="font-gotham_bold text-white text-4xl lg:text-5xl" data-aos="fade-down">{{$textoscontacto->title1section ?? "Ingrese texto"}} <span class="text-[#E29720]">{{$textoscontacto->title1section2}}</span></h2>
-      </div>
-  </section>
+    <main class="bg-white">
 
 
-  <section class="flex flex-col md:flex-row justify-center items-center px-[5%] xl:px-[10%] pt-5 pb-10 lg:pb-16 gap-6 md:gap-16 relative">
+        <section class="max-w-7xl mx-auto">
 
-      <form id="formContactos" class="w-full md:w-1/2 flex flex-col gap-3 got" data-aos="fade-down">
-                @csrf           
+            <div class="w-full flex gap-4 pt-32">
+                <div class="w-1/2  ">
+                    <div class="w-10/12 flex flex-col justify-start items-start gap-8">
 
-                <div class="flex flex-col gap-1">
-                  <label class="text-white text-base font-gotham_book font-semibold w-full leading-tight">Nombre completo</label>
-                  <input id="name" type="text" required name="full_name" placeholder="Nombre y apellido" class="placeholder:text-[#21149E] text-[#21149E] placeholder:text-opacity-50 bg-white font-gotham_book font-semibold rounded-xl px-3 py-2.5 ring-0 focus:ring-0 border-0"/>
-                </div>
-      
-                <div class="flex flex-col gap-1">
-                  <label class="text-white text-base font-gotham_book font-semibold w-full leading-tight">Email</label>
-                  <input required name="email" id="emailContacto" type="email" placeholder="hola@mail.com" class="placeholder:text-[#21149E] text-[#21149E] placeholder:text-opacity-50 bg-white font-gotham_book font-semibold rounded-xl px-3 py-2.5 ring-0 focus:ring-0 border-0"/>
-                </div>
+                        <h2 class="text-colorAzulOscuro text-text44 font-bold">A nuestro amable equipo le encantaría saber de
+                            usted</h2>
+                        <p class=" text-colorParrafo text-text16 font-light" data-aos="fade-down">
+                            Donec vehicula, lectus vel pharetra semper, justo massa pharetra nunc, non venenatis ante augue
+                            quis
+                            est.</p>
 
-                <div class="flex flex-col gap-1">
-                    <label class="text-white text-base font-gotham_book font-semibold w-full leading-tight">Telefono</label>
-                    <input required name="phone" id="telefonoContacto" type="text" placeholder="+51 123456789" class="placeholder:text-[#21149E] text-[#21149E] placeholder:text-opacity-50 bg-white font-gotham_book font-semibold rounded-xl px-3 py-2.5 ring-0 focus:ring-0 border-0"/>
-                  </div>
-      
-                <div class="flex flex-col gap-1">
-                  <label class="text-white text-base font-gotham_book font-semibold w-full leading-tight">Mensaje</label>
-                  <textarea name="message" id="mensaje" rows="3" type="text" placeholder="Escribe tu mensaje" class="placeholder:text-[#21149E] text-[#21149E] placeholder:text-opacity-50 bg-white font-gotham_book font-semibold rounded-xl px-3 py-2.5 ring-0 focus:ring-0 border-0"></textarea>
-                </div>
+                        <div class="flex flex-col gap-2 items-start justify-start" data-aos="fade-down">
+                            <p class="text-colorRojo text-text18 font-semibold">Horario de oficina</p>
 
-                <input required name="source" id="telefonoContacto" type="hidden" value="Inicio" class="placeholder:text-[#21149E] text-[#21149E] placeholder:text-opacity-50 bg-white font-gotham_book font-semibold rounded-xl px-3 py-2.5 ring-0 focus:ring-0 border-0"/>
-      
-                <div class="flex flex-col gap-1">  
-                  <button type="submit" class="bg-[#E29720] flex flex-row items-center justify-center gap-2 text-[#21149E] font-latobold rounded-xl px-3 py-2.5 ring-0 focus:ring-0 border-0" >Enviar
-                    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
-                      <path d="M18.8327 10.4141C18.8327 10.0046 18.8283 9.1784 18.8195 8.76773C18.7651 6.21311 18.7378 4.93581 17.7953 3.98961C16.8526 3.04342 15.5408 3.01046 12.917 2.94454C11.2999 2.90391 9.69877 2.90391 8.0817 2.94453C5.45796 3.01045 4.14608 3.04341 3.20347 3.98961C2.26087 4.9358 2.23363 6.2131 2.17915 8.76773C2.16163 9.58915 2.16164 10.4056 2.17916 11.2271C2.23363 13.7817 2.26087 15.059 3.20348 16.0052C4.14608 16.9514 5.45796 16.9843 8.08171 17.0502C8.75067 17.0671 9.41693 17.0769 10.0827 17.0798" stroke="#21149E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M2.16602 5L7.92687 8.27052C10.0316 9.46542 10.9671 9.46542 13.0718 8.27052L18.8327 5" stroke="#21149E" stroke-width="1.25" stroke-linejoin="round"/>
-                      <path d="M18.8327 14.5833H12.166M18.8327 14.5833C18.8327 13.9998 17.1708 12.9096 16.7493 12.5M18.8327 14.5833C18.8327 15.1668 17.1708 16.2571 16.7493 16.6667" stroke="#21149E" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
-                </div>
-      
-      </form>
-      
-      <div class="w-full md:w-1/2 max-w-lg ml-auto">
-          <div class="flex flex-col justify-center items-start gap-4">
-                  
-                  
-                  <h3 class="font-gotham_bold text-white text-2xl" data-aos="fade-down">{{$textoscontacto->title2section ?? "Ingrese texto"}}</h3>
-                  <p class="font-gotham_book text-white text-base " data-aos="fade-down">{{$textoscontacto->description2section ?? "Ingrese texto"}}</p>
+                            <p class="text-colorParrafo text-text16 font-light w-full leading-tight">
+                                @foreach ($general as $item)
+                                    {!! str_replace(',', '<br>', $item->schedule) !!}
+                                @endforeach
+                            </p>
+                        </div>
+                        <div class="flex flex-col gap-2 items-start  justify-start">
 
-                  
+                            <p class="text-colorRojo text-text18 font-semibold">Nuestra Dirección</p>
+                            <p class="text-textAzul group-hover:text-white text-base font-gotham_book w-full leading-tight">
+                                @foreach ($general as $item)
+                                    {{ $item->address }} - {{ $item->district }} - {{ $item->city }}
+                                @endforeach
+                            </p>
+                        </div>
 
-                  <div class="flex flex-row gap-2 items-center justify-start" data-aos="fade-down">
-                    <div class="flex flex-row">
-                      <div class="bg-[#1EA7A2] p-1 rounded-full w-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                          <path d="M1.66699 4.16797L7.42784 7.43849C9.53258 8.63339 10.4681 8.63339 12.5728 7.43849L18.3337 4.16797" stroke="#F2F4FF" stroke-width="1.25" stroke-linejoin="round"/>
-                          <path d="M8.75033 16.2487C8.36174 16.2436 7.97268 16.2362 7.58268 16.2264C4.95893 16.1604 3.64706 16.1274 2.70446 15.1807C1.76185 14.2339 1.73461 12.9559 1.68013 10.3999C1.66262 9.57795 1.66261 8.76095 1.68013 7.93906C1.73461 5.38297 1.76184 4.10493 2.70445 3.15819C3.64706 2.21145 4.95893 2.17847 7.58268 2.11251C9.19974 2.07186 10.8009 2.07187 12.418 2.11252C15.0417 2.17848 16.3536 2.21146 17.2962 3.15821C18.2388 4.10494 18.2661 5.38298 18.3205 7.93907C18.3286 8.31746 18.3329 8.49578 18.3336 8.7487" stroke="#F2F4FF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M15.833 14.168C15.833 14.8583 15.2733 15.418 14.583 15.418C13.8927 15.418 13.333 14.8583 13.333 14.168C13.333 13.4776 13.8927 12.918 14.583 12.918C15.2733 12.918 15.833 13.4776 15.833 14.168ZM15.833 14.168V14.5846C15.833 15.275 16.3927 15.8346 17.083 15.8346C17.7733 15.8346 18.333 15.275 18.333 14.5846V14.168C18.333 12.0969 16.6541 10.418 14.583 10.418C12.5119 10.418 10.833 12.0969 10.833 14.168C10.833 16.2391 12.5119 17.918 14.583 17.918" stroke="#F2F4FF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p class="text-white text-base font-gotham_book w-full leading-tight">
-                        @foreach ($general as $item)
-                            {{ $item->email ?? "Ingrese un email"}}
-                        @endforeach
-                    </p>
-                  </div>
-      
-                  <div class="flex flex-row gap-2 items-center justify-start">
-                    <div class="flex flex-row">
-                      <div class="bg-[#1EA7A2] p-1 rounded-full w-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                          <path d="M1.66699 4.16797L7.42784 7.43849C9.53258 8.63339 10.4681 8.63339 12.5728 7.43849L18.3337 4.16797" stroke="#F2F4FF" stroke-width="1.25" stroke-linejoin="round"/>
-                          <path d="M8.75033 16.2487C8.36174 16.2436 7.97268 16.2362 7.58268 16.2264C4.95893 16.1604 3.64706 16.1274 2.70446 15.1807C1.76185 14.2339 1.73461 12.9559 1.68013 10.3999C1.66262 9.57795 1.66261 8.76095 1.68013 7.93906C1.73461 5.38297 1.76184 4.10493 2.70445 3.15819C3.64706 2.21145 4.95893 2.17847 7.58268 2.11251C9.19974 2.07186 10.8009 2.07187 12.418 2.11252C15.0417 2.17848 16.3536 2.21146 17.2962 3.15821C18.2388 4.10494 18.2661 5.38298 18.3205 7.93907C18.3286 8.31746 18.3329 8.49578 18.3336 8.7487" stroke="#F2F4FF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M15.833 14.168C15.833 14.8583 15.2733 15.418 14.583 15.418C13.8927 15.418 13.333 14.8583 13.333 14.168C13.333 13.4776 13.8927 12.918 14.583 12.918C15.2733 12.918 15.833 13.4776 15.833 14.168ZM15.833 14.168V14.5846C15.833 15.275 16.3927 15.8346 17.083 15.8346C17.7733 15.8346 18.333 15.275 18.333 14.5846V14.168C18.333 12.0969 16.6541 10.418 14.583 10.418C12.5119 10.418 10.833 12.0969 10.833 14.168C10.833 16.2391 12.5119 17.918 14.583 17.918" stroke="#F2F4FF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p class="text-white group-hover:text-white text-base font-gotham_book w-full leading-tight">
-                        @foreach ($general as $item)
-                            @if ($item->cellphone && $item->office_phone)
-                                {{ $item->cellphone ?? "Ingrese nro. celular" }} / {{ $item->office_phone ?? "Ingrese nro. telefónico" }}
-                            @elseif($item->cellphone && empty($item->office_phone))
-                                {{ $item->cellphone ?? "Ingrese nro. celular" }}
-                            @elseif($item->office_phone && empty($item->cellphone))
-                                {{ $item->office_phone ?? "Ingrese nro. telefónico" }}
-                            @else
-                                <p>No hay información disponible para este ítem.</p>
-                            @endif
-                        @endforeach
-                    </p>
-                  </div>
-      
-                  <div class="flex flex-row gap-2 items-center justify-start" data-aos="fade-down">
-                    <div class="flex flex-row">
-                      <div class="bg-[#1EA7A2] p-1 rounded-full w-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                          <path d="M1.66699 4.16797L7.42784 7.43849C9.53258 8.63339 10.4681 8.63339 12.5728 7.43849L18.3337 4.16797" stroke="#F2F4FF" stroke-width="1.25" stroke-linejoin="round"/>
-                          <path d="M8.75033 16.2487C8.36174 16.2436 7.97268 16.2362 7.58268 16.2264C4.95893 16.1604 3.64706 16.1274 2.70446 15.1807C1.76185 14.2339 1.73461 12.9559 1.68013 10.3999C1.66262 9.57795 1.66261 8.76095 1.68013 7.93906C1.73461 5.38297 1.76184 4.10493 2.70445 3.15819C3.64706 2.21145 4.95893 2.17847 7.58268 2.11251C9.19974 2.07186 10.8009 2.07187 12.418 2.11252C15.0417 2.17848 16.3536 2.21146 17.2962 3.15821C18.2388 4.10494 18.2661 5.38298 18.3205 7.93907C18.3286 8.31746 18.3329 8.49578 18.3336 8.7487" stroke="#F2F4FF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M15.833 14.168C15.833 14.8583 15.2733 15.418 14.583 15.418C13.8927 15.418 13.333 14.8583 13.333 14.168C13.333 13.4776 13.8927 12.918 14.583 12.918C15.2733 12.918 15.833 13.4776 15.833 14.168ZM15.833 14.168V14.5846C15.833 15.275 16.3927 15.8346 17.083 15.8346C17.7733 15.8346 18.333 15.275 18.333 14.5846V14.168C18.333 12.0969 16.6541 10.418 14.583 10.418C12.5119 10.418 10.833 12.0969 10.833 14.168C10.833 16.2391 12.5119 17.918 14.583 17.918" stroke="#F2F4FF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </div>
+                        <div class="flex flex-col gap-2 items-start  justify-start">
+                            <p class="text-colorRojo text-text18 font-semibold">Ponerse en Contacto</p>
+                            <p data-aos="fade-down"
+                                class="text-textAzul group-hover:text-textAzul text-base font-gotham_book w-full leading-tight">
+                                @foreach ($general as $item)
+                                    @if ($item->cellphone && $item->office_phone)
+                                        {{ $item->cellphone ?? 'Ingrese nro. celular' }} /
+                                        {{ $item->office_phone ?? 'Ingrese nro. telefónico' }}
+                                    @elseif($item->cellphone && empty($item->office_phone))
+                                        {{ $item->cellphone ?? 'Ingrese nro. celular' }}
+                                    @elseif($item->office_phone && empty($item->cellphone))
+                                        {{ $item->office_phone ?? 'Ingrese nro. telefónico' }}
+                                    @else
+                                        <p>No hay información disponible para este ítem.</p>
+                                    @endif
+                                @endforeach
+                            </p>
+                        </div>
                     </div>
 
-                    <p class="text-white group-hover:text-white text-base font-gotham_book w-full leading-tight" data-aos="fade-down">
-                        @foreach ($general as $item)
-                            {{$item->address}} - {{ $item->district }} - {{ $item->city }}
-                        @endforeach
-                    </p>
-                  </div>
-      
-                  <div class="flex flex-row gap-2 items-center justify-start" data-aos="fade-down">
-                    <div class="flex flex-row">
-                      <div class="bg-[#1EA7A2] p-1 rounded-full w-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                          <path d="M1.66699 4.16797L7.42784 7.43849C9.53258 8.63339 10.4681 8.63339 12.5728 7.43849L18.3337 4.16797" stroke="#F2F4FF" stroke-width="1.25" stroke-linejoin="round"/>
-                          <path d="M8.75033 16.2487C8.36174 16.2436 7.97268 16.2362 7.58268 16.2264C4.95893 16.1604 3.64706 16.1274 2.70446 15.1807C1.76185 14.2339 1.73461 12.9559 1.68013 10.3999C1.66262 9.57795 1.66261 8.76095 1.68013 7.93906C1.73461 5.38297 1.76184 4.10493 2.70445 3.15819C3.64706 2.21145 4.95893 2.17847 7.58268 2.11251C9.19974 2.07186 10.8009 2.07187 12.418 2.11252C15.0417 2.17848 16.3536 2.21146 17.2962 3.15821C18.2388 4.10494 18.2661 5.38298 18.3205 7.93907C18.3286 8.31746 18.3329 8.49578 18.3336 8.7487" stroke="#F2F4FF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M15.833 14.168C15.833 14.8583 15.2733 15.418 14.583 15.418C13.8927 15.418 13.333 14.8583 13.333 14.168C13.333 13.4776 13.8927 12.918 14.583 12.918C15.2733 12.918 15.833 13.4776 15.833 14.168ZM15.833 14.168V14.5846C15.833 15.275 16.3927 15.8346 17.083 15.8346C17.7733 15.8346 18.333 15.275 18.333 14.5846V14.168C18.333 12.0969 16.6541 10.418 14.583 10.418C12.5119 10.418 10.833 12.0969 10.833 14.168C10.833 16.2391 12.5119 17.918 14.583 17.918" stroke="#F2F4FF" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <p class="text-white group-hover:text-white text-base font-gotham_book w-full leading-tight">
-                        @foreach ($general as $item)
-                            {!! str_replace(',', '<br>', $item->schedule) !!}
-                        @endforeach
-                    </p>
-                  </div>
-          </div>
-      </div>
-      
-  </section>
-      
-  @if (count($faqs) > 0)
-    <section class="bg-cover bg-opacity-100 relative py-10 lg:py-16" 
-              style="background-image: url('{{asset('images/img/textura6.png')}}');">
-              <div class="px-[5%] md:px-[10%] flex flex-col gap-5 md:gap-10">
-                      
 
-                  <div class="flex flex-col items-center justify-center gap-5">
-                      <div class="flex flex-col gap-1 max-w-3xl text-center" data-aos="fade-down">
-                          <h2 class="font-gotham_bold text-white text-4xl lg:text-5xl leading-none"> {{$textoscontacto->title3section ?? "Ingrese texto"}} <span class="text-[#21149E]">{{$textoscontacto->title3section2}}</span></h2>
-                      </div> 
-                      
-                      <div class="grid w-full divide-y divide-neutral-200 bg-[#21149E] px-6 py-2 rounded-2xl" data-aos="fade-down">
-                        @foreach ($faqs as $faq)
-                            <div class="py-3">
-                                <details class="group">
-                                <summary class="flex cursor-pointer list-none items-center justify-between font-medium">
-                                    <span class="font-bold text-[20px] text-white font-gotham_bold">
-                                        {{$faq->pregunta ?? "Ingrese la pregunta"}}</span>
-                                    <span class="transition group-open:rotate-180 bg-[#E29720] rounded-full p-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none">
-                                            <path d="M17 10L11.9992 14.58L7 10" stroke="#21149E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </span>
-                                </summary>
-                                <p class="text-base mt-3 text-white font-gotham_book">
-                                    {!! $faq->respuesta ?? "Ingrese la respuesta" !!}
-                                </p>
-                                </details>
+
+                </div>
+                <form id="formContactos" class="w-full md:w-1/2" method="POST" action="{{ route('guardarContactos') }}">
+                    @csrf
+                    <h2 class="text-colorAzulOscuro text-text32 font-bold">Ponerse en Contacto</h2>
+                    <p class="text-colorParrafo text-text16 font-light my-8">Donec vehicula...</p>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight">Nombres
+                            <input id="name" type="text" name="name" required placeholder="Ingrese tu nombre"
+                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-[#000F25]" />
+                        </label>
+
+                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight">Apellidos
+                            <input id="lastname" type="text" name="lastname" required placeholder="Ingrese tu apellido"
+                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-[#000F25]" />
+                        </label>
+
+                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight col-span-2">Email
+                            <input id="email" type="email" name="email" required
+                                placeholder="Ingrese tu correo electrónico"
+                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-[#000F25]" />
+                        </label>
+
+                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight col-span-2">Teléfono
+                            <input id="phone" type="text" name="phone" required placeholder="Teléfono"
+                                maxlength="9"
+                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-[#000F25]" />
+                        </label>
+
+                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight col-span-2">Escribe un mensaje
+                            <textarea id="message" name="message" required placeholder="Escríbenos tu pregunta aquí"
+                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-[#000F25] min-h-[200px]"></textarea>
+                        </label>
+                    </div>
+
+                    <div class="flex justify-start gap-4 items-center pt-4">
+                        <div class="flex justify-between py-4">
+                            <!-- Label con estilos dinámicos -->
+                            <label for="privacy_policy" class="flex items-center cursor-pointer w-full justify-between">
+                                <!-- Input Checkbox -->
+                                <input type="checkbox" id="privacy_policy" class="hidden peer" />
+
+
+
+
+                                <!-- Visual del Checkbox -->
+                                <div
+                                    class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
+                                    <i class="fa-solid fa-check fa-xs"></i>
+
+                                </div>
+                                <!-- Texto del Label -->
+                                <span class="ml-4 text-sm  text-colorParrafo ">
+                                    Acepto la política de
+                                    privacidad.
+                                </span>
+
+
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="bg-colorBackgroundRed my-8 flex flex-row items-center text-text18 justify-center gap-2 text-white font-semibold rounded-full px-4 py-2.5">
+                        Enviar mensaje
+                    </button>
+                </form>
+
+
+            </div>
+
+        </section>
+        <!--Seccion FAQs-->
+        <section class="max-w-7xl mx-auto flex mt-12">
+            <div class="w-1/2">
+                <h2 class="text-text32 font-bold text-colorAzulOscuro">Preguntas frecuentes</h2>
+                <p class="text-colorParrafo font-light text-text16">Todo lo que necesitas saber sobre nuestro servicio.</p>
+            </div>
+            <div class="w-1/2">
+                @foreach ($faqs as $faq)
+                    <div x-data="{ open: false }" class="border-b pb-4">
+                        <!-- Pregunta -->
+                        <h4 @click="open = !open"
+                            class="cursor-pointer flex justify-between items-center text-text16 font-semibold text-colorRojo py-3">
+                            {{ $faq->question }}
+
+                            <div class="h-6 w-6 border-2 border-[#ed1b2f] rounded-full flex items-center justify-center">
+                                <i x-show="!open" class="fa-solid fa-plus"></i>
+                                <i x-show="open" class="fa-solid fa-minus"></i>
                             </div>
-                        @endforeach  
-                      </div>
 
-                  </div>
+                        </h4>
+                        <!-- Respuesta -->
+                        <div x-show="open" x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-screen"
+                            x-transition:leave="transition ease-in duration-300"
+                            x-transition:leave-start="opacity-100 max-h-screen" x-transition:leave-end="opacity-0 max-h-0"
+                            class="text-gray-500 overflow-hidden">
+                            <p class="pt-3">
+                                {{ $faq->answer }}
+                            </p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+        <!--Seccion Contactar-->
+        <section class="max-w-7xl mx-auto my-12">
+            <section class="bg-colorBackgroundAzulClaro rounded-xl p-8 w-full ">
+                <div class="mt-6 flex justify-center">
+                    <div x-data="{
+                        currentIndex: 0,
+                        images: [],
+                        async init() {
+                            const response = await fetch('/imagenes'); // Cambia esto por tu endpoint real
+                            this.images = await response.json();
+                        },
+                        next() {
+                            this.currentIndex = (this.currentIndex + 1) % this.images.length;
+                        },
+                        prev() {
+                            this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+                        }
+                    }" class="w-full">
+                        <!-- Contenedor principal -->
+                        <div class="relative overflow-hidden">
+                            <!-- Imágenes -->
+                            <div class="flex transition-transform duration-500"
+                                :style="'transform: translateX(-' + (currentIndex * 100) + '%)'">
+                                <template x-for="(image, index) in images" :key="index">
+                                    <div class="min-w-full">
+                                        <img :src="image.image" alt="Imagen" class="w-full object-cover h-64">
+                                    </div>
+                                </template>
+                            </div>
 
-                
-              </div>  
-    </section>
-  @endif 
+                            <!-- Botones de navegación -->
+                            <button @click="prev()"
+                                class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full">
+                                &#8592;
+                            </button>
+                            <button @click="next()"
+                                class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full">
+                                &#8594;
+                            </button>
+                        </div>
 
-</main>
+                        <!-- Indicadores -->
+                        <div class="flex justify-center mt-4 space-x-2">
+                            <template x-for="(image, index) in images" :key="index">
+                                <button @click="currentIndex = index"
+                                    :class="currentIndex === index ? 'bg-red-500' : 'bg-gray-300'"
+                                    class="w-4 h-4 rounded-full"></button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="text-center max-w-md mx-auto">
+                    <h2 class="text-text24 font-semibold text-colorAzulOscuro">¿Aún tienes preguntas?</h2>
+                    <p class="text-colorParrafo mt-2 text-text16">No encuentras la respuesta que buscas? Por favor chatea
+                        con nuestro
+                        amigable equipo.</p>
+                </div>
+
+                <div class="mt-6 text-center">
+                    <button
+                        class="bg-colorBackgroundRed text-white px-6 py-3 rounded-full hover:bg-colorBackgroundRed transition duration-300">
+                        Ponerse en contacto
+                    </button>
+                </div>
+            </section>
+
+
+        </section>
+    </main>
 
 
 @section('scripts_importados')
@@ -212,6 +268,115 @@
         document.getElementById('anchodispositivo').value = screenWidth;
         document.getElementById('largodispositivo').value = screenHeight;
     </script>
+
+    <script>
+        function alerta(message) {
+            Swal.fire({
+                title: message,
+                icon: "error",
+            });
+        }
+
+
+        $('#formContactos').submit(function(event) {
+            event.preventDefault();
+
+            const formData = $(this).serialize();
+
+            Swal.fire({
+                title: 'Procesando información...',
+                html: '<div class="spinner"></div>',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
+            $.ajax({
+                url: '{{ route('guardarContactos') }}',
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    Swal.close();
+                    Swal.fire({
+                        title: response.message,
+                        icon: 'success',
+                    });
+                    $('#formContactos')[0].reset();
+                },
+                error: function(error) {
+                    Swal.close();
+                    if (error.status === 400) {
+                        const errors = error.responseJSON.message;
+                        const firstError = Object.values(errors)[0][0];
+                        Swal.fire({
+                            title: 'Error',
+                            text: firstError,
+                            icon: 'error',
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ocurrió un error inesperado. Inténtalo de nuevo.',
+                            icon: 'error',
+                        });
+                    }
+                },
+            });
+        });
+
+        $('#newsletterForm').submit(function(event) {
+            event.preventDefault();
+            let formDataArray = $(this).serializeArray();
+
+            if (!validarEmail($('#emailSubscriptor').val())) {
+                return;
+            };
+
+            Swal.fire({
+
+                title: 'Procesando información',
+                html: `Enviando... 
+                    <p class=" text-text12">Espere un momento</p>
+                        <div class="max-w-2xl mx-auto overflow-hidden flex justify-center items-center mt-4 ">
+                            <div role="status">
+                                <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                                </svg>
+                                
+                            </div>
+                        </div>                  
+                        `,
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            $.ajax({
+                url: '{{ route('guardarSubscriptor') }}',
+                method: 'POST',
+                data: {
+                    email: $('#emailSubscriptor').val(), // Envía directamente el valor del campo de email
+                    _token: $('input[name="_token"]').val() // Incluye el token CSRF
+                },
+                success: function(response) {
+                    Swal.close();
+                    Swal.fire({
+                        title: response.message,
+                        icon: "success",
+                    });
+                    $('#newsletterForm')[0].reset();
+                },
+                error: function(error) {
+                    Swal.close();
+                    console.log(error);
+                }
+            });
+        });
+    </script>
+
 
 @stop
 

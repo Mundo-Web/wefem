@@ -85,6 +85,13 @@ Route::get('/descargables/{filtro}', [IndexController::class, 'catalogosDescarga
 Route::get('/blog', [IndexController::class, 'blog'])->name('blog.all');
 Route::get('/blog/{filtro}', [IndexController::class, 'blog'])->name('blog');
 Route::get('/post/{id}', [IndexController::class, 'detalleBlog'])->name('detalleBlog');
+//probando alpine js
+Route::get('/imagenes', [IndexController::class, 'imagenes'])->name('imagenes');
+Route::post('/guardarSubscriptor', [IndexController::class, ''])->name('guardarSubscriptor');
+
+
+
+
 
 
 /* Proceso de pago */
@@ -145,16 +152,11 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
         //messages
         Route::resource('/mensajes', MessageController::class);
         Route::post('/mensajes/borrar', [MessageController::class, 'borrar'])->name('mensajes.borrar');
-        Route::get('/mensajeslanding', [MessageController::class, 'showMessageLanding'])->name('mensajeslanding');
-        Route::get('/mensajeslanding/{id}', [MessageController::class, 'showMessageL'])->name('mensajeslanding.show');
-        Route::post('/mensajeslanding/borrar', [MessageController::class, 'mensajeslandingDelete'])->name('mensajeslanding.borrar');
-        Route::get('/mensajesproduct', [MessageController::class, 'showMessageProducto'])->name('mensajesproduct');
-        Route::get('/mensajesproduct/{id}', [MessageController::class, 'showproductL'])->name('mensajesproduct.show');
-        Route::post('/mensajesproduct/borrar', [MessageController::class, 'mensajesproductoDelete'])->name('mensajesproduct.borrar');
 
         Route::resource('/politicas-de-devolucion', PolyticsConditionController::class);
-        Route::resource('/terminos-y-condiciones', TermsAndConditionController::class);    
-        
+        Route::resource('/terminos-y-condiciones', TermsAndConditionController::class);
+
+
         //Datos Generales
         Route::resource('/datosgenerales', GeneralController::class);
         Route::resource('/homeview', HomeViewController::class);
@@ -162,6 +164,14 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
         Route::resource('/nosotrosview', NosotrosViewController::class);
         Route::resource('/innovacionesview', InnovacionViewController::class);
         Route::resource('/productosview', ProductosViewController::class);
+
+        //Servicios
+        Route::resource('/servicios', ServiceController::class);
+        Route::post('/servicios/deleteService', [ServiceController::class, 'deleteService'])->name('servicio.deleteService');
+        Route::post('/servicios/updateVisible', [ServiceController::class, 'updateVisible'])->name('servicio.updateVisible');
+
+
+
         //Testimonies
         Route::resource('/testimonios', TestimonyController::class);
         Route::post('/testimonios/deleteTestimony', [TestimonyController::class, 'deleteTestimony'])->name('testimonios.deleteTestimony');
@@ -196,10 +206,6 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
         Route::post('/certificados/deleteCertificado', [CertificadosController::class, 'deleteCerticado'])->name('certificados.deleteCertificado');
         Route::post('/certificados/updateVisible', [CertificadosController::class, 'updateVisible'])->name('certificados.updateVisible');
 
-        //Servicios
-        Route::resource('/servicios', ServiceController::class);
-        Route::post('/servicios/deleteService', [ServiceController::class, 'deleteService'])->name('servicio.deleteService');
-        Route::post('/servicios/updateVisible', [ServiceController::class, 'updateVisible'])->name('servicio.updateVisible');
 
 
         //Blog
@@ -267,7 +273,7 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
         Route::resource('/liquidacion', LiquidacionController::class);
         Route::post('/liquidacion/updateVisible', [LiquidacionController::class, 'updateVisible'])->name('liquidacion.updateVisible');
         Route::post('/liquidacion/deleteSlider', [LiquidacionController::class, 'deleteLiquidacion'])->name('liquidacion.deleteLiquidacion');
-        
+
         //Mis Marcas
         Route::resource('/mismarcas', MisMarcasController::class);
         Route::post('/mismarcas/updateVisible', [MisMarcasController::class, 'updateVisible'])->name('mismarcas.updateVisible');
@@ -294,13 +300,13 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
 
         //Suscripciones
         Route::get('/subscripciones', [NewsletterSubscriberController::class, 'showSubscripciones'])->name('subscripciones');
-        
+
         //Cotizaciones
         Route::get('/cotizaciones', [CotizacionController::class, 'showCotizaciones'])->name('cotizaciones');
 
         Route::get(
             '/templates',
-            fn () => view('pages.templates.index')
+            fn() => view('pages.templates.index')
                 ->with('regex', '/{{(.*?)}}/gs')
                 ->with('llavesBegin', '{{')
                 ->with('llavesEnd', '}}')
@@ -334,4 +340,4 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Customer'])->group(function 
     Route::post('/micuenta/actualizarPerfil', [IndexController::class, 'actualizarPerfil'])->name('actualizarPerfil');
 });
 
-Route::fallback(fn () => response()->view('public.404', [], 404));
+Route::fallback(fn() => response()->view('public.404', [], 404));

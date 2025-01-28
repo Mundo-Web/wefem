@@ -62,48 +62,10 @@ class HomeViewController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $homeview = HomeView::findOrfail($id); 
-
-        if ($request->hasFile("url_image2section")) {
-            $file = $request->file('url_image2section');
-            $routeImg = 'storage/images/viewhome/';
-            $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
-      
-            $this->saveImg($file, $routeImg, $nombreImagen);
-      
-            $homeview['url_image2section'] = $routeImg . $nombreImagen;
-           
-        } 
-
-        if ($request->hasFile("url_image3section")) {
-            $file = $request->file('url_image3section');
-            $routeImg = 'storage/images/viewhome/';
-            $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
-      
-            $this->saveImg($file, $routeImg, $nombreImagen);
-      
-            $homeview['url_image3section'] = $routeImg . $nombreImagen;
-           
-        } 
-
+        $homeview = HomeView::findOrfail($id);
         $homeview->update($request->all());
-
-        $homeview->save();  
-
+        $homeview->save();
         return back()->with('success', 'Registro actualizado correctamente');
-    }
-
-    public function saveImg($file, $route, $nombreImagen)
-    {
-      $manager = new ImageManager(new Driver());
-      $img =  $manager->read($file);
-      // $img->coverDown(1000, 1500, 'center');
-  
-      if (!file_exists($route)) {
-        mkdir($route, 0777, true);
-      }
-  
-      $img->save($route . $nombreImagen);
     }
 
     /**

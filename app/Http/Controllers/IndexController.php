@@ -10,6 +10,7 @@ use App\Models\AddressUser;
 use App\Models\Attributes;
 use App\Models\AttributesValues;
 use App\Models\Blog;
+use App\Models\Brand;
 use App\Models\Faqs;
 use App\Models\General;
 use App\Models\Index;
@@ -43,6 +44,7 @@ use App\Models\InnovacionView;
 use App\Models\NosotrosView;
 use App\Models\PolyticsCondition;
 use App\Models\ProductosView;
+use App\Models\Service;
 use App\Models\TermsAndCondition;
 use Attribute;
 use Illuminate\Http\Request;
@@ -63,969 +65,949 @@ use function PHPUnit\Framework\isNull;
 
 class IndexController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        // $productos = Products::all();
-        $productos = Products::where('status', '=', 1)->where('visible', '=', 1)->with('tags')->get();
-        $categorias = Category::all();
-        $textoshome = HomeView::first();
-        $destacados = Products::where('destacar', '=', 1)->where('status', '=', 1)->where('visible', '=', 1)->with('tags')->with('images')->get();
-        // $descuentos = Products::where('descuento', '>', 0)->where('status', '=', 1)
-        // ->where('visible', '=', 1)->with('tags')->get();
-        $promociones = Products::where('recomendar', '=', 1)->where('status', '=', 1)->where('visible', '=', 1)->with('tags')->with('images')->get();
-        $ultimoProducto = $promociones->last();
-        $restopromociones = $promociones->reject(function ($producto) use ($ultimoProducto) {
-          return $producto->id === $ultimoProducto->id;
-        });
+  /**
+   * Display a listing of the resource.
+   */
+  public function index()
+  {
 
-        $general = General::all();
-        $benefit = Strength::where('status', '=', 1)->get();
-        $faqs = Faqs::where('status', '=', 1)->where('visible', '=', 1)->get();
-        $testimonie = Testimony::where('status', '=', 1)->where('visible', '=', 1)->get();
-        $slider = Slider::where('status', '=', 1)->where('visible', '=', 1)->get();
-        $category = Category::where('status', '=', 1)
-                        ->where('visible', '=', 1)
-                        ->whereHas('productos', function ($query) {
-                            $query->where('status', 1)->where('visible', 1);
-                        })
-                        ->orderBy('order', 'asc')
-                        ->get();
-        
-        $complementos = Liquidacion::where('status', '=', 1)
-                        ->where('visible', '=', 1)
-                        ->get();
+    $home = HomeView::first();
+    $productos = Products::all();
 
-        $zonas = MisMarcas::where('status', '=', 1)->where('visible', '=', 1)->get();
-        $estadisticas = MisClientes::where('status', '=', 1)->where('visible', '=', 1)->get();
-        
-        $contactos = ContactDetail::where('status', '=', 1)->get();
-        $posts = Blog::where('status', '=', 1)->where('visible', '=', 1)->orderBy('created_at', 'desc')->take(3)->get();
 
-        return view('public.index', compact('ultimoProducto','restopromociones','textoshome', 'productos', 'destacados', 'promociones', 'general', 'benefit', 'faqs', 'testimonie', 'slider', 'categorias', 'category', 'complementos', 'posts','zonas', 'estadisticas', 'contactos'));
+    $general = General::all();
+
+    $servicios = Service::take(4)->get();
+
+    return view('public.index', compact('home', 'productos', 'general', 'servicios'));
+  }
+  public function servicios()
+  {
+    $servicios = Service::where('visible', '=', 1)->get();
+    $servicio = Service::where('visible', '=', 1)->first();
+    return view('public.servicio', compact('servicios', 'servicio'));
+  }
+
+  public function coleccion($filtro)
+  {
+    try {
+      $collections = Collection::where('status', '=', 1)->where('visible', '=', 1)->get();
+
+      if ($filtro == 0) {
+        $productos = Products::where('status', '=', 1)->where('visible', '=', 1)->paginate(16);
+        $collection = Collection::where('status', '=', 1)->where('visible', '=', 1)->get();
+      } else {
+        $productos = Products::where('status', '=', 1)->where('visible', '=', 1)->where('collection_id', '=', $filtro)->paginate(16);
+        $collection = Collection::where('status', '=', 1)->where('visible', '=', 1)->where('id', '=', $filtro)->first();
+      }
+
+      return view('public.collection', compact('filtro', 'productos', 'collection', 'collections'));
+    } catch (\Throwable $th) {
+    }
+  }
+
+  public function catalogoFiltroAjax(Request $request)
+  {
+    $productos = Products::obtenerProductos();
+    $page = 0;
+    if (!empty($productos->nextPageUrl())) {
+      $parse_url = parse_url($productos->nextPageUrl());
+
+      if (!empty($parse_url['query'])) {
+        parse_str($parse_url['query'], $get_array);
+        $page = !empty($get_array['page']) ? $get_array['page'] : 0;
+      }
     }
 
-    public function coleccion($filtro)
-    {
-        try {
-            $collections = Collection::where('status', '=', 1)->where('visible', '=', 1)->get();
+    return response()->json(
+      [
+        'status' => true,
+        'page' => $page,
+        'success' => view('public._listproduct', [
+          'productos' => $productos,
+        ])->render(),
+      ],
+      200,
+    );
+  }
 
-            if ($filtro == 0) {
-                $productos = Products::where('status', '=', 1)->where('visible', '=', 1)->paginate(16);
-                $collection = Collection::where('status', '=', 1)->where('visible', '=', 1)->get();
-            } else {
-                $productos = Products::where('status', '=', 1)->where('visible', '=', 1)->where('collection_id', '=', $filtro)->paginate(16);
-                $collection = Collection::where('status', '=', 1)->where('visible', '=', 1)->where('id', '=', $filtro)->first();
-            }
+  public function catalogo(Request $request, string $filtro = null)
+  {
+    $categorias = null;
+    $productos = null;
+    $categoria = null;
+    $brands = null;
+    try {
+      $general = General::all();
+      $textoproducto = ProductosView::first();
+      $faqs = Faqs::where('status', '=', 1)->where('visible', '=', 1)->get();
+      $categorias = Category::all();
 
-            return view('public.collection', compact('filtro', 'productos', 'collection', 'collections'));
-        } catch (\Throwable $th) {
-        }
+      $subcategorias = Subcategory::all();
+      $microcategorias = Microcategory::all();
+      $testimonie = Testimony::where('status', '=', 1)->where('visible', '=', 1)->get();
+      $atributos = Attributes::where('status', '=', 1)->where('visible', '=', 1)->get();
+      $colecciones = Collection::where('status', '=', 1)->where('visible', '=', 1)->get();
+
+      if (is_null($filtro) || $filtro == 0) {
+        //$productos = Products::where('status', '=', 1)->where('visible', '=', 1)->with('tags')->paginate(12);
+        // $productos = Products::obtenerProductos();
+
+        $categoria = Category::all();
+      } else {
+        //$productos = Products::where('status', '=', 1)->where('visible', '=', 1)->where('categoria_id', '=', $filtro)->with('tags')->paginate(12);
+        // $productos = Products::obtenerProductos($filtro);
+
+        $categoria = Category::findOrFail($filtro);
+      }
+
+      $page = 0;
+      //  if (!empty($productos->nextPageUrl())) {
+      //  $parse_url = parse_url($productos->nextPageUrl());
+
+      // if (!empty($parse_url['query'])) {
+      // parse_str($parse_url['query'], $get_array);
+      //  $page = !empty($get_array['page']) ? $get_array['page'] : 0;
+      //  }
+      //  }
+
+
+
+      $brands = Brand::all();
+      $productos = Products::all();
+      return view('public.catalogobk2', compact('brands', 'productos', 'textoproducto', 'general', 'faqs', 'categorias', 'testimonie', 'filtro', 'categoria', 'atributos', 'colecciones', 'page', 'subcategorias', 'microcategorias'));
+    } catch (\Throwable $th) {
+      dump($th);
+    }
+  }
+
+  public function comentario()
+  {
+    $comentarios = Testimony::where('status', '=', 1)->where('visible', '=', 1)->paginate(15);
+    $contarcomentarios = count($comentarios);
+    return view('public.comentario', compact('comentarios', 'contarcomentarios'));
+  }
+
+  public function hacerComentario(Request $request)
+  {
+    $user = auth()->user();
+
+    $newComentario = new Testimony();
+    if (isset($user)) {
+      $alert = null;
+      $request->validate(
+        [
+          'testimonie' => 'required',
+        ],
+        [
+          'testimonie.required' => 'Ingresa tu comentario',
+        ],
+      );
+
+      $newComentario->name = $user->name;
+      $newComentario->testimonie = $request->testimonie;
+      $newComentario->visible = 0;
+      $newComentario->status = 1;
+      $newComentario->email = $user->email;
+      $newComentario->save();
+
+      $mensaje = 'Gracias. Tu comentario pasará por una validación y será publicado.';
+      $alert = 1;
+    } else {
+      $alert = 2;
+      $mensaje = 'Inicia sesión para hacer un comentario';
     }
 
-    public function catalogoFiltroAjax(Request $request)
-    {
-        $productos = Products::obtenerProductos();
-        $page = 0;
-        if (!empty($productos->nextPageUrl())) {
-            $parse_url = parse_url($productos->nextPageUrl());
+    return redirect()
+      ->route('comentario')
+      ->with(['mensaje' => $mensaje, 'alerta' => $alert]);
+  }
 
-            if (!empty($parse_url['query'])) {
-                parse_str($parse_url['query'], $get_array);
-                $page = !empty($get_array['page']) ? $get_array['page'] : 0;
-            }
-        }
+  public function contacto()
+  {
+    $images = [
+      ['name' => 'John Doe', 'image' => 'https://i.ibb.co/Sstnnfy/5701db8d4318f0d93edd1f4b64493b37.png'],
+      ['name' => 'Jane Smith', 'image' => 'https://i.ibb.co/n3NFXXs/969a7d7f009059cfa5c45bc3cfc941ae.png'],
+      ['name' => 'Robert Brown', 'image' => 'https://i.ibb.co/mSmGhwv/cc6e3e60f69ecac1443984f93e6078eb.png'],
+    ];
+    $faqs = [
+      (object) ['question' => 'What is Alpine.js?', 'answer' => 'Alpine.js is a lightweight JavaScript framework.'],
+      (object) ['question' => 'How do I install Alpine.js?', 'answer' => 'You can install it via CDN or npm.'],
+      (object) ['question' => 'Can I use Alpine.js with Laravel?', 'answer' => 'Yes! It integrates seamlessly with Laravel Blade.'],
+    ];
+    $general = General::all();
+    $textoscontacto = ContactoView::first();
+    $contactos = ContactDetail::where('status', '=', 1)->get();
+    $preguntasfrec = Faqs::where('status', '=', 1)->where('visible', '=', 1)->get();
+    // $faqs = Faqs::where('status', '=', 1)->where('visible', '=', 1)->get();
+    return view('public.contacto', compact('preguntasfrec', 'textoscontacto', 'general', 'contactos', 'faqs', 'images'));
+  }
 
-        return response()->json(
-            [
-                'status' => true,
-                'page' => $page,
-                'success' => view('public._listproduct', [
-                    'productos' => $productos,
-                ])->render(),
-            ],
-            200,
-        );
-    }
 
-    public function catalogo(Request $request, string $filtro = null)
-    {
-        $categorias = null;
-        $productos = null;
-        $categoria = null;
+  public function imagenes()
+  {
+    $images = [
+      ['name' => 'John Doe', 'image' => 'https://i.ibb.co/Sstnnfy/5701db8d4318f0d93edd1f4b64493b37.png'],
+      ['name' => 'Jane Smith', 'image' => 'https://i.ibb.co/n3NFXXs/969a7d7f009059cfa5c45bc3cfc941ae.png'],
+      ['name' => 'Robert Brown', 'image' => 'https://i.ibb.co/mSmGhwv/cc6e3e60f69ecac1443984f93e6078eb.png'],
+    ];
+    return response()->json($images);
+  }
 
-        try {
-            $general = General::all();
-            $textoproducto = ProductosView::first();
-            $faqs = Faqs::where('status', '=', 1)->where('visible', '=', 1)->get();
-            $categorias = Category::where('status', '=', 1)->where('destacar', '=', 1)->where('visible', '=', 1)->orderBy('order', 'asc')->get();
-           
-            $subcategorias = Subcategory::all();
-            $microcategorias = Microcategory::all();
-            $testimonie = Testimony::where('status', '=', 1)->where('visible', '=', 1)->get();
-            $atributos = Attributes::where('status', '=', 1)->where('visible', '=', 1)->get();
-            $colecciones = Collection::where('status', '=', 1)->where('visible', '=', 1)->get();
+  public function carrito()
+  {
+    //
+    $url_env = $_ENV['APP_URL'];
+    $departamentos = DB::table('departments')->get();
+    return view('public.checkout_carrito', compact('url_env', 'departamentos'));
+  }
 
-            if (is_null($filtro) || $filtro == 0) {
-                //$productos = Products::where('status', '=', 1)->where('visible', '=', 1)->with('tags')->paginate(12);
-                $productos = Products::obtenerProductos();
+  public function pago(Request $request)
+  {
+    //
+    $formToken = $request->input('token');
+    $codigoCompra = $request->input('codigoCompra');
 
-                $categoria = Category::all();
-            } else {
-                //$productos = Products::where('status', '=', 1)->where('visible', '=', 1)->where('categoria_id', '=', $filtro)->with('tags')->paginate(12);
-                $productos = Products::obtenerProductos($filtro);
-
-                $categoria = Category::findOrFail($filtro);
-            }
-
-            $page = 0;
-            if (!empty($productos->nextPageUrl())) {
-                $parse_url = parse_url($productos->nextPageUrl());
-
-                if (!empty($parse_url['query'])) {
-                    parse_str($parse_url['query'], $get_array);
-                    $page = !empty($get_array['page']) ? $get_array['page'] : 0;
-                }
-            }
-
-            return view('public.catalogo', compact('textoproducto','general', 'faqs', 'categorias', 'testimonie', 'filtro', 'productos', 'categoria', 'atributos', 'colecciones', 'page', 'subcategorias', 'microcategorias'));
-        } catch (\Throwable $th) {
-        }
-    }
-
-    public function comentario()
-    {
-        $comentarios = Testimony::where('status', '=', 1)->where('visible', '=', 1)->paginate(15);
-        $contarcomentarios = count($comentarios);
-        return view('public.comentario', compact('comentarios', 'contarcomentarios'));
-    }
-
-    public function hacerComentario(Request $request)
-    {
-        $user = auth()->user();
-
-        $newComentario = new Testimony();
-        if (isset($user)) {
-            $alert = null;
-            $request->validate(
-                [
-                    'testimonie' => 'required',
-                ],
-                [
-                    'testimonie.required' => 'Ingresa tu comentario',
-                ],
-            );
-
-            $newComentario->name = $user->name;
-            $newComentario->testimonie = $request->testimonie;
-            $newComentario->visible = 0;
-            $newComentario->status = 1;
-            $newComentario->email = $user->email;
-            $newComentario->save();
-
-            $mensaje = 'Gracias. Tu comentario pasará por una validación y será publicado.';
-            $alert = 1;
-        } else {
-            $alert = 2;
-            $mensaje = 'Inicia sesión para hacer un comentario';
-        }
-
-        return redirect()
-            ->route('comentario')
-            ->with(['mensaje' => $mensaje, 'alerta' => $alert]);
-    }
-
-    public function contacto()
-    {
-        $general = General::all();
-        $textoscontacto = ContactoView::first();
-        $contactos = ContactDetail::where('status', '=', 1)->get();
-        $preguntasfrec = Faqs::where('status', '=', 1)->where('visible', '=', 1)->get();
-        $faqs = Faqs::where('status', '=', 1)->where('visible', '=', 1)->get();
-        return view('public.contacto', compact('preguntasfrec', 'textoscontacto','general','contactos','faqs'));
-    }
-
-    public function carrito()
-    {
-        //
-        $url_env = $_ENV['APP_URL'];
-        $departamentos = DB::table('departments')->get();
-        return view('public.checkout_carrito', compact('url_env', 'departamentos'));
-    }
-
-    public function pago(Request $request)
-    {
-        //
-        $formToken = $request->input('token');
-        $codigoCompra = $request->input('codigoCompra');
-
-        $detalleUsuario = [];
-        $user = auth()->user();
-        $N_orden = Ordenes::where('codigo_orden', '=', $codigoCompra)->get()->toArray();
-        /* if (!isNull($user)) {
+    $detalleUsuario = [];
+    $user = auth()->user();
+    $N_orden = Ordenes::where('codigo_orden', '=', $codigoCompra)->get()->toArray();
+    /* if (!isNull($user)) {
       $detalleUsuario = UserDetails::where('email', $user->email)->get();
     } */
-        $detalleUsuario = UserDetails::where('id', $N_orden[0]['usuario_id'])->get();
+    $detalleUsuario = UserDetails::where('id', $N_orden[0]['usuario_id'])->get();
 
-        $distritos = DB::select('select * from districts where active = ? order by 3', [1]);
-        $provincias = DB::select('select * from provinces where active = ? order by 3', [1]);
-        $departamento = DB::select('select * from departments where active = ? order by 2', [1]);
+    $distritos = DB::select('select * from districts where active = ? order by 3', [1]);
+    $provincias = DB::select('select * from provinces where active = ? order by 3', [1]);
+    $departamento = DB::select('select * from departments where active = ? order by 2', [1]);
 
-        //consultar n orden
-        // traer los datos necesarios para armar el token
-        // $formToken =  $this->generateFormTokenIzipay();
+    //consultar n orden
+    // traer los datos necesarios para armar el token
+    // $formToken =  $this->generateFormTokenIzipay();
 
-        $url_env = $_ENV['APP_URL'];
-        return view('public.checkout_pago', compact('url_env', 'distritos', 'provincias', 'departamento', 'detalleUsuario', 'formToken', 'codigoCompra'));
+    $url_env = $_ENV['APP_URL'];
+    return view('public.checkout_pago', compact('url_env', 'distritos', 'provincias', 'departamento', 'detalleUsuario', 'formToken', 'codigoCompra'));
+  }
+
+  private function generateFormTokenIzipay($amount, $orderId, $email)
+  {
+    $clientId = config('services.izipay.client_id');
+    $clientSecret = config('services.izipay.client_secret');
+    $auth = base64_encode($clientId . ':' . $clientSecret);
+
+    $url = config('services.izipay.url');
+    $response = Http::withHeaders([
+      'Authorization' => "Basic $auth",
+      'Content-Type' => 'application/json',
+    ])
+      ->post($url, [
+        'amount' => $amount * 100,
+        'currency' => 'PEN',
+        'orderId' => $orderId,
+        'customer' => [
+          'email' => $email,
+        ],
+      ])
+      ->json();
+
+    $token = $response['answer']['formToken'];
+    return $token;
+  }
+
+  public function procesarPago(Request $request)
+  {
+    $codigoCompra = $request->codigoCompra;
+    $dataArray = $request->data;
+    $result = [];
+
+    $codigoAleatorio = '';
+    foreach ($dataArray as $item) {
+      $result[$item['name']] = $item['value'];
+    }
+    $tipoTarjeta = $result['tipo_tarjeta'];
+
+    try {
+      $reglasPrimeraCompra = [
+        'email' => 'required',
+      ];
+      $mensajes = [
+        'email.required' => 'El campo Email es obligatorio.',
+      ];
+      // $request->validate($reglasPrimeraCompra, $mensajes);
+
+      $orden = Ordenes::where('codigo_orden', '=', $codigoCompra);
+
+      $orden->update(['tipo_tarjeta' => $tipoTarjeta]);
+
+      $ordenid = $orden->get();
+      AddressUser::where('id', $ordenid[0]['address_id'])->update([
+        'dir_av_calle' => $result['dir_av_calle'],
+        'dir_numero' => $result['dir_numero'],
+        'dir_bloq_lote' => $result['dir_bloq_lote'],
+      ]);
+
+      UserDetails::where('email', '=', $request->email)->update($result);
+
+      return response()->json(['message' => 'Todos los datos estan correctos', 'codigoCompra' => $codigoAleatorio]);
+    } catch (\Throwable $th) {
+      //throw $th;
+      return response()->json(['message' => $th], 400);
+    }
+  }
+
+  private function guardarOrden()
+  {
+    //almacenar venta, generar orden de pedido , guardar en tabla detalle de compra, li
+  }
+
+  private function codigoVentaAleatorio()
+  {
+    $codigoAleatorio = '';
+
+    // Longitud deseada del código
+    $longitudCodigo = 10;
+
+    // Genera un código aleatorio de longitud 10
+    for ($i = 0; $i < $longitudCodigo; $i++) {
+      $codigoAleatorio .= mt_rand(0, 9); // Agrega un dígito aleatorio al código
+    }
+    return $codigoAleatorio;
+  }
+
+  public function agradecimiento(Request $request)
+  {
+    //
+    $codigoCompra = $request->input('codigoCompra');
+
+    $ordenes = Ordenes::where('codigo_orden', '=', $codigoCompra)->update(['status_id' => 2]);
+
+    return view('public.checkout_agradecimiento', compact('codigoCompra'));
+  }
+
+  public function cambiofoto(Request $request)
+  {
+    $user = User::findOrFail($request->id);
+
+    if ($request->hasFile('image')) {
+      $file = $request->file('image');
+      $route = 'storage/images/users/';
+      $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
+
+      if (File::exists(storage_path() . '/app/public/' . $user->profile_photo_path)) {
+        File::delete(storage_path() . '/app/public/' . $user->profile_photo_path);
+      }
+
+      $this->saveImg($file, $route, $nombreImagen);
+
+      $routeforshow = 'images/users/';
+      $user->profile_photo_path = $routeforshow . $nombreImagen;
+
+      $user->save();
+
+      return response()->json(['message' => 'La imagen se cargó correctamente.']);
+    }
+  }
+
+  public function actualizarPerfil(Request $request)
+  {
+    $name = $request->name;
+    $lastname = $request->lastname;
+    $email = $request->email;
+    $user = User::findOrFail($request->id);
+
+    if ($request->password !== null || $request->newpassword !== null || $request->confirmnewpassword !== null) {
+      if (!Hash::check($request->password, $user->password)) {
+        $imprimir = 'La contraseña actual no es correcta';
+        $alert = 'error';
+      } else {
+        $user->password = Hash::make($request->newpassword);
+        $imprimir = 'Cambio de contraseña exitosa';
+        $alert = 'success';
+      }
     }
 
-    private function generateFormTokenIzipay($amount, $orderId, $email)
-    {
-        $clientId = config('services.izipay.client_id');
-        $clientSecret = config('services.izipay.client_secret');
-        $auth = base64_encode($clientId . ':' . $clientSecret);
-
-        $url = config('services.izipay.url');
-        $response = Http::withHeaders([
-            'Authorization' => "Basic $auth",
-            'Content-Type' => 'application/json',
-        ])
-            ->post($url, [
-                'amount' => $amount * 100,
-                'currency' => 'PEN',
-                'orderId' => $orderId,
-                'customer' => [
-                    'email' => $email,
-                ],
-            ])
-            ->json();
-
-        $token = $response['answer']['formToken'];
-        return $token;
+    if ($user->name == $name && $user->lastname == $lastname) {
+      $imprimir = 'Sin datos que actualizar';
+      $alert = 'question';
+    } else {
+      $user->name = $name;
+      $user->lastname = $lastname;
+      $alert = 'success';
+      $imprimir = 'Datos actualizados';
     }
 
-    public function procesarPago(Request $request)
-    {
-        $codigoCompra = $request->codigoCompra;
-        $dataArray = $request->data;
-        $result = [];
+    $user->save();
+    return response()->json(['message' => $imprimir, 'alert' => $alert]);
+  }
 
-        $codigoAleatorio = '';
-        foreach ($dataArray as $item) {
-            $result[$item['name']] = $item['value'];
-        }
-        $tipoTarjeta = $result['tipo_tarjeta'];
+  public function micuenta()
+  {
+    $user = Auth::user();
+    return view('public.dashboard', compact('user'));
+  }
 
-        try {
-            $reglasPrimeraCompra = [
-                'email' => 'required',
-            ];
-            $mensajes = [
-                'email.required' => 'El campo Email es obligatorio.',
-            ];
-            // $request->validate($reglasPrimeraCompra, $mensajes);
+  public function pedidos()
+  {
+    $user = Auth::user();
 
-            $orden = Ordenes::where('codigo_orden', '=', $codigoCompra);
+    $detalleUsuario = UserDetails::where('email', $user->email)
+      ->get()
+      ->toArray();
 
-            $orden->update(['tipo_tarjeta' => $tipoTarjeta]);
+    $ordenes = Ordenes::where('usuario_id', $detalleUsuario[0]['id'])
+      ->with('DetalleOrden')
+      ->with('statusOrdenes')
+      ->get();
 
-            $ordenid = $orden->get();
-            AddressUser::where('id', $ordenid[0]['address_id'])->update([
-                'dir_av_calle' => $result['dir_av_calle'],
-                'dir_numero' => $result['dir_numero'],
-                'dir_bloq_lote' => $result['dir_bloq_lote'],
-            ]);
+    return view('public.dashboard_order', compact('user', 'ordenes'));
+  }
 
-            UserDetails::where('email', '=', $request->email)->update($result);
+  public function direccionFavorita(Request $request)
+  {
+    $item = AddressUser::find($request->id);
+    if ($item) {
+      AddressUser::where('user_id', $item->user_id)->update(['favorite' => 0]);
+      $item->favorite = 1;
+      $item->save();
 
-            return response()->json(['message' => 'Todos los datos estan correctos', 'codigoCompra' => $codigoAleatorio]);
-        } catch (\Throwable $th) {
-            //throw $th;
-            return response()->json(['message' => $th], 400);
-        }
+      return response()->json(['message' => 'Dirección favorita modificada']);
     }
 
-    private function guardarOrden()
-    {
-        //almacenar venta, generar orden de pedido , guardar en tabla detalle de compra, li
+    return response()->json(['error' => 'Item no encontrado'], 404);
+  }
+
+  public function direccion()
+  {
+    $user = Auth::user();
+    $direcciones = AddressUser::where('user_id', $user->id)->get();
+    $departamentofiltro = DB::select('select * from departments where active = ? order by 2', [1]);
+    $departamento = DB::select('select * from departments where active = ? order by 2', [1]);
+
+    foreach ($direcciones as $direccion) {
+      $distrito = DB::table('districts')
+        ->where('id', $direccion->distrito_id)
+        ->first();
+      $provincia = DB::table('provinces')
+        ->where('id', $direccion->provincia_id)
+        ->first();
+      $departamento = DB::table('departments')
+        ->where('id', $direccion->departamento_id)
+        ->first();
+
+      $direccion->distrito_id = $distrito ? $distrito->description : '';
+      $direccion->provincia_id = $provincia ? $provincia->description : '';
+      $direccion->departamento_id = $departamento ? $departamento->description : '';
     }
 
-    private function codigoVentaAleatorio()
-    {
-        $codigoAleatorio = '';
+    return view('public.dashboard_direccion', compact('user', 'direcciones', 'departamento', 'departamentofiltro'));
+  }
 
-        // Longitud deseada del código
-        $longitudCodigo = 10;
+  public function obtenerProvincia($departmentId)
+  {
+    $provinces = DB::select('select * from provinces where active = ? and department_id = ? order by description', [1, $departmentId]);
+    return response()->json($provinces);
+  }
 
-        // Genera un código aleatorio de longitud 10
-        for ($i = 0; $i < $longitudCodigo; $i++) {
-            $codigoAleatorio .= mt_rand(0, 9); // Agrega un dígito aleatorio al código
-        }
-        return $codigoAleatorio;
-    }
+  public function obtenerDistritos($provinceId)
+  {
+    $distritos = DB::select('select * from districts where active = ? and province_id = ? order by description', [1, $provinceId]);
+    return response()->json($distritos);
+  }
 
-    public function agradecimiento(Request $request)
-    {
-        //
-        $codigoCompra = $request->input('codigoCompra');
+  public function guardarDireccion(Request $request)
+  {
+    $user = Auth::user();
+    $direccion = new AddressUser();
 
-        $ordenes = Ordenes::where('codigo_orden', '=', $codigoCompra)->update(['status_id' => 2]);
+    $direccion->departamento_id = $request->departamento_id;
+    $direccion->provincia_id = $request->provincia_id;
+    $direccion->distrito_id = $request->distrito_id;
+    $direccion->dir_av_calle = $request->nombre_calle;
+    $direccion->dir_numero = $request->numero_calle;
+    $direccion->dir_bloq_lote = $request->direccion;
+    $direccion->user_id = $user->id;
+    $direccion->save();
 
-        return view('public.checkout_agradecimiento', compact('codigoCompra'));
-    }
+    return response()->json(['message' => 'Dirección guardada exitosamente']);
+  }
 
-    public function cambiofoto(Request $request)
-    {
-        $user = User::findOrFail($request->id);
+  public function error()
+  {
+    //
+    return view('public.404');
+  }
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $route = 'storage/images/users/';
-            $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
 
-            if (File::exists(storage_path() . '/app/public/' . $user->profile_photo_path)) {
-                File::delete(storage_path() . '/app/public/' . $user->profile_photo_path);
-            }
 
-            $this->saveImg($file, $route, $nombreImagen);
+  public function cambioGaleria(Request $request)
+  {
+    $colorId = $request->id;
+    $productId = $request->idproduct;
 
-            $routeforshow = 'images/users/';
-            $user->profile_photo_path = $routeforshow . $nombreImagen;
+    $images = ImagenProducto::where('color_id', $colorId)->where('product_id', $productId)->get();
 
-            $user->save();
+    // return response()->json(['images' => $images]);
+    // $productos = Products::where('id', '=', $productId)->with('attributes')->with('tags')->get();
+    $tallas = Combinacion::where('color_id', $colorId)->where('product_id', $productId)->with('talla')->get();
 
-            return response()->json(['message' => 'La imagen se cargó correctamente.']);
-        }
-    }
+    return response()->json(
+      [
+        'status' => true,
+        'images' => $images,
+        'tallas' => $tallas,
+      ],
+      200,
+    );
+  }
 
-    public function actualizarPerfil(Request $request)
-    {
-        $name = $request->name;
-        $lastname = $request->lastname;
-        $email = $request->email;
-        $user = User::findOrFail($request->id);
+  public function producto(string $id)
+  {
 
-        if ($request->password !== null || $request->newpassword !== null || $request->confirmnewpassword !== null) {
-            if (!Hash::check($request->password, $user->password)) {
-                $imprimir = 'La contraseña actual no es correcta';
-                $alert = 'error';
-            } else {
-                $user->password = Hash::make($request->newpassword);
-                $imprimir = 'Cambio de contraseña exitosa';
-                $alert = 'success';
-            }
-        }
+    $producto = Products::where('id', '=', $id)->first();
 
-        if ($user->name == $name && $user->lastname == $lastname) {
-            $imprimir = 'Sin datos que actualizar';
-            $alert = 'question';
-        } else {
-            $user->name = $name;
-            $user->lastname = $lastname;
-            $alert = 'success';
-            $imprimir = 'Datos actualizados';
-        }
+    $meta_title = $producto->meta_title ?? $producto->producto;
+    $meta_description = $producto->meta_description  ?? Str::limit(strip_tags($producto->description), 160);
+    $meta_keywords = $producto->meta_keywords ?? '';
 
-        $user->save();
-        return response()->json(['message' => $imprimir, 'alert' => $alert]);
-    }
 
-    public function micuenta()
-    {
-        $user = Auth::user();
-        return view('public.dashboard', compact('user'));
-    }
+    $colors = DB::table('imagen_productos')->where('product_id', $id)->groupBy('color_id')->join('attributes_values', 'color_id', 'attributes_values.id')->get();
 
-    public function pedidos()
-    {
-        $user = Auth::user();
+    $productos = Products::where('id', '=', $id)->with('attributes')->with('tags')->get();
 
-        $detalleUsuario = UserDetails::where('email', $user->email)
-            ->get()
-            ->toArray();
 
-        $ordenes = Ordenes::where('usuario_id', $detalleUsuario[0]['id'])
-            ->with('DetalleOrden')
-            ->with('statusOrdenes')
-            ->get();
-
-        return view('public.dashboard_order', compact('user', 'ordenes'));
-    }
-
-    public function direccionFavorita(Request $request)
-    {
-        $item = AddressUser::find($request->id);
-        if ($item) {
-            AddressUser::where('user_id', $item->user_id)->update(['favorite' => 0]);
-            $item->favorite = 1;
-            $item->save();
-
-            return response()->json(['message' => 'Dirección favorita modificada']);
-        }
-
-        return response()->json(['error' => 'Item no encontrado'], 404);
-    }
-
-    public function direccion()
-    {
-        $user = Auth::user();
-        $direcciones = AddressUser::where('user_id', $user->id)->get();
-        $departamentofiltro = DB::select('select * from departments where active = ? order by 2', [1]);
-        $departamento = DB::select('select * from departments where active = ? order by 2', [1]);
-
-        foreach ($direcciones as $direccion) {
-            $distrito = DB::table('districts')
-                ->where('id', $direccion->distrito_id)
-                ->first();
-            $provincia = DB::table('provinces')
-                ->where('id', $direccion->provincia_id)
-                ->first();
-            $departamento = DB::table('departments')
-                ->where('id', $direccion->departamento_id)
-                ->first();
-
-            $direccion->distrito_id = $distrito ? $distrito->description : '';
-            $direccion->provincia_id = $provincia ? $provincia->description : '';
-            $direccion->departamento_id = $departamento ? $departamento->description : '';
-        }
-
-        return view('public.dashboard_direccion', compact('user', 'direcciones', 'departamento', 'departamentofiltro'));
-    }
-
-    public function obtenerProvincia($departmentId)
-    {
-        $provinces = DB::select('select * from provinces where active = ? and department_id = ? order by description', [1, $departmentId]);
-        return response()->json($provinces);
-    }
-
-    public function obtenerDistritos($provinceId)
-    {
-        $distritos = DB::select('select * from districts where active = ? and province_id = ? order by description', [1, $provinceId]);
-        return response()->json($distritos);
-    }
-
-    public function guardarDireccion(Request $request)
-    {
-        $user = Auth::user();
-        $direccion = new AddressUser();
-
-        $direccion->departamento_id = $request->departamento_id;
-        $direccion->provincia_id = $request->provincia_id;
-        $direccion->distrito_id = $request->distrito_id;
-        $direccion->dir_av_calle = $request->nombre_calle;
-        $direccion->dir_numero = $request->numero_calle;
-        $direccion->dir_bloq_lote = $request->direccion;
-        $direccion->user_id = $user->id;
-        $direccion->save();
-
-        return response()->json(['message' => 'Dirección guardada exitosamente']);
-    }
-
-    public function error()
-    {
-        //
-        return view('public.404');
-    }
-
-    
-
-    public function cambioGaleria(Request $request)
-    {
-        $colorId = $request->id;
-        $productId = $request->idproduct;
-
-        $images = ImagenProducto::where('color_id', $colorId)->where('product_id', $productId)->get();
-
-        // return response()->json(['images' => $images]);
-        // $productos = Products::where('id', '=', $productId)->with('attributes')->with('tags')->get();
-        $tallas = Combinacion::where('color_id', $colorId)->where('product_id', $productId)->with('talla')->get();
-
-        return response()->json(
-            [
-                'status' => true,
-                'images' => $images,
-                'tallas' => $tallas,
-            ],
-            200,
-        );
-    }
-
-    public function producto(string $id)
-    {
-        
-        $producto = Products::where('id', '=', $id)->first();
-
-        $meta_title = $producto->meta_title ?? $producto->producto;
-        $meta_description = $producto->meta_description  ?? Str::limit(strip_tags($producto->description), 160);
-        $meta_keywords = $producto->meta_keywords ?? '';
-
-        
-        $colors = DB::table('imagen_productos')->where('product_id', $id)->groupBy('color_id')->join('attributes_values', 'color_id', 'attributes_values.id')->get();
-
-        $productos = Products::where('id', '=', $id)->with('attributes')->with('tags')->get();
-
-       
-        $especificaciones = Specifications::where('product_id', '=', $id)
-            ->where(function ($query) {
-                $query->whereNotNull('tittle')->orWhereNotNull('specifications');
-            })
-            ->get();
-        $productosConGalerias = DB::select(
-            "
+    $especificaciones = Specifications::where('product_id', '=', $id)
+      ->where(function ($query) {
+        $query->whereNotNull('tittle')->orWhereNotNull('specifications');
+      })
+      ->get();
+    $productosConGalerias = DB::select(
+      "
             SELECT products.*, galeries.*
             FROM products
             INNER JOIN galeries ON products.id = galeries.product_id
             WHERE products.id = :productId limit 5
         ",
-            ['productId' => $id],
-        );
+      ['productId' => $id],
+    );
 
-        $IdProductosComplementarios = $productos->toArray();
-        $IdProductosComplementarios = $IdProductosComplementarios[0]['categoria_id'];
+    $IdProductosComplementarios = $productos->toArray();
+    $IdProductosComplementarios = $IdProductosComplementarios[0]['categoria_id'];
 
-        $ProdComplementarios = $producto->productrelacionados()->where('status', 1)->get();
+    $ProdComplementarios = $producto->productrelacionados()->where('status', 1)->get();
 
-        if ($ProdComplementarios->isEmpty()) {
-          $ProdComplementarios = Products::where('categoria_id', '=', $IdProductosComplementarios)
-              ->where('id', '!=', $producto->id) // Excluir el producto actual
-              ->where('status', 1)
-              ->get();
-        }
-
-        //$productosRelacionados = Products::where('categoria_id', '=', $IdProductosComplementarios)->get();
-
-        $atributos = Attributes::where('status', '=', true)->get();
-      
-
-        $valorAtributo = AttributesValues::where('status', '=', true)->get();
-
-        $url_env = $_ENV['APP_URL'];
-
-        return view('public.product', compact('meta_title','meta_description','meta_keywords', 'producto', 'productos', 'atributos', 'valorAtributo', 'ProdComplementarios', 'productosConGalerias', 'especificaciones', 'url_env', 'colors'));
+    if ($ProdComplementarios->isEmpty()) {
+      $ProdComplementarios = Products::where('categoria_id', '=', $IdProductosComplementarios)
+        ->where('id', '!=', $producto->id) // Excluir el producto actual
+        ->where('status', 1)
+        ->get();
     }
 
-    public function liquidacion()
-    {
-        try {
-            $liquidacion = Products::where('status', '=', 1)->where('visible', '=', 1)->where('liquidacion', '=', 1)->paginate(16);
+    //$productosRelacionados = Products::where('categoria_id', '=', $IdProductosComplementarios)->get();
 
-            return view('public.liquidacion', compact('liquidacion'));
-        } catch (\Throwable $th) {
-        }
+    $atributos = Attributes::where('status', '=', true)->get();
+
+
+    $valorAtributo = AttributesValues::where('status', '=', true)->get();
+
+    $url_env = $_ENV['APP_URL'];
+
+    return view('public.product', compact('meta_title', 'meta_description', 'meta_keywords', 'producto', 'productos', 'atributos', 'valorAtributo', 'ProdComplementarios', 'productosConGalerias', 'especificaciones', 'url_env', 'colors'));
+  }
+
+  public function liquidacion()
+  {
+    try {
+      $liquidacion = Products::where('status', '=', 1)->where('visible', '=', 1)->where('liquidacion', '=', 1)->paginate(16);
+
+      return view('public.liquidacion', compact('liquidacion'));
+    } catch (\Throwable $th) {
     }
+  }
 
-    public function nosotros()
-    {
-        try {
-            $general = General::first();
-            $textosnosotros = NosotrosView::first();
-            $testimonie = Testimony::where('status', '=', 1)->where('visible', '=', 1)->get();
-            $staff = Staff::where('status', '=', 1)->get();
-            $valores = MisClientes::where('status', '=', 1)->where('visible', '=', 1)->get();
-            $certificados = Certificados::where('status', '=', 1)->where('visible', '=', 1)->get();
-            $nosotros = AboutUs::where('status', '=', 1)->get();
-            $benefit = Strength::where('status', '=', 1)->get();
-            return view('public.nosotros', compact('textosnosotros', 'benefit','general', 'testimonie', 'staff', 'nosotros', 'valores','certificados'));
-        } catch (\Throwable $th) {
-        }
-    }
-
-    public function innovaciones()
-    {
+  public function nosotros()
+  {
+    try {
       $general = General::first();
-      $innovaciontext = InnovacionView::first();
-      return view('public.innovaciones', compact('general','innovaciontext'));
+      $textosnosotros = NosotrosView::first();
+      $testimonie = Testimony::where('status', '=', 1)->where('visible', '=', 1)->get();
+      $staff = Staff::where('status', '=', 1)->get();
+      $valores = MisClientes::where('status', '=', 1)->where('visible', '=', 1)->get();
+      $certificados = Certificados::where('status', '=', 1)->where('visible', '=', 1)->get();
+      // $nosotros = AboutUs::where('status', '=', 1)->get();
+      $benefit = Strength::where('status', '=', 1)->get();
+
+      /*IMPLEMENTACION DAR TELECOM  */
+
+      $nosotros = AboutUs::first();
+      $home = HomeView::first();
+      return view('public.nosotros', compact('nosotros', 'home', 'textosnosotros', 'benefit', 'general', 'testimonie', 'staff', 'nosotros', 'valores', 'certificados'));
+    } catch (\Throwable $th) {
     }
+  }
 
-    public function novedades()
-    {
-        try {
-            $novedades = Products::where('status', '=', 1)->where('visible', '=', 1)->where('recomendar', '=', 1)->paginate(16);
+  public function innovaciones()
+  {
+    $general = General::first();
+    $innovaciontext = InnovacionView::first();
+    return view('public.innovaciones', compact('general', 'innovaciontext'));
+  }
 
-            return view('public.novedades', compact('novedades'));
-        } catch (\Throwable $th) {
-        }
+  public function novedades()
+  {
+    try {
+      $novedades = Products::where('status', '=', 1)->where('visible', '=', 1)->where('recomendar', '=', 1)->paginate(16);
+
+      return view('public.novedades', compact('novedades'));
+    } catch (\Throwable $th) {
     }
+  }
 
-    public function blog(Request $request, string $filtro = null)
-    {
-        try {
-            $categorias = Category::where('status', '=', 1)->where('visible', '=', 1)->get();
+  public function blog(Request $request, string $filtro = null)
+  {
+    try {
+      $categorias = Category::where('status', '=', 1)->where('visible', '=', 1)->get();
 
-            if ($filtro == 0) {
-                $posts = Blog::where('status', '=', 1)->where('visible', '=', 1)->get();
+      if ($filtro == 0) {
+        $posts = Blog::where('status', '=', 1)->where('visible', '=', 1)->get();
 
-                $categoria = Category::where('status', '=', 1)->where('visible', '=', 1)->get();
+        $categoria = Category::where('status', '=', 1)->where('visible', '=', 1)->get();
 
-                // $lastpost = Blog::where('status', '=', 1)->where('visible', '=', 1)->orderBy('created_at', 'desc')->first();
+        // $lastpost = Blog::where('status', '=', 1)->where('visible', '=', 1)->orderBy('created_at', 'desc')->first();
 
-                // $lastpost = $posts->last();
+        // $lastpost = $posts->last();
 
-                // $restopost = $posts->reject(function ($post) use ($lastpost) {
-                //   return $post->id === $lastpost->id;
-                // });
+        // $restopost = $posts->reject(function ($post) use ($lastpost) {
+        //   return $post->id === $lastpost->id;
+        // });
 
-            } else {
-                $posts = Blog::where('status', '=', 1)->where('visible', '=', 1)->where('category_id', '=', $filtro)->get();
+      } else {
+        $posts = Blog::where('status', '=', 1)->where('visible', '=', 1)->where('category_id', '=', $filtro)->get();
 
-                $categoria = Category::where('status', '=', 1)->where('visible', '=', 1)->where('id', '=', $filtro)->get();
+        $categoria = Category::where('status', '=', 1)->where('visible', '=', 1)->where('id', '=', $filtro)->get();
 
-                // $lastpost = Blog::where('status', '=', 1)->where('visible', '=', 1)->orderBy('created_at', 'desc')->where('category_id', '=', $filtro)->first();
+        // $lastpost = Blog::where('status', '=', 1)->where('visible', '=', 1)->orderBy('created_at', 'desc')->where('category_id', '=', $filtro)->first();
 
-                // $lastpost = $posts->last();
+        // $lastpost = $posts->last();
 
-                // $restopost = $posts->reject(function ($post) use ($lastpost) {
-                //   return $post->id === $lastpost->id;
-                // });
-            }
+        // $restopost = $posts->reject(function ($post) use ($lastpost) {
+        //   return $post->id === $lastpost->id;
+        // });
+      }
 
-            $postsgeneral = Blog::where('status', '=', 1)->where('visible', '=', 1)->get();
+      $postsgeneral = Blog::where('status', '=', 1)->where('visible', '=', 1)->get();
 
-            $lastpost = $postsgeneral->last();
+      $lastpost = $postsgeneral->last();
 
-            return view('public.blog', compact('posts', 'categoria', 'categorias', 'filtro', 'lastpost', 'postsgeneral'));
-        } catch (\Throwable $th) {
-        }
+      return view('public.blog', compact('posts', 'categoria', 'categorias', 'filtro', 'lastpost', 'postsgeneral'));
+    } catch (\Throwable $th) {
     }
+  }
 
-    public function detalleBlog($id)
-    {
-        $post = Blog::where('status', '=', 1)->where('visible', '=', 1)->where('id', '=', $id)->first();
-        
-        $postsrelacionados = Blog::where('status', '=', 1)
-                         ->where('visible', '=', 1)
-                         ->where('category_id', '=', $post->category_id)
-                         ->where('id', '!=', $post->id) // Excluir el post actual
-                         ->take(6)
-                         ->get();
-        
-        $meta_title = $post->meta_title ?? $post->title;
-        $meta_description = $post->meta_description  ?? Str::limit($post->extract, 160);
-        $meta_keywords = $post->meta_keywords ?? '';
+  public function detalleBlog($id)
+  {
+    $post = Blog::where('status', '=', 1)->where('visible', '=', 1)->where('id', '=', $id)->first();
 
-        return view('public.post', compact('meta_title','meta_description','meta_keywords','post','postsrelacionados'));
+    $postsrelacionados = Blog::where('status', '=', 1)
+      ->where('visible', '=', 1)
+      ->where('category_id', '=', $post->category_id)
+      ->where('id', '!=', $post->id) // Excluir el post actual
+      ->take(6)
+      ->get();
+
+    $meta_title = $post->meta_title ?? $post->title;
+    $meta_description = $post->meta_description  ?? Str::limit($post->extract, 160);
+    $meta_keywords = $post->meta_keywords ?? '';
+
+    return view('public.post', compact('meta_title', 'meta_description', 'meta_keywords', 'post', 'postsrelacionados'));
+  }
+
+  public function catalogosDescargables($filtro)
+  {
+    try {
+      $categorias = Category::where('status', '=', 1)->where('visible', '=', 1)->orderBy('order', 'asc')->get();
+
+      if ($filtro == 0) {
+        //$productos = Products::where('status', '=', 1)->where('visible', '=', 1)->with('tags')->paginate(12);
+        $descargables = Descargables::where('status', '=', 1)->where('visible', '=', 1)->paginate(16);
+
+        $categoria = Category::where('status', '=', 1)->where('visible', '=', 1)->get();
+        //$categoria = Category::all();
+      } else {
+        //$productos = Products::where('status', '=', 1)->where('visible', '=', 1)->where('categoria_id', '=', $filtro)->with('tags')->paginate(12);
+        $descargables = Descargables::where('status', '=', 1)->where('visible', '=', 1)->where('categoria_id', '=', $filtro)->paginate(16);
+
+        $categoria = Category::where('status', '=', 1)->where('visible', '=', 1)->where('id', '=', $filtro)->get();
+        //$categorias = Category::findOrFail($filtro);
+      }
+
+      return view('public.descargables', compact('descargables', 'categorias', 'filtro', 'categoria'));
+    } catch (\Throwable $th) {
     }
+  }
 
-    public function catalogosDescargables($filtro)
-    {
-        try {
-            $categorias = Category::where('status', '=', 1)->where('visible', '=', 1)->orderBy('order', 'asc')->get();
+  public function searchProduct(Request $request)
+  {
+    $query = $request->input('query');
+    $resultados = Products::where('producto', 'like', "%$query%")->where('visible', '=', true)->where('status', '=', true)
+      ->with('categoria')->get();
 
-            if ($filtro == 0) {
-                //$productos = Products::where('status', '=', 1)->where('visible', '=', 1)->with('tags')->paginate(12);
-                $descargables = Descargables::where('status', '=', 1)->where('visible', '=', 1)->paginate(16);
+    return response()->json($resultados);
+  }
+  //  --------------------------------------------
+  /**
+   * Show the form for creating a new resource.
+   */
+  public function create()
+  {
+    //
+  }
 
-                $categoria = Category::where('status', '=', 1)->where('visible', '=', 1)->get();
-                //$categoria = Category::all();
-            } else {
-                //$productos = Products::where('status', '=', 1)->where('visible', '=', 1)->where('categoria_id', '=', $filtro)->with('tags')->paginate(12);
-                $descargables = Descargables::where('status', '=', 1)->where('visible', '=', 1)->where('categoria_id', '=', $filtro)->paginate(16);
+  /**
+   * Store a newly created resource in storage.
+   */
+  public function store(StoreIndexRequest $request)
+  {
+    //
+  }
 
-                $categoria = Category::where('status', '=', 1)->where('visible', '=', 1)->where('id', '=', $filtro)->get();
-                //$categorias = Category::findOrFail($filtro);
-            }
+  /**
+   * Display the specified resource.
+   */
+  public function show(Index $index)
+  {
+    //
+  }
 
-            return view('public.descargables', compact('descargables', 'categorias', 'filtro', 'categoria'));
-        } catch (\Throwable $th) {
-        }
+  /**
+   * Show the form for editing the specified resource.
+   */
+  public function edit(Index $index)
+  {
+    //
+  }
+
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(UpdateIndexRequest $request, Index $index)
+  {
+    //
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy(Index $index)
+  {
+    //
+  }
+
+  /**
+   * Realizado para Dar Telecom
+   */
+  public function guardarContacto(Request $request)
+  {
+
+    $data = $request->all();
+    $data['full_name'] = $request->name . ' ' . $request->lastname;
+
+    try {
+      $reglasValidacion = [
+        'name' => 'required|string|max:255',
+        'lastname' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'phone' => 'required|digits:9',
+        'message' => 'required|string|max:500',
+      ];
+
+      $mensajes = [
+        'name.required' => 'El campo nombre es obligatorio.',
+        'lastname.required' => 'El campo apellido es obligatorio.',
+        'email.required' => 'El campo correo electrónico es obligatorio.',
+        'email.email' => 'El formato del correo electrónico no es válido.',
+        'email.max' => 'El campo correo electrónico no puede tener más de :max caracteres.',
+        'phone.required' => 'El campo teléfono es obligatorio.',
+        'phone.digits' => 'El teléfono debe tener exactamente 9 dígitos.',
+        'message.required' => 'El campo mensaje es obligatorio.',
+        'message.max' => 'El campo mensaje no puede tener más de :max caracteres.',
+      ];
+
+      $request->validate($reglasValidacion, $mensajes);
+
+      Message::create($data);
+
+
+      return response()->json(['message' => 'Mensaje enviado con éxito']);
+    } catch (ValidationException $e) {
+      return response()->json(['message' => $e->validator->errors()], 400);
+    } catch (\Exception $e) {
+      return response()->json(['message' => 'Ocurrió un error inesperado. Inténtalo de nuevo.'], 500);
     }
+  }
 
-    public function searchProduct(Request $request)
-    {
-        $query = $request->input('query');
-        $resultados = Products::where('producto', 'like', "%$query%")->where('visible', '=', true)->where('status', '=', true)
-                                ->with('categoria')->get();
 
-        return response()->json($resultados);
+
+  public function guardarContactoWsp(Request $request)
+  {
+    $data = $request->all();
+    $data['full_name'] = $request->full_name;
+    $ipAddress = $request->ip();
+    $ancho = $request->client_width;
+    $latitud = $request->client_latitude;
+    $longitud = $request->client_longitude;
+    $sistema = $request->client_system;
+
+    try {
+      $reglasValidacion = [
+        'full_name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+      ];
+      $mensajes = [
+        'full_name.required' => 'El campo nombre es obligatorio.',
+        'email.required' => 'El campo correo electrónico es obligatorio.',
+        'email.email' => 'El formato del correo electrónico no es válido.',
+        'email.max' => 'El campo correo electrónico no puede tener más de :max caracteres.',
+      ];
+      $request->validate($reglasValidacion, $mensajes);
+
+
+      if (!is_null($ipAddress)) {
+        $data['ip'] = $ipAddress;
+      } else {
+        $data['ip'] = 'Sin data';
+      }
+
+      if (!is_null($latitud)) {
+        $data['client_latitude'] = $latitud;
+      } else {
+        $data['client_latitude'] = 'Sin data';
+      }
+
+      if (!is_null($longitud)) {
+        $data['client_longitude'] = $longitud;
+      } else {
+        $data['client_longitude'] = 'Sin data';
+      }
+
+      if (!is_null($sistema)) {
+        $data['client_system'] = $sistema;
+      } else {
+        $data['client_system'] = 'Sin data';
+      }
+
+
+      if ($ancho >= 1 && $ancho <= 767) {
+        $data['device'] = 'mobile';
+      } elseif ($ancho >= 768 && $ancho <= 1024) {
+        $data['device'] = 'tablet';
+      } elseif ($ancho >= 1025) {
+        $data['device'] = 'desktop';
+      } elseif (is_null($ancho)) {
+        $data['device'] = 'Sin data';
+      }
+
+
+
+      $formlanding = Message::create($data);
+      return response()->json(['message' => 'Redirigiendo a Whatsapp']);
+    } catch (ValidationException $e) {
+      return response()->json(['message' => $e->validator->errors()], 400);
     }
-    //  --------------------------------------------
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+  }
+
+  public function guardarProducto(Request $request)
+  {
+    $data = $request->all();
+    $data['full_name'] = $request->full_name;
+    $data['service_product'] = $request->service_product;
+    $ipAddress = $request->ip();
+    $ancho = $request->client_width;
+    $latitud = $request->client_latitude;
+    $longitud = $request->client_longitude;
+    $sistema = $request->client_system;
+
+    try {
+      $reglasValidacion = [
+        'full_name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+      ];
+      $mensajes = [
+        'full_name.required' => 'El campo nombre es obligatorio.',
+        'email.required' => 'El campo correo electrónico es obligatorio.',
+        'email.email' => 'El formato del correo electrónico no es válido.',
+        'email.max' => 'El campo correo electrónico no puede tener más de :max caracteres.',
+      ];
+      $request->validate($reglasValidacion, $mensajes);
+
+
+      if (!is_null($ipAddress)) {
+        $data['ip'] = $ipAddress;
+      } else {
+        $data['ip'] = 'Sin data';
+      }
+
+      if (!is_null($latitud)) {
+        $data['client_latitude'] = $latitud;
+      } else {
+        $data['client_latitude'] = 'Sin data';
+      }
+
+      if (!is_null($longitud)) {
+        $data['client_longitude'] = $longitud;
+      } else {
+        $data['client_longitude'] = 'Sin data';
+      }
+
+      if (!is_null($sistema)) {
+        $data['client_system'] = $sistema;
+      } else {
+        $data['client_system'] = 'Sin data';
+      }
+
+
+      if ($ancho >= 1 && $ancho <= 767) {
+        $data['device'] = 'mobile';
+      } elseif ($ancho >= 768 && $ancho <= 1024) {
+        $data['device'] = 'tablet';
+      } elseif ($ancho >= 1025) {
+        $data['device'] = 'desktop';
+      } elseif (is_null($ancho)) {
+        $data['device'] = 'Sin data';
+      }
+
+
+      $formlanding = Message::create($data);
+      $this->envioCorreoAdmin($formlanding);
+      $this->envioCorreoCliente($formlanding);
+
+      return response()->json(['message' => 'Mensaje enviado con exito']);
+    } catch (ValidationException $e) {
+      return response()->json(['message' => $e->validator->errors()], 400);
     }
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreIndexRequest $request)
-    {
-        //
+  public function saveImg($file, $route, $nombreImagen)
+  {
+    $manager = new ImageManager(new Driver());
+    $img = $manager->read($file);
+
+    if (!file_exists($route)) {
+      mkdir($route, 0777, true); // Se crea la ruta con permisos de lectura, escritura y ejecución
     }
+    $img->save($route . $nombreImagen);
+  }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Index $index)
-    {
-        //
-    }
+  private function envioCorreoAdmin($data)
+  {
+    $generales = General::first();
+    $emailadmin = $generales->email;
+    $appUrl = env('APP_URL');
+    $name = 'Administrador';
+    $mensaje = "Nueva solicitud de contacto - Redconex";
+    $mail = EmailConfig::config($name, $mensaje);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Index $index)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateIndexRequest $request, Index $index)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Index $index)
-    {
-        //
-    }
-
-    /**
-     * Save contact from blade
-     */
-    public function guardarContacto(Request $request)
-    {
-        $data = $request->all();
-        $data['full_name'] = $request->full_name;
-        $ipAddress = $request->ip();
-        $ancho = $request->client_width;
-        $latitud = $request->client_latitude;
-        $longitud = $request->client_longitude;
-        $sistema = $request->client_system;
-
-        try {
-            $reglasValidacion = [
-                'full_name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-            ];
-            $mensajes = [
-                'full_name.required' => 'El campo nombre es obligatorio.',
-                'email.required' => 'El campo correo electrónico es obligatorio.',
-                'email.email' => 'El formato del correo electrónico no es válido.',
-                'email.max' => 'El campo correo electrónico no puede tener más de :max caracteres.',
-            ];
-            $request->validate($reglasValidacion, $mensajes);
-
-
-            if (!is_null($ipAddress)) {
-              $data['ip'] = $ipAddress;
-            }else{
-              $data['ip'] = 'Sin data';
-            }
-
-            if (!is_null($latitud)) {
-              $data['client_latitude'] = $latitud;
-            }else{
-              $data['client_latitude'] = 'Sin data';
-            }
-
-            if (!is_null($longitud)) {
-              $data['client_longitude'] = $longitud;
-            }else{
-              $data['client_longitude'] = 'Sin data';
-            }
-
-            if (!is_null($sistema)) {
-              $data['client_system'] = $sistema;
-            }else{
-              $data['client_system'] = 'Sin data';
-            }
-
-
-            if ($ancho >= 1 && $ancho <= 767) {
-              $data['device'] = 'mobile';
-            } elseif ($ancho >= 768 && $ancho <= 1024) {
-              $data['device'] = 'tablet';
-            } elseif ($ancho >= 1025 ){
-              $data['device'] = 'desktop';
-            } elseif (is_null($ancho)){
-              $data['device'] = 'Sin data';
-            }
-
-           
-
-            $dataform = Message::create($data);
-            $this->envioCorreoAdmin($dataform);
-            $this->envioCorreoCliente($dataform);
-
-            return response()->json(['message' => 'Mensaje enviado con exito']);
-        } catch (ValidationException $e) {
-            return response()->json(['message' => $e->validator->errors()], 400);
-        }
-    }
-
-
-    public function guardarContactoWsp(Request $request)
-    {
-        $data = $request->all();
-        $data['full_name'] = $request->full_name;
-        $ipAddress = $request->ip();
-        $ancho = $request->client_width;
-        $latitud = $request->client_latitude;
-        $longitud = $request->client_longitude;
-        $sistema = $request->client_system;
-
-        try {
-            $reglasValidacion = [
-                'full_name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-            ];
-            $mensajes = [
-                'full_name.required' => 'El campo nombre es obligatorio.',
-                'email.required' => 'El campo correo electrónico es obligatorio.',
-                'email.email' => 'El formato del correo electrónico no es válido.',
-                'email.max' => 'El campo correo electrónico no puede tener más de :max caracteres.',
-            ];
-            $request->validate($reglasValidacion, $mensajes);
-
-
-            if (!is_null($ipAddress)) {
-              $data['ip'] = $ipAddress;
-            }else{
-              $data['ip'] = 'Sin data';
-            }
-
-            if (!is_null($latitud)) {
-              $data['client_latitude'] = $latitud;
-            }else{
-              $data['client_latitude'] = 'Sin data';
-            }
-
-            if (!is_null($longitud)) {
-              $data['client_longitude'] = $longitud;
-            }else{
-              $data['client_longitude'] = 'Sin data';
-            }
-
-            if (!is_null($sistema)) {
-              $data['client_system'] = $sistema;
-            }else{
-              $data['client_system'] = 'Sin data';
-            }
-                     
-
-            if ($ancho >= 1 && $ancho <= 767) {
-              $data['device'] = 'mobile';
-            } elseif ($ancho >= 768 && $ancho <= 1024) {
-              $data['device'] = 'tablet';
-            } elseif ($ancho >= 1025 ){
-              $data['device'] = 'desktop';
-            } elseif (is_null($ancho)){
-              $data['device'] = 'Sin data';
-            }
-
-           
-
-            $formlanding = Message::create($data);
-            return response()->json(['message' => 'Redirigiendo a Whatsapp']);
-        } catch (ValidationException $e) {
-            return response()->json(['message' => $e->validator->errors()], 400);
-        }
-    }
-
-    public function guardarProducto(Request $request)
-    {   
-        $data = $request->all();
-        $data['full_name'] = $request->full_name;
-        $data['service_product'] = $request->service_product;
-        $ipAddress = $request->ip();
-        $ancho = $request->client_width;
-        $latitud = $request->client_latitude;
-        $longitud = $request->client_longitude;
-        $sistema = $request->client_system;
-
-        try {
-            $reglasValidacion = [
-                'full_name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-            ];
-            $mensajes = [
-                'full_name.required' => 'El campo nombre es obligatorio.',
-                'email.required' => 'El campo correo electrónico es obligatorio.',
-                'email.email' => 'El formato del correo electrónico no es válido.',
-                'email.max' => 'El campo correo electrónico no puede tener más de :max caracteres.',
-            ];
-            $request->validate($reglasValidacion, $mensajes);
-
-
-            if (!is_null($ipAddress)) {
-              $data['ip'] = $ipAddress;
-            }else{
-              $data['ip'] = 'Sin data';
-            }
-
-            if (!is_null($latitud)) {
-              $data['client_latitude'] = $latitud;
-            }else{
-              $data['client_latitude'] = 'Sin data';
-            }
-
-            if (!is_null($longitud)) {
-              $data['client_longitude'] = $longitud;
-            }else{
-              $data['client_longitude'] = 'Sin data';
-            }
-
-            if (!is_null($sistema)) {
-              $data['client_system'] = $sistema;
-            }else{
-              $data['client_system'] = 'Sin data';
-            }
-            
-
-            if ($ancho >= 1 && $ancho <= 767) {
-              $data['device'] = 'mobile';
-            } elseif ($ancho >= 768 && $ancho <= 1024) {
-              $data['device'] = 'tablet';
-            } elseif ($ancho >= 1025 ){
-              $data['device'] = 'desktop';
-            } elseif (is_null($ancho)){
-              $data['device'] = 'Sin data';
-            }
-
-
-            $formlanding = Message::create($data);
-            $this->envioCorreoAdmin($formlanding);
-            $this->envioCorreoCliente($formlanding);
-           
-            return response()->json(['message' => 'Mensaje enviado con exito']);
-        } catch (ValidationException $e) {
-            return response()->json(['message' => $e->validator->errors()], 400);
-        }
-    }
-
-    public function saveImg($file, $route, $nombreImagen)
-    {
-        $manager = new ImageManager(new Driver());
-        $img = $manager->read($file);
-
-        if (!file_exists($route)) {
-            mkdir($route, 0777, true); // Se crea la ruta con permisos de lectura, escritura y ejecución
-        }
-        $img->save($route . $nombreImagen);
-    }
-
-    private function envioCorreoAdmin($data)
-    {
-        $generales = General::first();
-        $emailadmin = $generales->email;
-        $appUrl = env('APP_URL');
-        $name = 'Administrador';
-        $mensaje = "Nueva solicitud de contacto - Redconex";
-        $mail = EmailConfig::config($name, $mensaje);
-
-        try {
-          $mail->addAddress($emailadmin);
-          $mail->Body = '<html lang="en">
+    try {
+      $mail->addAddress($emailadmin);
+      $mail->Body = '<html lang="en">
           <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -1052,8 +1034,8 @@ class IndexController extends Controller
                   margin: 0 auto;
                   text-align: center;
                   background-image: url(' .
-                        $appUrl .
-                        '/mail/fondo.png);
+        $appUrl .
+        '/mail/fondo.png);
                   background-repeat: no-repeat;
                   background-position: center;
                   background-size: cover;
@@ -1072,10 +1054,10 @@ class IndexController extends Controller
                       "
                     >
                         <a href="' .
-                        $appUrl .
-                        '" target="_blank" style="text-align:center" ><img src="' .
-                        $appUrl .
-                        '/mail/logo.png" alt="hpi" /></a>
+        $appUrl .
+        '" target="_blank" style="text-align:center" ><img src="' .
+        $appUrl .
+        '/mail/logo.png" alt="hpi" /></a>
                     </th>
                   </tr>
                 </thead>
@@ -1139,8 +1121,8 @@ class IndexController extends Controller
                       <a
                          target="_blank"
                         href="' .
-                        $appUrl .
-                        '"
+        $appUrl .
+        '"
                         style="
                           text-decoration: none;
                           background-color: #E29720;
@@ -1167,26 +1149,26 @@ class IndexController extends Controller
           </body>
         </html>
           ';
-          $mail->isHTML(true);
-          $mail->send();
-        } catch (\Throwable $th) {
-          //throw $th;
-        }
+      $mail->isHTML(true);
+      $mail->send();
+    } catch (\Throwable $th) {
+      //throw $th;
     }
+  }
 
-    private function envioCorreoCliente($data)
-    { 
-       
-        $name = $data['full_name'];
-        $appUrl = env('APP_URL');
-        $mensaje = 'Gracias por comunicarte con Redconex';
-        $mail = EmailConfig::config($name, $mensaje);
-        // $baseUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/mail';
-        // $baseUrllink = 'https://' . $_SERVER['HTTP_HOST'] . '/';
+  private function envioCorreoCliente($data)
+  {
 
-        try {
-          $mail->addAddress($data['email']);
-          $mail->Body = '<html lang="en">
+    $name = $data['full_name'];
+    $appUrl = env('APP_URL');
+    $mensaje = 'Gracias por comunicarte con Redconex';
+    $mail = EmailConfig::config($name, $mensaje);
+    // $baseUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/mail';
+    // $baseUrllink = 'https://' . $_SERVER['HTTP_HOST'] . '/';
+
+    try {
+      $mail->addAddress($data['email']);
+      $mail->Body = '<html lang="en">
           <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -1213,8 +1195,8 @@ class IndexController extends Controller
                   margin: 0 auto;
                   text-align: center;
                   background-image: url(' .
-                        $appUrl .
-                        '/mail/fondo.png);
+        $appUrl .
+        '/mail/fondo.png);
                   background-repeat: no-repeat;
                   background-position: center;
                   background-size: cover;
@@ -1233,10 +1215,10 @@ class IndexController extends Controller
                       "
                     >
                         <a href="' .
-                        $appUrl .
-                        '" target="_blank" style="text-align:center" ><img src="' .
-                        $appUrl .
-                        '/mail/logo.png" alt="redconex" /></a>
+        $appUrl .
+        '" target="_blank" style="text-align:center" ><img src="' .
+        $appUrl .
+        '/mail/logo.png" alt="redconex" /></a>
                     </th>
                   </tr>
                 </thead>
@@ -1300,8 +1282,8 @@ class IndexController extends Controller
                       <a
                          target="_blank"
                         href="' .
-                        $appUrl .
-                        '"
+        $appUrl .
+        '"
                         style="
                           text-decoration: none;
                           background-color: #E29720;
@@ -1328,135 +1310,135 @@ class IndexController extends Controller
           </body>
         </html>
           ';
-          $mail->isHTML(true);
-          $mail->send();
-        } catch (\Throwable $th) {
-          //throw $th;
-        }
+      $mail->isHTML(true);
+      $mail->send();
+    } catch (\Throwable $th) {
+      //throw $th;
     }
+  }
 
-    public function procesarCarrito(Request $request)
-    {
-        $primeraVez = false;
+  public function procesarCarrito(Request $request)
+  {
+    $primeraVez = false;
 
-        try {
-            $codigoOrden = $this->codigoVentaAleatorio();
-            $jsonMonto = json_decode($request->total, true);
-            $montoT = $jsonMonto['total'];
-            $subMonto = $jsonMonto['suma'];
+    try {
+      $codigoOrden = $this->codigoVentaAleatorio();
+      $jsonMonto = json_decode($request->total, true);
+      $montoT = $jsonMonto['total'];
+      $subMonto = $jsonMonto['suma'];
 
-            $precioEnvio = $montoT - $subMonto;
-            $email = $request->email;
+      $precioEnvio = $montoT - $subMonto;
+      $email = $request->email;
 
-            $usuario = UserDetails::where('email', '=', $email)->get(); // obtenemos usuario para validarlo si no agregarlo
+      $usuario = UserDetails::where('email', '=', $email)->get(); // obtenemos usuario para validarlo si no agregarlo
 
-            //si tiene usuario registrad
+      //si tiene usuario registrad
 
-            if (!$usuario->isNotEmpty()) {
-                $usuario = UserDetails::create(['email' => $email]);
-                $primeraVez = true;
-            }
-
-            $addres = AddressUser::create([
-                'departamento_id' => (int) $request->departamento,
-                'provincia_id' => (int) $request->provincia,
-                'distrito_id' => (int) $request->distrito,
-                'user_id' => $usuario[0]['id'],
-            ]);
-            $this->GuardarOrdenAndDetalleOrden($codigoOrden, $montoT, $precioEnvio, $usuario, $request->carrito, $addres);
-
-            $formToken = $this->generateFormTokenIzipay($montoT, $codigoOrden, $email);
-
-            //
-            return response()->json(['mensaje' => 'Orden generada correctamente', 'formToken' => $formToken, 'codigoOrden' => $codigoOrden, 'primeraVez' => $primeraVez]);
-        } catch (\Throwable $th) {
-            //throw $th;
-            return response()->json(['mensaje' => "Intente de nuevo mas tarde , estamos trabajando en una solucion , $th"], 400);
-        }
-    }
-    private function GuardarOrdenAndDetalleOrden($codigoOrden, $montoT, $precioEnvio, $usuario, $carrito, $addres)
-    {
-        $data['codigo_orden'] = $codigoOrden;
-        $data['monto'] = $montoT;
-        $data['precio_envio'] = $precioEnvio;
-        $data['status_id'] = '1';
-        $data['usuario_id'] = $usuario[0]['id'];
-        $data['address_id'] = $addres['id'];
-
-        $orden = Ordenes::create($data);
-
-        //creamos detalle de orden
-        foreach ($carrito as $key => $value) {
-            DetalleOrden::create([
-                'producto_id' => $value['id'],
-                'cantidad' => $value['cantidad'],
-                'orden_id' => $orden->id,
-                'precio' => $value['precio'],
-                'talla' => $value['talla'],
-                'color' => $value['color']['valor'],
-            ]);
-        }
-    }
-
-
-    // if ($rangefrom !== null && $rangeto !== null) {
-
-            //   if ($filtro == 0) {
-            //     $productos = Products::where('status', '=', 1)->where('visible', '=', 1)->with('tags')->paginate(12);
-            //     $categoria = Category::all();
-            //   } else {
-            //     $productos = Products::where('status', '=', 1)->where('visible', '=', 1)->where('categoria_id', '=', $filtro)->with('tags')->paginate(12);
-            //     $categoria = Category::findOrFail($filtro);
-            //   }
-
-            //   $cleanedData = $productos->filter(function ($value) use ($rangefrom, $rangeto) {
-
-            //     if ($value['descuento'] == 0) {
-
-            //       if ($value['precio'] <= $rangeto && $value['precio'] >= $rangefrom) {
-            //         return $value;
-            //       }
-            //     } else {
-
-            //       if ($value['descuento'] <= $rangeto && $value['descuento'] >= $rangefrom) {
-            //         return $value;
-            //       }
-            //     }
-            //   });
-
-            //   $currentPage = LengthAwarePaginator::resolveCurrentPage();
-            //   $productos = new LengthAwarePaginator(
-            //     $cleanedData->forPage($currentPage, 12), // Obtener los productos por página
-            //     $cleanedData->count(), // Contar todos los elementos
-            //     12, // Número de elementos por página
-            //     $currentPage, // Página actual
-            //     ['path' => request()->url()] // URL base para la paginación
-            //   );
-            // }
-
-      public function politicasDevolucion()
-
-      {
-        $politicDev = PolyticsCondition::first();
-        return view('public.politicasdeenvio', compact('politicDev'));
+      if (!$usuario->isNotEmpty()) {
+        $usuario = UserDetails::create(['email' => $email]);
+        $primeraVez = true;
       }
 
-      public function TerminosyCondiciones()
+      $addres = AddressUser::create([
+        'departamento_id' => (int) $request->departamento,
+        'provincia_id' => (int) $request->provincia,
+        'distrito_id' => (int) $request->distrito,
+        'user_id' => $usuario[0]['id'],
+      ]);
+      $this->GuardarOrdenAndDetalleOrden($codigoOrden, $montoT, $precioEnvio, $usuario, $request->carrito, $addres);
 
-      {
-        $termsAndCondicitions = TermsAndCondition::first();
-        return view('public.terminosycondiciones', compact('termsAndCondicitions'));
-      }
+      $formToken = $this->generateFormTokenIzipay($montoT, $codigoOrden, $email);
 
-      public function obtenerdata(Request $request){
-        
-        try {
-            $producto = Products::where('id', '=', $request->id)->first();
-            return response()->json(['menssage' => 'Data obtenida', 'producto' => $producto]);
-        } catch (\Throwable $th) {
-            //throw $th;
-            return response()->json(['menssage' => "Ocurrio un error , $th"], 400);
-        }
-       
-      }
+      //
+      return response()->json(['mensaje' => 'Orden generada correctamente', 'formToken' => $formToken, 'codigoOrden' => $codigoOrden, 'primeraVez' => $primeraVez]);
+    } catch (\Throwable $th) {
+      //throw $th;
+      return response()->json(['mensaje' => "Intente de nuevo mas tarde , estamos trabajando en una solucion , $th"], 400);
+    }
+  }
+  private function GuardarOrdenAndDetalleOrden($codigoOrden, $montoT, $precioEnvio, $usuario, $carrito, $addres)
+  {
+    $data['codigo_orden'] = $codigoOrden;
+    $data['monto'] = $montoT;
+    $data['precio_envio'] = $precioEnvio;
+    $data['status_id'] = '1';
+    $data['usuario_id'] = $usuario[0]['id'];
+    $data['address_id'] = $addres['id'];
+
+    $orden = Ordenes::create($data);
+
+    //creamos detalle de orden
+    foreach ($carrito as $key => $value) {
+      DetalleOrden::create([
+        'producto_id' => $value['id'],
+        'cantidad' => $value['cantidad'],
+        'orden_id' => $orden->id,
+        'precio' => $value['precio'],
+        'talla' => $value['talla'],
+        'color' => $value['color']['valor'],
+      ]);
+    }
+  }
+
+
+  // if ($rangefrom !== null && $rangeto !== null) {
+
+  //   if ($filtro == 0) {
+  //     $productos = Products::where('status', '=', 1)->where('visible', '=', 1)->with('tags')->paginate(12);
+  //     $categoria = Category::all();
+  //   } else {
+  //     $productos = Products::where('status', '=', 1)->where('visible', '=', 1)->where('categoria_id', '=', $filtro)->with('tags')->paginate(12);
+  //     $categoria = Category::findOrFail($filtro);
+  //   }
+
+  //   $cleanedData = $productos->filter(function ($value) use ($rangefrom, $rangeto) {
+
+  //     if ($value['descuento'] == 0) {
+
+  //       if ($value['precio'] <= $rangeto && $value['precio'] >= $rangefrom) {
+  //         return $value;
+  //       }
+  //     } else {
+
+  //       if ($value['descuento'] <= $rangeto && $value['descuento'] >= $rangefrom) {
+  //         return $value;
+  //       }
+  //     }
+  //   });
+
+  //   $currentPage = LengthAwarePaginator::resolveCurrentPage();
+  //   $productos = new LengthAwarePaginator(
+  //     $cleanedData->forPage($currentPage, 12), // Obtener los productos por página
+  //     $cleanedData->count(), // Contar todos los elementos
+  //     12, // Número de elementos por página
+  //     $currentPage, // Página actual
+  //     ['path' => request()->url()] // URL base para la paginación
+  //   );
+  // }
+
+  public function politicasDevolucion()
+
+  {
+    $politicDev = PolyticsCondition::first();
+    return view('public.politicasdeenvio', compact('politicDev'));
+  }
+
+  public function TerminosyCondiciones()
+
+  {
+    $termsAndCondicitions = TermsAndCondition::first();
+    return view('public.terminosycondiciones', compact('termsAndCondicitions'));
+  }
+
+  public function obtenerdata(Request $request)
+  {
+
+    try {
+      $producto = Products::where('id', '=', $request->id)->first();
+      return response()->json(['menssage' => 'Data obtenida', 'producto' => $producto]);
+    } catch (\Throwable $th) {
+      //throw $th;
+      return response()->json(['menssage' => "Ocurrio un error , $th"], 400);
+    }
+  }
 }

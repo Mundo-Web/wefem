@@ -31,11 +31,11 @@ export default {
                 regular: "400",
                 semibold: "600",
             },
+            textShadow: {
+                custom: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+            },
             boxShadow: {
-                DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.02)',
-                md: '0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.02)',
-                lg: '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.01)',
-                xl: '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.01)',
+                DEFAULT: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
             },
             outline: {
                 blue: '2px solid rgba(0, 112, 244, 0.5)',
@@ -111,6 +111,13 @@ export default {
                 bgWhite: "#FFFFFF",
                 bgButtonBaseGreen: "#BFDE8E",
                 bgRosa: "#F5F5F5",
+
+                /*Add Dar Telecom */
+                colorBackgroundAzulClaro:"#EFF1FB",
+                colorBackgroundAzul: "#0E1D42",
+                colorBackgroundAzulOscuro:"#000F25",
+                colorBackgroundRed:"#ED1B2F",
+                
             },
             
             textColor: {
@@ -123,6 +130,13 @@ export default {
                 textAzul: "#00395F",
                 textBlack: "#111111",
                 textGray: "#A6A6A6",
+
+                /*Add Dar Telecom */
+                colorAzul: "#0E1D42",
+                colorAzulOscuro:"#000F25",
+                colorRojo: "#ED1B2F",
+                colorParrafo: "#333F51",
+
             },
             borderColor: {
                 selectCheck: "#173525",
@@ -179,6 +193,7 @@ export default {
                 modifySelectors(({ className }) => `.sidebar-expanded .${e(`sidebar-expanded${separator}${className}`)}`);
             });
         }),
-        flowbite
+        flowbite,
+        require('tailwindcss-textshadow')
     ],
 };

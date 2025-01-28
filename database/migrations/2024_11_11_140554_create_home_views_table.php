@@ -13,52 +13,20 @@ return new class extends Migration
     {
         Schema::create('home_views', function (Blueprint $table) {
             $table->id();
-
-            $table->string('subtitle1section')->nullable();
-            $table->string('title1section')->nullable();
-
-            $table->string('subtitle2section')->nullable();
-            $table->string('title2section')->nullable();
-
-            $table->string('subtitle3section')->nullable();
-            $table->string('title3section')->nullable();
-
-            $table->string('title4section')->nullable();
-
-            $table->string('subtitle5section')->nullable();
-            $table->string('title5section')->nullable();
-            $table->string('title5section2')->nullable();
-            $table->string('title5section3')->nullable();
-
-
-            $table->string('subtitle6section')->nullable();
-            $table->string('title6section')->nullable();
-            $table->string('title6section2')->nullable();
-            $table->string('title6section3')->nullable();
-         
-
-            $table->string('subtitle7section')->nullable();
-            $table->string('title7section')->nullable();
-            $table->string('title7section2')->nullable();
-            $table->string('title7section3')->nullable();
-            $table->text('description7section')->nullable();
-            
-
-            $table->string('title8section')->nullable();
-            $table->string('title8section2')->nullable();
-            $table->string('title8section3')->nullable();
-
-            $table->string('subtitle9section')->nullable();
-            $table->string('title9section')->nullable();
-            $table->string('url_9section')->nullable();
-
-            $table->string('subtitle10section')->nullable();
-            $table->string('title10section')->nullable();
-
-            $table->string('subtitle11section')->nullable();
-            $table->string('title11section')->nullable();
-
-
+            //hero section
+            $table->string('titleHero')->nullable();
+            $table->string('subtitleHero')->nullable();
+            //services section
+            $table->string('titleServicios')->nullable();
+            $table->string('subtitleServicios')->nullable();
+            //products section
+            $table->string('titleProductos')->nullable();
+            $table->string('subtitleProductos')->nullable();
+            //blogs section
+            $table->string('titleBlogs')->nullable();
+            $table->string('subtitleBlogs')->nullable();
+            //newsletter section
+            $table->string('titleNewsletter')->nullable();
             $table->timestamps();
         });
     }

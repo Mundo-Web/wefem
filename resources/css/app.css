@@ -13,7 +13,9 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 
-
+*{
+  font-family: 'Poppins',serif;
+}
 
 .text-shadow {
     /* o el color que prefieras */
@@ -195,4 +197,10 @@
     right: 100;
     left: -13px;
     z-index: 999;
+  }
+
+
+  /* Error en el color del Sweet Alert Arreglado*/
+  .swal2-confirm {
+    background-color: green;
   }

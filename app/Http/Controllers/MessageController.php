@@ -16,39 +16,18 @@ class MessageController extends Controller
     public function index()
     {
         //
-        $mensajes = Message::where('status', '=', 1)
-                            ->where(function($query) {
-                                $query->where('source', '=', 'Inicio')
-                                    ->orWhere('source', '=', 'Contacto')
-                                    ->orWhere('source', '=', 'WSP - Tratamiento de Agua')
-                                    ->orWhere('source', '=', 'WSP - Productos Químicos');
-                            })
-                            ->orderBy('created_at', 'DESC')
-                            ->get();
+        $mensajes = Message::where('status', '=', 1)->orderBy('created_at', 'desc')->get();
+
         return view('pages.message.index', compact('mensajes'));
-    
-        
     }
 
-    public function showMessageLanding(){
-        $mensajeslanding = Message::where('status', '=', 1)
-                            ->whereNotIn('source', ['Inicio', 'Contacto', 'Producto', 'WSP - Productos Químicos','WSP - Tratamiento de Agua'])
-                            ->orderBy('created_at', 'DESC')
-                            ->get();
-        return view('pages.landingmessages.index', compact('mensajeslanding'));
-    }
+    public function showMessageLanding() {}
 
 
     public function showMessageProducto()
     {
         //
-        $mensajesproduct = Message::where('status', '=', 1)
-                            ->where('source','=', 'Producto')
-                            ->orderBy('created_at', 'DESC')
-                            ->get();
-        return view('pages.messageProduct.index', compact('mensajesproduct'));
-    
-        
+
     }
 
     /**
@@ -68,13 +47,14 @@ class MessageController extends Controller
     }
     function storePublic(Request $request)
     {
+
         $mensaje = new Message();
 
-        $mensaje->full_name = $request->full_name; 
-        $mensaje->email = $request->email; 
-        $mensaje->phone = $request->phone; 
-        $mensaje->source = $request->tipo_message; 
-        $mensaje->message = $request->mensaje; 
+        $mensaje->full_name = $request->nombre;
+        $mensaje->email = $request->email;
+        $mensaje->phone = $request->telefono;
+        $mensaje->source = $request->textoSeleccionado;
+        $mensaje->service_product = $request->textoMeet;
 
         $mensaje->save();
 
@@ -90,34 +70,12 @@ class MessageController extends Controller
         //
         $message = Message::findOrFail($id);
 
-        $message->is_read = 1; 
+        $message->is_read = 1;
         $message->save();
 
         return view('pages.message.show', compact('message'));
     }
 
-
-    public function showMessageL($id)
-    {
-        //
-        $message = Message::findOrFail($id);
-
-        $message->is_read = 1; 
-        $message->save();
-
-        return view('pages.landingmessages.show', compact('message'));
-    }
-
-    public function showproductL($id)
-    {
-        //
-        $message = Message::findOrFail($id);
-
-        $message->is_read = 1; 
-        $message->save();
-
-        return view('pages.messageProduct.show', compact('message'));
-    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -147,49 +105,9 @@ class MessageController extends Controller
     {
 
         $mensaje = Message::find($request->id);
-        $mensaje->status = 0; 
+        $mensaje->status = 0;
         $mensaje->save();
 
-        return response()->json(['success' => true]);
-
-    }
-
-    public function mensajeslandingDelete(Request $request)
-    {
-
-        $mensaje = Message::find($request->id);
-        $mensaje->status = 0; 
-        $mensaje->save();
-
-        return response()->json(['success' => true]);
-
-    }
-
-    public function mensajesproductoDelete(Request $request)
-    {
-
-        $mensaje = Message::find($request->id);
-        $mensaje->status = 0; 
-        $mensaje->save();
-
-        return response()->json(['success' => true]);
-
-    }
-
-
-    public function deleteMensajes(Request $request) {
-        //Recupero el id mandado mediante ajax
-        
-        $id = $request->id;
-        //Busco el servicio con id como parametro
-        $message = Message::findOrfail($id);
-        //Modifico el status a false
-        $message->status = false;
-        //Guardo 
-        $message->save();
-
-        // Devuelvo una respuesta JSON u otra respuesta según necesites
-        return response()->json(['message' => 'Mensaje eliminado.']);
-    
+        return response()->json(['success' => 'Mensaje Eliminado Correctamente']);
     }
 }
