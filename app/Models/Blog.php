@@ -9,12 +9,13 @@ class Blog extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'category_id', 'title', 'description', 'extract', 'url_image', 'name_image','meta_title', 'meta_description', 'meta_keywords', 'url_video', 'status', 'visible'];
+    protected $fillable = ['category_post_id', 'titulo', 'descripcion', 'extracto', 'imagen', 'visible', 'destacado', 'slug'];
 
-    
-    public function categories()
+
+    // app/Models/Blog.php
+    public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(CategoryPost::class, 'category_post_id'); // Especificar la clave foránea
     }
 
 
@@ -26,10 +27,4 @@ class Blog extends Model
             $article->tags()->detach();
         });
     }
-
-    public function tags(): \Illuminate\Database\Eloquent\Relations\MorphToMany
-    {
-        return $this->morphToMany(Tag::class, 'taggable');
-    }
 }
-

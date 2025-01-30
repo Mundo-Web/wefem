@@ -45,6 +45,7 @@ use App\Models\NosotrosView;
 use App\Models\PolyticsCondition;
 use App\Models\ProductosView;
 use App\Models\Service;
+use App\Models\ServiceView;
 use App\Models\TermsAndCondition;
 use Attribute;
 use Illuminate\Http\Request;
@@ -85,7 +86,8 @@ class IndexController extends Controller
   {
     $servicios = Service::where('visible', '=', 1)->get();
     $servicio = Service::where('visible', '=', 1)->first();
-    return view('public.servicio', compact('servicios', 'servicio'));
+    $servicioPage = ServiceView::first();
+    return view('public.servicio', compact('servicios', 'servicio', 'servicioPage'));
   }
 
   public function coleccion($filtro)
@@ -230,17 +232,12 @@ class IndexController extends Controller
       ['name' => 'Jane Smith', 'image' => 'https://i.ibb.co/n3NFXXs/969a7d7f009059cfa5c45bc3cfc941ae.png'],
       ['name' => 'Robert Brown', 'image' => 'https://i.ibb.co/mSmGhwv/cc6e3e60f69ecac1443984f93e6078eb.png'],
     ];
-    $faqs = [
-      (object) ['question' => 'What is Alpine.js?', 'answer' => 'Alpine.js is a lightweight JavaScript framework.'],
-      (object) ['question' => 'How do I install Alpine.js?', 'answer' => 'You can install it via CDN or npm.'],
-      (object) ['question' => 'Can I use Alpine.js with Laravel?', 'answer' => 'Yes! It integrates seamlessly with Laravel Blade.'],
-    ];
-    $general = General::all();
-    $textoscontacto = ContactoView::first();
-    $contactos = ContactDetail::where('status', '=', 1)->get();
-    $preguntasfrec = Faqs::where('status', '=', 1)->where('visible', '=', 1)->get();
-    // $faqs = Faqs::where('status', '=', 1)->where('visible', '=', 1)->get();
-    return view('public.contacto', compact('preguntasfrec', 'textoscontacto', 'general', 'contactos', 'faqs', 'images'));
+
+    $general = General::first();
+    $contactoview = ContactoView::first();
+    $faqs = Faqs::where('status', true)->where('visible', true)->get();
+
+    return view('public.contacto', compact('contactoview', 'general', 'faqs', 'images'));
   }
 
 
@@ -664,12 +661,12 @@ class IndexController extends Controller
   public function blog(Request $request, string $filtro = null)
   {
     try {
-      $categorias = Category::where('status', '=', 1)->where('visible', '=', 1)->get();
+      $categorias = Category::where('visible', '=', 1)->get();
 
       if ($filtro == 0) {
-        $posts = Blog::where('status', '=', 1)->where('visible', '=', 1)->get();
+        $posts = Blog::where('visible', '=', 1)->get();
 
-        $categoria = Category::where('status', '=', 1)->where('visible', '=', 1)->get();
+        $categoria = Category::where('visible', '=', 1)->get();
 
         // $lastpost = Blog::where('status', '=', 1)->where('visible', '=', 1)->orderBy('created_at', 'desc')->first();
 
@@ -680,9 +677,9 @@ class IndexController extends Controller
         // });
 
       } else {
-        $posts = Blog::where('status', '=', 1)->where('visible', '=', 1)->where('category_id', '=', $filtro)->get();
+        $posts = Blog::where('visible', '=', 1)->where('category_id', '=', $filtro)->get();
 
-        $categoria = Category::where('status', '=', 1)->where('visible', '=', 1)->where('id', '=', $filtro)->get();
+        $categoria = Category::where('visible', '=', 1)->where('id', '=', $filtro)->get();
 
         // $lastpost = Blog::where('status', '=', 1)->where('visible', '=', 1)->orderBy('created_at', 'desc')->where('category_id', '=', $filtro)->first();
 
@@ -693,7 +690,7 @@ class IndexController extends Controller
         // });
       }
 
-      $postsgeneral = Blog::where('status', '=', 1)->where('visible', '=', 1)->get();
+      $postsgeneral = Blog::where('visible', '=', 1)->get();
 
       $lastpost = $postsgeneral->last();
 

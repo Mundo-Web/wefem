@@ -7,17 +7,17 @@ use App\Http\Requests\UpdateServiceRequest;
 use App\Models\ClientLogos;
 use App\Models\General;
 use App\Models\Service;
+use App\Models\ServiceView;
 use Illuminate\Http\Request;
 
-//use Intervention\Image\Facades\Image;
+
 use Intervention\Image\Facades\Image;
-use Intervention\Image\ImageManager;
+
 use Intervention\Image\Drivers\Gd\Driver;
 //use Illuminate\Support\Facades\Image;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
-
-
+use Intervention\Image\ImageManager;
 
 class ServiceController extends Controller
 {
@@ -28,8 +28,9 @@ class ServiceController extends Controller
     {
         //
         $servicios = Service::all();
+        $servicioPage = ServiceView::first();
 
-        return view('pages.service.index', compact('servicios'));
+        return view('pages.service.index', compact('servicios', 'servicioPage'));
     }
 
     /**
@@ -149,23 +150,9 @@ class ServiceController extends Controller
     {
         $service = Service::findOrfail($id);
 
-
-
         $service->status = false;
 
-
         $service->save();
-
-        // $service = update(['status' => false]);
-        // $ruta = storage_path() .'/app/public/images/servicios/'. $service->name_image; 
-
-        // if(File::exists($ruta))
-        // {
-        //     File::delete($ruta);
-        // }
-
-        // $service->delete();    
-        // return redirect()->route('servicios.index')->with('success', 'Servicio eliminado exitosamente.');
     }
 
 
@@ -175,6 +162,10 @@ class ServiceController extends Controller
         $id = $request->id;
         //Busco el servicio con id como parametro
         $service = Service::findOrfail($id);
+        // Elimina el archivo anterior si existe
+        if (File::exists(public_path($service->icono))) {
+            File::delete(public_path($service->icono));
+        }
 
         $service->delete();
 
@@ -205,5 +196,47 @@ class ServiceController extends Controller
             $service->visible == 1 ? 'Servicio Visible.' : 'Servicio No Visible.',
             'titleService' => $titleService
         ]);
+    }
+
+    public function updatePageServicio(Request $request, $id)
+    {
+        $servicioPage = ServiceView::findOrfail($id);
+        dump($request->imagen);  // Verifica que la imagen se esté enviando correctamente
+
+        // Verificar si se ha subido una nueva imagen
+        if ($request->hasFile('imagen')) {
+            $file = $request->file('imagen');
+            $routeImg = 'storage/images/servicios/';
+            $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
+
+            // Si existe una imagen anterior, eliminarla
+            if ($servicioPage->image && File::exists(public_path($routeImg . $servicioPage->image))) {
+                File::delete(public_path($routeImg . $servicioPage->image));
+                dump('Imagen anterior eliminada.');
+            }
+
+            // Procesar la imagen (redimensionar y hacer crop)
+            $manager = new ImageManager(new Driver());
+            $img = $manager->read($file);
+            if (!file_exists(public_path($routeImg))) {
+                mkdir(public_path($routeImg), 0777, true); // Crear la ruta si no existe
+            }
+
+            // Mover la nueva imagen a la carpeta de destino
+            $file->move(public_path($routeImg), $nombreImagen);
+            dump('Imagen guardada: ' . public_path($routeImg) . $nombreImagen);
+
+            // Actualizar el campo de imagen en la base de datos
+            $servicioPage->imagen = $routeImg . $nombreImagen;  // Solo el nombre de la imagen
+        }
+
+        // Actualizar otros campos
+        $servicioPage->titulo = $request->titulo;
+        $servicioPage->subtitulo = $request->subtitulo;
+
+        // Guardar los cambios
+        $servicioPage->save();
+
+        return back()->with('success', 'Registro actualizado correctamente');
     }
 }

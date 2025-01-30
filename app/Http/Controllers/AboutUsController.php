@@ -17,8 +17,9 @@ class AboutUsController extends Controller
    */
   public function index()
   {
-    $aboutUs = AboutUs::all();
-    return view('pages.aboutus.index', compact('aboutUs'));
+    $aboutUs = AboutUs::first();
+
+    return view('pages.aboutus.edit', compact('nosotros'));
   }
 
   /**
@@ -101,30 +102,28 @@ class AboutUsController extends Controller
     $request->validate([
       'titulo' => 'required',
     ]);
-		$aboutUs = AboutUs::find($id);
-		try {
-			
-			if ($request->hasFile("imagen")) {
-				$file = $request->file('imagen');
-				$routeImg = 'storage/images/imagen/';
-				$nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
+    $aboutUs = AboutUs::find($id);
+    try {
 
-				$this->saveImg($file, $routeImg, $nombreImagen);
-	
-				$aboutUs->imagen = $routeImg.$nombreImagen;
-				// $aboutUs->name_image = $nombreImagen;
-			}
-	
-			$aboutUs->titulo = $request->titulo;
-			$aboutUs->descripcion = $request->descripcion;
-			$aboutUs->save();
+      if ($request->hasFile("imagen")) {
+        $file = $request->file('imagen');
+        $routeImg = 'storage/images/imagen/';
+        $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
 
-			return redirect()->route('aboutus.index')->with('success', 'Publicación creado exitosamente.');
+        $this->saveImg($file, $routeImg, $nombreImagen);
 
+        $aboutUs->imagen = $routeImg . $nombreImagen;
+        // $aboutUs->name_image = $nombreImagen;
+      }
 
-		} catch (\Throwable $th) {
-			return response()->json(['messge' => 'Verifique sus datos '], 400); 
-		}
+      $aboutUs->titulo = $request->titulo;
+      $aboutUs->descripcion = $request->descripcion;
+      $aboutUs->save();
+
+      return redirect()->route('aboutus.index')->with('success', 'Publicación creado exitosamente.');
+    } catch (\Throwable $th) {
+      return response()->json(['messge' => 'Verifique sus datos '], 400);
+    }
   }
 
   /**
@@ -134,18 +133,18 @@ class AboutUsController extends Controller
   {
     $strength = AboutUs::find($request->id);
 
-		
-		if ($strength->imagen && file_exists($strength->imagen)) {
-			unlink($strength->imagen);
-		}
 
-		$strength->delete();
-		return response()->json(['message'=>'Logo eliminado']);
+    if ($strength->imagen && file_exists($strength->imagen)) {
+      unlink($strength->imagen);
+    }
+
+    $strength->delete();
+    return response()->json(['message' => 'Logo eliminado']);
   }
 
   public function updateVisible(Request $request)
   {
-    
+
     $id = $request->id;
     $stauts = $request->status;
     $staff = AboutUs::find($id);

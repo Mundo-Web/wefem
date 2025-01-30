@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Blog;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
+use App\Models\Album;
+use App\Models\CategoryPost;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -14,6 +16,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Validation\ValidationException;
 
 class BlogController extends Controller
 {
@@ -22,8 +25,8 @@ class BlogController extends Controller
    */
   public function index()
   {
-    $posts = Blog::where('status', '=', true)->get();
-
+    $posts = Blog::where('visible', '=', true)->with('category')->get();
+    //dump($posts);
     return view('pages.blog.index', compact('posts'));
   }
 
@@ -32,8 +35,8 @@ class BlogController extends Controller
    */
   public function create()
   {
-    $categories = Category::where('status', '=', true)->where('visible', '=', true)->get();
-    
+    $categories = CategoryPost::all();
+
     return view('pages.blog.create', compact('categories'));
   }
 
@@ -42,78 +45,92 @@ class BlogController extends Controller
    */
   public function saveImg($file, $route, $nombreImagen)
   {
-      $manager = new ImageManager(new Driver());
-      $img = $manager->read($file);
-      // $img->coverDown(672, 700, 'center');
-      if (!file_exists($route)) {
-          mkdir($route, 0777, true); // Se crea la ruta con permisos de lectura, escritura y ejecución
-      }
-      $img->save($route . $nombreImagen);
+    $manager = new ImageManager(new Driver());
+    $img = $manager->read($file);
+    // $img->coverDown(672, 700, 'center');
+    if (!file_exists($route)) {
+      mkdir($route, 0777, true); // Se crea la ruta con permisos de lectura, escritura y ejecución
+    }
+    $img->save($route . $nombreImagen);
   }
 
 
   public function store(Request $request)
   {
-
-    
     $request->validate([
-      'title' => 'required',
+      'titulo' => 'required|string|max:255',
+      'extracto' => 'nullable|string|max:255',
+      'descripcion' => 'nullable|string',
+      //'categoria_id' => 'required|exists:categories,id',
+      'category_post_id' => 'required|exists:category_posts,id',
+      'destacado' => 'nullable|boolean',
+
     ]);
 
-    $post = new Blog();
+    $data = $request->all();
+    $data['slug'] = Str::slug($request->titulo);
 
-        if ($request->hasFile('imagen')) {
-            $file = $request->file('imagen');
-            $routeImg = 'storage/images/post/';
-            $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
-
-            $this->saveImg($file, $routeImg, $nombreImagen);
-
-            $post->url_image = $routeImg;
-            $post->name_image = $nombreImagen;
-        } else {
-            $routeImg = 'images/img/';
-            $nombreImagen = 'noimagenslider.jpg';
-
-            $post->url_image = $routeImg;
-            $post->name_image = $nombreImagen;
-        }
-    $url = $request->video;
-    $post->url_video = $this->getYTVideoId($url);
-    $post->category_id = $request->category_id;
-    $post->title = $request->title;
-    $post->description = $request->description;
-    $post->extract = $request->extract;
-    $post->meta_title = $request->meta_title;
-    $post->meta_description = $request->meta_description;
-    $post->meta_keywords = $request->meta_keywords;
-    $post->status = 1;
-    $post->visible = 1;
-
-    
-
-
-    $post->save();
-
-    return redirect()->route('blog.index')->with('success', 'Publicación creado exitosamente.');
-  }
-
-
-  private function getYTVideoId($url)
-  {
-      $patterns = [
-        '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', // URL estándar
-        '/(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]+)/', // URL corta
-        '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]+)/', // URL embebida
-        '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)(?:&.*)?/', // URL estándar con parámetros adicionales
-      ];
-      foreach ($patterns as $pattern) {
-        if (preg_match($pattern, $url, $matches)) {
-          return $matches[1];
-        }
+    try {
+      // **Paso 1: Crear la carpeta principal "Blogs" si no existe**
+      $mainFolder = 'Blogs';
+      $pathMainFolder = public_path('storage/images/albums/' . $mainFolder);
+      if (!is_dir($pathMainFolder)) {
+        mkdir($pathMainFolder, 0777, true);
       }
-      return null;
+
+      // **Paso 2: Crear la subcarpeta con el nombre del producto**
+      $subFolder = ucfirst(strtolower($data['slug'])); // Convertimos el nombre para evitar errores
+      $pathSubFolder = $pathMainFolder . '/' . $subFolder;
+      if (!is_dir($pathSubFolder)) {
+        mkdir($pathSubFolder, 0777, true);
+      }
+
+      // **Paso 3: Crear el álbum del producto**
+      $blogsAlbum = Album::firstOrCreate([
+        'name' => 'Blogs',
+      ], [
+        'description' => 'Contenedor principal para los Blogs.',
+      ]);
+
+      $album = Album::updateOrCreate([
+        'name' => $subFolder,
+      ], [
+        'parent_id' => $blogsAlbum->id,
+      ]);
+
+      // **Paso 4: Manejo de la imagen, ahora guardada en la carpeta del producto**
+      if ($request->hasFile("imagen")) {
+        $file = $request->file('imagen');
+        $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
+        $file->move($pathSubFolder, $nombreImagen);
+        $data['imagen'] = 'storage/images/albums/' . $mainFolder . '/' . $subFolder . '/' . $nombreImagen;
+      } else {
+        $data['imagen'] = 'images/img/noimagen.jpg';
+      }
+
+      // **Paso 6: Guardar el producto en la base de datos**
+      $blog = new Blog();
+      $blog->titulo = $data['titulo'] ?? null;
+      $blog->extracto = $data['extracto'] ?? null;
+      $blog->descripcion = $data['descripcion'] ?? null;
+      $blog->category_post_id = $data['category_post_id'] ?? null;
+      $blog->destacado = $request->has('destacado');
+      $blog->imagen = $data['imagen'] ?? null;
+      $blog->slug = $data['slug'] ?? null;
+      $blog->fecha_publicacion = date('Y-m-d');
+      if ($request->has('destacado')) {
+        $blog->fecha_descatado = date('Y-m-d');
+      }
+      $blog->save();
+
+      return redirect()->route('blog.index')->with('success', 'Publicación creada exitosamente.');
+    } catch (ValidationException $e) {
+      return redirect()->back()->withErrors($e->validator)->withInput();
+    } catch (\Throwable $th) {
+      return redirect()->route('blog.create')->with('error', 'Llenar campos obligatorios');
+    }
   }
+
   /**
    * Display the specified resource.
    */
@@ -129,56 +146,104 @@ class BlogController extends Controller
 
   public function edit(Blog $blog)
   {
-    
-    $categories = Category::where('status', '=', true)->where('visible', '=', true)->get();
+
+    $categories = CategoryPost::all();
     return view('pages.blog.edit', compact('blog', 'categories'));
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request)
+  private function updateAlbumAndFolder($oldTitle, $newTitle)
   {
-
-    $post = Blog::find($request->id);
-
-
-    if ($request->hasFile('imagen')) {
-      $file = $request->file('imagen');
-      $routeImg = 'storage/images/post/';
-      $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
-
-      if ($post->url_image !== 'images/img/') {
-          File::delete($post->url_image . $post->name_image);
-      }
-
-      $this->saveImg($file, $routeImg, $nombreImagen);
-
-      $post->url_image = $routeImg;
-      $post->name_image = $nombreImagen;
+    // Actualizar el título del álbum en la base de datos
+    $album = Album::where('name', $oldTitle)->first();
+    if ($album) {
+      $album->name = $newTitle;
+      $album->save();
+    }
   }
 
-    $url = $request->video;
-    
-    if ($post->url_video == $url) {
-      $post->url_video == $url;
-    }else{
-      $post->url_video = $this->getYTVideoId($url);
+  public function update(Request $request, $id)
+  {
+    $request->validate([
+      'titulo' => 'required|string|max:255',
+      'extracto' => 'nullable|string|max:255',
+      'descripcion' => 'nullable|string',
+      //'categoria_id' => 'required|exists:categories,id',
+      'category_post_id' => 'required|exists:category_posts,id',
+      'destacado' => 'nullable|boolean',
+
+    ]);
+    $blog = Blog::findOrFail($id);
+    $newTitle = Str::slug($request->titulo);
+    // Guardar el título anterior para actualizar el álbum y la carpeta
+    $oldTitle = $blog->slug;
+
+    // Verificar si ya existe un producto con el mismo nombre (excluyendo el producto actual)
+    $existingBlog = Blog::where('slug', Str::slug($request->titulo))->where('id', '!=', $id)->first();
+    if ($existingBlog) {
+      return redirect()->back()
+        ->withInput()
+        ->with('error', 'Ya existe un Post con ese nombre.');
     }
-    
-   
-    $post->category_id = $request->category_id;
-    $post->title = $request->title;
-    $post->description = $request->description;
-    $post->extract = $request->extract;
-    $post->meta_title = $request->meta_title;
-    $post->meta_description = $request->meta_description;
-    $post->meta_keywords = $request->meta_keywords;
+    try {
+      $data = $request->all();
+      // **Paso 1: Obtener la carpeta actual del producto**
+      $mainFolder = 'Blogs';
+      $subFolder = $oldTitle;
+      $pathSubFolder = public_path("storage/images/albums/{$mainFolder}/{$subFolder}");
 
+      if (!is_dir($pathSubFolder)) {
+        mkdir($pathSubFolder, 0777, true);
+      }
 
-    $post->update();
+      // **Paso 2: Actualizar el álbum**
+      $blogsAlbum = Album::firstOrCreate([
+        'name' => 'Blogs',
+      ], [
+        'description' => 'Contenedor principal para los Productos.',
+      ]);
 
-    return redirect()->route('blog.index')->with('success', 'Post actualizado');
+      $album = Album::updateOrCreate(
+        ['name' => $subFolder],
+        ['parent_id' => $blogsAlbum->id]
+      );
+
+      // **Paso 3: Manejo de la imagen**
+      if ($request->hasFile("imagen")) {
+        // Eliminar la imagen anterior si existe
+        if ($blog->imagen && file_exists(public_path($blog->imagen))) {
+          unlink(public_path($blog->imagen));
+        }
+
+        $file = $request->file('imagen');
+        $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
+        $file->move($pathSubFolder, $nombreImagen);
+        $data['imagen'] = "storage/images/albums/{$mainFolder}/{$subFolder}/{$nombreImagen}";
+      }
+
+      // **Paso 5: Actualizar el Blog en la base de datos**
+      $blog->update([
+        'titulo' => $request->titulo,
+        'extracto' => $request->extracto,
+        'descripcion' => $request->descripcion,
+        'destacado' => $request->has('destacado'),
+        'imagen' => $data['imagen'] ?? $blog->imagen,
+        'slug' => $data['slug'] ??  $blog->slug,
+        'fecha_publicacion' => $blog->fecha_publicacion,
+        'fecha_descatado' => $request->has('destacado') ? date('Y-m-d') : $blog->fecha_descatado,
+        'category_post_id' => $request->category_post_id
+      ]);
+      // Actualizar el álbum y la carpeta en el sistema de archivos
+      $this->updateAlbumAndFolder($oldTitle, $newTitle);
+
+      return redirect()->route('blog.index')->with('success', 'Post actualizado exitosamente.');
+    } catch (ValidationException $e) {
+      return redirect()->back()->withErrors($e->validator)->withInput();
+    } catch (\Throwable $th) {
+      return redirect()->route('blog.edit', $id)->with('error', 'Error al actualizar el Post.');
+    }
   }
 
   /**
@@ -195,11 +260,11 @@ class BlogController extends Controller
     //Recupero el id mandado mediante ajax
     $id = $request->id;
     //Busco el servicio con id como parametro
-    $service = Blog::findOrfail($id);
-    //Modifico el status a false
-    $service->status = false;
+    $blog = Blog::findOrfail($id);
+
+
     //Guardo 
-    $service->save();
+    $blog->delete();
 
     // Devuelvo una respuesta JSON u otra respuesta según necesites
     return response()->json(['message' => 'Post eliminado.']);
@@ -223,6 +288,6 @@ class BlogController extends Controller
 
     $service->save();
 
-    return response()->json(['message' => 'Servicio eliminado.']);
+    return response()->json(['message' => 'Post modificado.']);
   }
 }

@@ -108,7 +108,7 @@
 
                     $('#dataWhatsapp')[0].reset();
                     window.location.href =
-                        'https://api.whatsapp.com/send?phone={{ $general[0]->whatsapp }}&text={{ $general[0]->mensaje_whatsapp }}';
+                        'https://api.whatsapp.com/send?phone={{ $general->whatsapp }}&text={{ $general->mensaje_whatsapp }}';
 
 
                 },
@@ -172,7 +172,7 @@
 
                     $('#dataWhatsapp2')[0].reset();
                     window.location.href =
-                        'https://api.whatsapp.com/send?phone={{ $general[0]->whatsapp2 }}&text={{ $general[0]->mensaje_whatsapp }}';
+                        'https://api.whatsapp.com/send?phone={{ $general->whatsapp2 }}&text={{ $general->mensaje_whatsapp }}';
                 },
                 error: function(error) {
                     Swal.close();

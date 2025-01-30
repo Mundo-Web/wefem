@@ -97,14 +97,6 @@
                                 </div>
                             </div>
 
-
-
-
-
-
-
-
-
                             <div class="md:col-span-5 text-right mt-6 flex justify-between">
                                 <div class="inline-flex items-end">
                                     <a href="{{ URL::previous() }}"

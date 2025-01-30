@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('faqs', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
+
             $table->string('pregunta')->nullable();
             $table->text('respuesta')->nullable();
-    
+
             $table->boolean('visible')->default(true);
             $table->boolean('status')->default(true);
             $table->timestamps();

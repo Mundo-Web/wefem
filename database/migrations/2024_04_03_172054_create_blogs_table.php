@@ -13,20 +13,18 @@ return new class extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
-
-            $table->string('title');
-            $table->text('extract')->nullable();
-            $table->text('description')->nullable();
-            $table->string('url_image')->nullable();
-            $table->string('name_image')->nullable();
-            $table->string('url_video')->nullable();
-            $table->boolean('visible')->default(false);
-            $table->boolean('status')->default(false);
-
+            $table->unsignedBigInteger('category_post_id')->nullable();
+            $table->string('titulo');
+            $table->text('extracto')->nullable();
+            $table->longText('descripcion')->nullable();
+            $table->text('imagen')->nullable();
+            $table->boolean('destacado')->default(false);
+            $table->boolean('visible')->default(true);
+            $table->string('slug')->nullable();
+            $table->date('fecha_publicacion')->nullable();
+            $table->date('fecha_destacado')->nullable();
             $table->timestamps();
-
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('category_post_id')->references('id')->on('category_posts');
         });
     }
 

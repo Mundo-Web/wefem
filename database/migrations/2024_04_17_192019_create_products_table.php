@@ -17,16 +17,16 @@ return new class extends Migration
             $table->string('extract')->nullable();
             $table->text('description')->nullable();
 
-            // $table->decimal('precio', 12, 2)->default(0)->nullable();
-            // $table->decimal('descuento', 12, 2)->default(0)->nullable();
-            // $table->decimal('stock', 12, 2)->default(0)->nullable();
+            $table->decimal('precio', 12, 2)->default(0)->nullable();
+            $table->boolean('destacado')->default(false);
+            $table->decimal('stock', 12, 2)->default(0)->nullable();
 
             $table->string('imagen')->nullable();
 
             $table->text('especificaciones')->nullable();
 
-            // $table->string('manuales')->nullable();  ->tener en cuenta
-
+            $table->text('album')->nullable();
+            $table->text('manuales')->nullable();
 
             $table->unsignedBigInteger('categoria_id')->nullable();
 

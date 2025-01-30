@@ -136,10 +136,23 @@
             if (file) {
                 // Verificar tipo MIME
                 if (file.type !== "image/svg+xml") {
-                    alert("Solo se permiten archivos SVG.");
+                    Swal.fire({
+
+                        icon: "error",
+                        title: 'Solo se admiten archivos SVG', // Mostrar el mensaje dinámico
+                        showConfirmButton: true,
+                        timer: 1500
+                    });
                     this.value = ""; // Resetea el input
                 } else {
-                    alert("Archivo válido: " + file.name);
+                    Swal.fire({
+
+                        icon: "error",
+                        title: 'Archivo válido' + file.name, // Mostrar el mensaje dinámico
+                        showConfirmButton: true,
+                        timer: 1500
+                    });
+
                 }
             }
         });

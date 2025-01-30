@@ -31,7 +31,7 @@ class FaqsController extends Controller
     {
 
         Faqs::create($request->all());
-        return redirect()->route('faqs.index')->with('success', 'FAQS creada exitosamente.');
+        return redirect()->route('contactoview.edit', 1)->with('success', 'FAQS creada exitosamente.');
     }
 
     /**
@@ -58,8 +58,7 @@ class FaqsController extends Controller
     {
         $faqs = Faqs::find($id);
         $faqs->update($request->all());
-        return redirect()->route('faqs.index')->with('success', 'FAQS actualizada exitosamente.');
-
+        return redirect()->route('contactoview.edit', 1)->with('success', 'FAQS actualizada exitosamente.');
     }
 
     /**
@@ -67,20 +66,20 @@ class FaqsController extends Controller
      */
     public function borrar(Request $request)
     {
-      //softdelete
-      $product = Faqs::find($request->id);
-      $product->status = 0 ; 
-      $product->save();
-  
+        //softdelete
+        $faq = Faqs::find($request->id);
+
+        $faq->delete();
+        return response()->json(['message' => 'registro eliminado']);
     }
-    public function updateVisible(Request $request){
-        $id = $request->id; 
-        $stauts = $request->status; 
+    public function updateVisible(Request $request)
+    {
+        $id = $request->id;
+        $stauts = $request->status;
         $staff = Faqs::find($id);
-        $staff->visible = $stauts; 
+        $staff->visible = $stauts;
 
         $staff->save();
-        return response()->json(['message'=> 'registro actualizado']);
+        return response()->json(['message' => 'registro actualizado']);
     }
-    
 }

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Album;
+use App\Models\AlbumImage;
 use App\Models\Attributes;
 use App\Models\AttributesValues;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Collection;
 use App\Models\Combinacion;
@@ -32,7 +35,11 @@ class ProductsController extends Controller
    */
   public function index()
   {
-    $products =  Products::where("status", "=", true)->with('images')->get();
+
+
+
+    $products =  Products::where("status", "=", true)->get(); //quiero tambien que obtenga a que categoria pertenece
+
     return view('pages.products.index', compact('products'));
   }
 
@@ -42,23 +49,23 @@ class ProductsController extends Controller
    */
   public function create()
   {
-    $atributos = Attributes::where("status", "=", true)->get();
-    $valorAtributo = AttributesValues::where("status", "=", true)->get();
-    $tags = Tag::where("status", "=", true)->get();
-    $categoria = Category::all();
-    $productosRelacionados = Products::where('status', '=', 1)->get();
-    $collection = Collection::all();
-    return view('pages.products.create', compact('atributos', 'valorAtributo', 'categoria', 'tags', 'collection', 'productosRelacionados'));
+    $marcas = Brand::all();
+
+
+    $categorias = Category::all();
+
+
+    return view('pages.products.create', compact('categorias', 'marcas'));
   }
 
   public function saveImg($file, $route, $nombreImagen)
   {
     $manager = new ImageManager(new Driver());
     $img =  $manager->read($file);
-    // $img->coverDown(1000, 1500, 'center');
+
 
     if (!file_exists($route)) {
-      mkdir($route, 0777, true);
+      mkdir($route, 0777, true); // Se crea la ruta con permisos de lectura, escritura y ejecución
     }
 
     $img->save($route . $nombreImagen);
@@ -69,290 +76,102 @@ class ProductsController extends Controller
    */
   public function store(Request $request)
   {
-   
-    $especificaciones = [];
-    $data = $request->all();
-    $atributos = null;
-    $productosSeleccionados = $request->input('products_id');
-    $onlyOneCaratula = false;
-    
 
-    // if(is_null($request->input('descuento'))){
-    //   $request->merge(['descuento' => 0]);
-    //   $data['descuento'];
-    // }
-    
-    // $valorprecio = $request->input('precio') - 0.1;
+
+    $request->validate([
+      'producto' => 'required|string|max:255',
+      'extract' => 'nullable|string|max:255',
+      'description' => 'nullable|string',
+      'precio' => 'nullable|numeric|min:0',
+      'stock' => 'nullable|numeric|min:0',
+      'categoria_id' => 'required|exists:categories,id',
+      'brand_id' => 'required|exists:brands,id',
+      'especificaciones' => 'nullable|string',
+      'destacado' => 'nullable|boolean',
+      'visible' => 'nullable|boolean',
+      'status' => 'nullable|boolean',
+    ]);
+
+    $data = $request->all();
 
     try {
-      $request->validate([
-        'producto' => 'required',
-        'precio' => 'required',
-        'categoria_id' => 'required', 
+      // **Paso 1: Crear la carpeta principal "Productos" si no existe**
+      $mainFolder = 'Productos';
+      $pathMainFolder = public_path('storage/images/albums/' . $mainFolder);
+      if (!is_dir($pathMainFolder)) {
+        mkdir($pathMainFolder, 0777, true);
+      }
+
+      // **Paso 2: Crear la subcarpeta con el nombre del producto**
+      $subFolder = ucfirst(strtolower($request->producto)); // Convertimos el nombre para evitar errores
+      $pathSubFolder = $pathMainFolder . '/' . $subFolder;
+      if (!is_dir($pathSubFolder)) {
+        mkdir($pathSubFolder, 0777, true);
+      }
+
+      // **Paso 3: Crear el álbum del producto**
+      $productosAlbum = Album::firstOrCreate([
+        'name' => 'Productos',
+      ], [
+        'description' => 'Contenedor principal para los Productos.',
       ]);
 
+      $album = Album::updateOrCreate([
+        'name' => $subFolder,
+      ], [
+        'parent_id' => $productosAlbum->id,
+      ]);
+
+      // **Paso 4: Manejo de la imagen, ahora guardada en la carpeta del producto**
       if ($request->hasFile("imagen")) {
         $file = $request->file('imagen');
-        $routeImg = 'storage/images/productos/';
         $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
-
-        $this->saveImg($file, $routeImg, $nombreImagen);
-
-        $data['imagen'] = $routeImg . $nombreImagen;
-        // $AboutUs->name_image = $nombreImagen;
+        $file->move($pathSubFolder, $nombreImagen);
+        $data['imagen'] = 'storage/images/albums/' . $mainFolder . '/' . $subFolder . '/' . $nombreImagen;
       } else {
-        $routeImg = 'images/img/';
-        $nombreImagen = 'noimagen.jpg';
-
-        $data['imagen'] = $routeImg . $nombreImagen;
+        $data['imagen'] = 'images/img/noimagen.jpg';
       }
 
+      // **Paso 5: Manejo de manuales**
+      if ($request->hasFile("manuales")) {
+        $file = $request->file('manuales');
+        $routearchive = 'storage/archivos/productos/';
+        $nombrearchive = Str::random(10) . '_' . $file->getClientOriginalName();
 
-      if ($request->hasFile("fichatecnica")) {
-				$file = $request->file('fichatecnica');
-				$routearchive = 'storage/archives/';
-				$nombrearchive = Str::random(10) . '_' . $file->getClientOriginalName();
-                
-				if (!file_exists($routearchive)) {
-                    mkdir($routearchive, 0777, true);
-                }
-
-                $file->move($routearchive, $nombrearchive);
-
-                $data['url_fichatecnica'] = $routearchive;
-                $data['name_fichatecnica'] = $nombrearchive;
-			}
-
-
-      if ($request->hasFile("fichariesgo")) {
-				$file = $request->file('fichariesgo');
-				$routearchive2 = 'storage/archives/';
-				$nombrearchive2 = Str::random(10) . '_' . $file->getClientOriginalName();
-                
-				if (!file_exists($routearchive2)) {
-                    mkdir($routearchive2, 0777, true);
-                }
-
-                $file->move($routearchive2, $nombrearchive2);
-
-                $data['url_docriesgo'] = $routearchive2;
-                $data['name_docriesgo'] = $nombrearchive2;
-			}
-
-
-
-      foreach ($data as $key => $value) {
-
-        if (strstr($key, ':')) {
-          // Separa el nombre del atributo y su valor
-          $atributos = $this->stringToObject($key, $atributos);
-          //$atributoName = Attributes::where('titulo', )
-          unset($request[$key]);
-        } elseif (strstr($key, '-')) {
-
-          //strpos primera ocurrencia que enuentre
-          if (strpos($key, 'tittle-') === 0 || strpos($key, 'title-') === 0) {
-            $num = substr($key, strrpos($key, '-') + 1); // Obtener el número de la especificación
-            $especificaciones[$num]['tittle'] = $value; // Agregar el título al array asociativo
-          } elseif (strpos($key, 'specifications-') === 0) {
-            $num = substr($key, strrpos($key, '-') + 1); // Obtener el número de la especificación
-            $especificaciones[$num]['specifications'] = $value; // Agregar las especificaciones al array asociativo
-          }
+        if (!file_exists($routearchive)) {
+          mkdir($routearchive, 0777, true);
         }
+
+        $file->move($routearchive, $nombrearchive);
+        $data['manuales'] = $routearchive . $nombrearchive;
       }
 
-      $jsonAtributos = json_encode($atributos);
+      // **Paso 6: Guardar el producto en la base de datos**
+      $producto = new Products();
+      $producto->producto = $request->producto;
+      $producto->extract = $request->extract;
+      $producto->description = $request->description;
+      $producto->precio = $request->precio;
+      $producto->stock = $request->stock;
+      $producto->especificaciones = $request->especificaciones;
+      $producto->categoria_id = $request->categoria_id;
+      $producto->brand_id = $request->brand_id;
+      $producto->destacado = $request->has('destacado');
 
-      if (array_key_exists('destacar', $data)) {
-        if (strtolower($data['destacar']) == 'on') $data['destacar'] = 1;
-      }
-      if (array_key_exists('recomendar', $data)) {
-        if (strtolower($data['recomendar']) == 'on') $data['recomendar'] = 1;
-      }
-      if (array_key_exists('liquidacion', $data)) {
-        if (strtolower($data['liquidacion']) == 'on') $data['liquidacion'] = 1;
-      }
+      $producto->album = 'storage/images/albums/' . $mainFolder . '/' . $subFolder; // Guardar ruta en el campo album
+      $producto->imagen = $data['imagen'] ?? null;
+      $producto->manuales = $data['manuales'] ?? null;
 
+      $producto->save();
 
-      $data['atributes'] = $jsonAtributos;
-
-
-      $cleanedData = Arr::where($data, function ($value, $key) {
-        return !is_null($value);
-      });
-
-
-
-
-      $producto = Products::create($cleanedData);
-
-      // if ($producto['descuento'] == 0 || is_null($producto['descuento'])) {
-      //   $precioFiltro = $producto['precio'];
-      // } else {
-      //   $precioFiltro = $producto['descuento'];
-      // }
-      // $producto->update(['preciofiltro' => $precioFiltro]);
-
-      if (isset($atributos)) {
-        foreach ($atributos as $atributo => $valores) {
-          $idAtributo = Attributes::where('titulo', $atributo)->first();
-
-          foreach ($valores as $valor) {
-            $idValorAtributo = AttributesValues::where('valor', $valor)->first();
-
-            if ($idAtributo && $idValorAtributo) {
-              DB::table('attribute_product_values')->insert([
-                'product_id' => $producto->id,
-                'attribute_id' => $idAtributo->id,
-                'attribute_value_id' => $idValorAtributo->id,
-              ]);
-            }
-          }
-        }
-      }
-
-
-      $this->GuardarEspecificaciones($producto->id, $especificaciones);
-
-     /*  if (!is_null($tagsSeleccionados)) {
-        $this->TagsXProducts($producto->id, $tagsSeleccionados);
-      } */
-
-      $producto->productrelacionados()->sync($productosSeleccionados);
-
-
-      if (isset($data['filesGallery'])) {
-
-        foreach ($data['filesGallery'] as $file) {
-        
-          [$first, $code] = explode(';base64,', $file);
-   
-          $imageData = base64_decode($code);
-
-          $routeImg = 'storage/images/gallery/';
-          $ext = ExtendFile::getExtention(str_replace("data:", '', $first));
-          $nombreImagen = Str::random(10) . '.' . $ext;
-          // Verificar si la ruta no existe y crearla si es necesario
-          if (!file_exists($routeImg)) {
-            mkdir($routeImg, 0777, true); 
-          }
-          
-          // Guardar los datos binarios en un archivo
-          file_put_contents($routeImg . $nombreImagen, $imageData);
-          $dataGalerie['imagen'] = $routeImg . $nombreImagen;
-          $dataGalerie['product_id'] = $producto->id;
-          // $dataGalerie['type_img'] = 'gall';
-          Galerie::create($dataGalerie);
-        }
-      }
-
-
-
-
-      return redirect()->route('products.index')->with('success', 'Publicación creado exitosamente.');
+      return redirect()->route('products.index')->with('success', 'Publicación creada exitosamente.');
     } catch (ValidationException $e) {
-      // Redirigir con los errores de validación y los datos de entrada
-      return redirect()->back()
-        ->withErrors($e->validator)
-        ->withInput();
+      return redirect()->back()->withErrors($e->validator)->withInput();
     } catch (\Throwable $th) {
-      //throw $th;
       return redirect()->route('products.create')->with('error', 'Llenar campos obligatorios');
     }
   }
-  private function GuardarCombinacion($producto_id, $combinacion)
-  {
-    Combinacion::create([
 
-      'product_id' => $producto_id,
-      'color_id' => $combinacion['color'],
-      'talla_id' => $combinacion['talla'],
-      'stock' => $combinacion['stock'],
-    ]);
-  }
-  private function GuardarGaleria($file, $producto_id, $colorId)
-  {
-
-    try {
-      //code...
-      [$first, $code] = explode(';base64,', $file);
-
-
-
-      $imageData = base64_decode($code);
-
-
-      $routeImg = 'storage/images/gallery/';
-      $ext = ExtendFile::getExtention(str_replace("data:", '', $first));
-      $nombreImagen = Str::random(10) . '.' . $ext;
-      // Verificar si la ruta no existe y crearla si es necesario
-      if (!file_exists($routeImg)) {
-        mkdir($routeImg, 0777, true);
-      }
-      // Guardar los datos binarios en un archivo
-      file_put_contents($routeImg . $nombreImagen, $imageData);
-      $dataGalerie['name_imagen'] = $routeImg . $nombreImagen;
-      $dataGalerie['product_id'] = $producto_id;
-      $dataGalerie['type_imagen'] = 'secondary';
-      $dataGalerie['caratula'] = 0;
-      $dataGalerie['color_id'] = $colorId;
-      
-      // $dataGalerie['type_img'] = 'gall';
-      ImagenProducto::create($dataGalerie);
-    } catch (\Throwable $th) {
-      //throw $th;
-    }
-  }
-
-  private function TagsXProducts($id, $nTags)
-  {
-    foreach ($nTags as $key => $value) {
-      DB::insert('insert into product_xproducts (product_id, related_product_id) values (?, ?)', [$id, $value]);
-    }
-  }
-
-
-  private function GuardarEspecificaciones($id, $especificaciones)
-  {
-
-    foreach ($especificaciones as $value) {
-      $value['product_id'] = $id;
-      Specifications::create($value);
-    }
-  }
-
-  private function actualizarEspecificacion($especificaciones)
-  {
-    foreach ($especificaciones as $key => $value) {
-      $espect = Specifications::find($key);
-      $espect->tittle = $value['tittle'];
-      $espect->specifications = $value['specifications'];
-
-      if ($value['specifications'] == null) {
-        $espect->delete();
-      } else {
-        $espect->save();
-      }
-    }
-  }
-
-  private function stringToObject($key, $atributos)
-  {
-
-    $parts = explode(':', $key);
-    $nombre = strtolower($parts[0]); // Nombre del atributo
-    $valor = strtolower($parts[1]); // Valor del atributo en minúsculas
-
-    // Verifica si el atributo ya existe en el array
-    if (isset($atributos[$nombre])) {
-      // Si el atributo ya existe, agrega el nuevo valor a su lista
-      $atributos[$nombre][] = $valor;
-    } else {
-      // Si el atributo no existe, crea una nueva lista con el valor
-      $atributos[$nombre] = [$valor];
-    }
-    return $atributos;
-  }
 
   /**
    * Display the specified resource.
@@ -368,240 +187,139 @@ class ProductsController extends Controller
   public function edit(string $id)
   {
 
-    $product =  Products::with('tags')->find($id);
-    $atributos = Attributes::where("status", "=", true)->get();
-    $valorAtributo = AttributesValues::where("status", "=", true)->get();
-    $especificacion = Specifications::where("product_id", "=", $id)->get();
-    // $allTags = Tag::all();
-    $productosRelacionados = Products::where('status', '=', 1) ->where('id', '!=', $id)->get();
-    $categoria = Category::all();
-    $subcategoria = Subcategory::all();
-    $microcategoria = Microcategory::all();
-    $collection = Collection::all();
-
-    return view('pages.products.edit', compact('product', 'atributos', 'valorAtributo', 'productosRelacionados', 'categoria', 'subcategoria', 'microcategoria', 'especificacion', 'collection'));
+    $producto =  Products::findOrFail($id);
+    $marcas = Brand::all();
+    $categorias = Category::all();
+    // Extraer solo el nombre del producto desde la ruta en "album"
+    $albumPath = $producto->album; // Ejemplo: "storage/images/albums/Productos/MiProducto"
+    $albumParts = explode('/', $albumPath);
+    $albumName = end($albumParts); // Obtiene "MiProducto"
+    // Buscar el álbum en la base de datos
+    $album = Album::where('name', $albumName)->withCount('images', 'children')->first();
+    $album->load('children', 'images');
+    return view('pages.products.edit', compact('producto', 'categorias',  'marcas', 'album'));
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  private function updateAlbumAndFolder($oldTitle, $newTitle)
   {
-    $onlyOneCaratula= false;
-    $cleanGaleria = true;
-    $especificaciones = [];
-    $product = Products::find($id);
-    $tagsSeleccionados = $request->input('tags_id');
-    $data = $request->all();
-    $atributos = null;
+    // Actualizar el título del álbum en la base de datos
+    $album = Album::where('name', $oldTitle)->first();
+    if ($album) {
+      $album->name = $newTitle;
+      $album->save();
+    }
+  }
 
-    
-
+  public function update(Request $request, $id)
+  {
     $request->validate([
-      'producto' => 'required',
-      'precio' => 'required',
-      'categoria_id' => 'required'
+      'producto' => 'required|string|max:255',
+      'extract' => 'nullable|string|max:255',
+      'description' => 'nullable|string',
+      'precio' => 'nullable|numeric|min:0',
+      'stock' => 'nullable|numeric|min:0',
+      'categoria_id' => 'required|exists:categories,id',
+      'brand_id' => 'required|exists:brands,id',
+      'especificaciones' => 'nullable|string',
+      //'destacado' => 'nullable|boolean',
+      //'visible' => 'nullable|boolean',
+      //'status' => 'nullable|boolean',
     ]);
+    $producto = Products::findOrFail($id);
+    // Guardar el título anterior para actualizar el álbum y la carpeta
+    $oldTitle = $producto->producto;
 
-    
-    if ($request->hasFile("imagen")) {
-      $file = $request->file('imagen');
-      $routeImg = 'storage/images/productos/';
-      $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
-
-      $this->saveImg($file, $routeImg, $nombreImagen);
-
-      $data['imagen'] = $routeImg . $nombreImagen;
-     
-    } 
-
-
-    if ($request->hasFile("fichatecnica")) {
-      $file = $request->file('fichatecnica');
-      $routearchive = 'storage/archives/';
-      $nombrearchive = Str::random(10) . '_' . $file->getClientOriginalName();
-              
-      if (!file_exists($routearchive)) {
-                  mkdir($routearchive, 0777, true);
-              }
-
-              $file->move($routearchive, $nombrearchive);
-
-              $data['url_fichatecnica'] = $routearchive;
-              $data['name_fichatecnica'] = $nombrearchive;
+    // Verificar si ya existe un producto con el mismo nombre (excluyendo el producto actual)
+    $existingProduct = Products::where('producto', $request->producto)->where('id', '!=', $id)->first();
+    if ($existingProduct) {
+      return redirect()->back()
+        ->withInput()
+        ->with('error', 'Ya existe un producto con ese nombre.');
     }
+    try {
+      $data = $request->all();
 
 
-    if ($request->hasFile("fichariesgo")) {
-      $file = $request->file('fichariesgo');
-      $routearchive2 = 'storage/archives/';
-      $nombrearchive2 = Str::random(10) . '_' . $file->getClientOriginalName();
-              
-      if (!file_exists($routearchive2)) {
-                  mkdir($routearchive2, 0777, true);
-              }
+      // **Paso 1: Obtener la carpeta actual del producto**
+      $mainFolder = 'Productos';
+      $subFolder = $oldTitle;
+      $pathSubFolder = public_path("storage/images/albums/{$mainFolder}/{$subFolder}");
 
-              $file->move($routearchive2, $nombrearchive2);
-
-              $data['url_docriesgo'] = $routearchive2;
-              $data['name_docriesgo'] = $nombrearchive2;
-    }
-
-
-    if (isset($data['filesGallery'])) {
-
-      foreach ($data['filesGallery'] as $file) {
-      
-        [$first, $code] = explode(';base64,', $file);
- 
-        $imageData = base64_decode($code);
-
-        $routeImg = 'storage/images/gallery/';
-        $ext = ExtendFile::getExtention(str_replace("data:", '', $first));
-        $nombreImagen = Str::random(10) . '.' . $ext;
-        // Verificar si la ruta no existe y crearla si es necesario
-        if (!file_exists($routeImg)) {
-          mkdir($routeImg, 0777, true); 
-        }
-        
-        // Guardar los datos binarios en un archivo
-        file_put_contents($routeImg . $nombreImagen, $imageData);
-        $dataGalerie['imagen'] = $routeImg . $nombreImagen;
-        $dataGalerie['product_id'] = $product->id;
-        // $dataGalerie['type_img'] = 'gall';
-        Galerie::create($dataGalerie);
+      if (!is_dir($pathSubFolder)) {
+        mkdir($pathSubFolder, 0777, true);
       }
-    }
 
+      // **Paso 2: Actualizar el álbum**
+      $productosAlbum = Album::firstOrCreate([
+        'name' => 'Productos',
+      ], [
+        'description' => 'Contenedor principal para los Productos.',
+      ]);
 
+      $album = Album::updateOrCreate(
+        ['name' => $subFolder],
+        ['parent_id' => $productosAlbum->id]
+      );
 
-    foreach ($request->all() as $key => $value) {
-
-      if (strstr($key, ':')) {
-        // Separa el nombre del atributo y su valor
-        $atributos = $this->stringToObject($key, $atributos);
-        unset($request[$key]);
-      } elseif (strstr($key, '-')) {
-        //strpos primera ocurrencia que enuentre
-        if (strpos($key, 'tittle-') === 0 || strpos($key, 'title-') === 0) {
-          $num = substr($key, strrpos($key, '-') + 1); // Obtener el número de la especificación
-          $especificaciones[$num]['tittle'] = $value; // Agregar el título al array asociativo
-        } elseif (strpos($key, 'specifications-') === 0) {
-
-          $num = substr($key, strrpos($key, '-') + 1); // Obtener el número de la especificación
-          $especificaciones[$num]['specifications'] = $value; // Agregar las especificaciones al array asociativo
-        }elseif(strpos($key, 'conbinacion-') === 0 ){
-           $num = substr($key, strrpos($key, '-') + 1);
-           $combinacion = Combinacion::find($num)->update([ 'color_id' => $value["color"] ,
-           'talla_id' => $value["talla"] ,
-           'stock' => $value["stock"] ,]);
-
- 
-        }elseif(strpos($key, 'updateComb-') === 0 ){
-          Combinacion::create([
-            "product_id" =>$id,
-            "color_id" =>$value["color"],
-            "talla_id" =>$value["talla"],
-            "stock" =>$value["stock"],
-          ]);
-        }elseif (strpos($key, 'imagenP-') === 0) {
-          $colorId = substr($key, strrpos($key, '-') + 1);
-          $isCaratula = 0;
-          if ($colorId == isset($data['caratula']) && $onlyOneCaratula == false) {
-            $isCaratula = 1;
-            $onlyOneCaratula = true;
-          }
-          $file = $request->file($key);
-          $routeImg = 'storage/images/productos/';
-          $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
-
-          $this->saveImg($file, $routeImg, $nombreImagen);
-
-          $dataGalerie['name_imagen'] = $routeImg . $nombreImagen;
-          $dataGalerie['product_id'] = $id;
-          $dataGalerie['type_imagen'] = 'primary';
-          $dataGalerie['caratula'] = $isCaratula;
-          $dataGalerie['color_id'] = $colorId;
-          // $dataGalerie['type_img'] = 'gall';
-
-          /* if($cleanGaleria){
-            $cleanGaleria = false ; 
-            DB::delete('delete from imagen_productos where product_id = ?', [$id]);
-          } */
-         
-          ImagenProducto::create($dataGalerie);
-        }elseif(strpos($key, 'attrid-') === 0) {
-          $colorId = substr($key, strrpos($key, '-') + 1);
-          foreach ($value as $file) {
-            $this->GuardarGaleria($file, $id, $colorId);
-          }
+      // **Paso 3: Manejo de la imagen**
+      if ($request->hasFile("imagen")) {
+        // Eliminar la imagen anterior si existe
+        if ($producto->imagen && file_exists(public_path($producto->imagen))) {
+          unlink(public_path($producto->imagen));
         }
-        
+
+        $file = $request->file('imagen');
+        $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
+        $file->move($pathSubFolder, $nombreImagen);
+        $data['imagen'] = "storage/images/albums/{$mainFolder}/{$subFolder}/{$nombreImagen}";
       }
-    }
 
-    
-    $jsonAtributos = json_encode($atributos);
-
-
-    if (array_key_exists('destacar', $data)) {
-      if (strtolower($data['destacar']) == 'on') $data['destacar'] = 1;
-    }
-    if (array_key_exists('recomendar', $data)) {
-      if (strtolower($data['recomendar']) == 'on') $data['recomendar'] = 1;
-    }
-    if (array_key_exists('liquidacion', $data)) {
-      if (strtolower($data['liquidacion']) == 'on') $data['liquidacion'] = 1;
-    }
-
-
-
-    $data['atributes'] = $jsonAtributos;
-    $cleanedData = Arr::where($data, function ($value, $key) {
-      return !is_null($value);
-    });
-    $cleanedData['description'] = $data['description'];
-    $cleanedData['order'] = $data['order'];
-    // $cleanedData['extract'] = $data['extract'];
-    // $cleanedData['especificacion'] = $data['especificacion'];
-
-    // $cleanedData['sku'] = $data['sku'];
-
-    // if ($data['descuento'] == 0 || is_null($data['descuento'])) {
-    //   $cleanedData['preciofiltro'] = $data['precio'];
-    // } else {
-    //   $cleanedData['preciofiltro'] = $data['descuento'];
-    // }
-
-    
-    $product->update($cleanedData);
-
-    DB::delete('delete from attribute_product_values where product_id = ?', [$product->id]);
-
-    if (isset($atributos)) {
-      foreach ($atributos as $atributo => $valores) {
-        $idAtributo = Attributes::where('titulo', $atributo)->first();
-
-        foreach ($valores as $valor) {
-          $idValorAtributo = AttributesValues::where('valor', $valor)->first();
-
-          if ($idAtributo && $idValorAtributo) {
-            DB::table('attribute_product_values')->insert([
-              'product_id' => $product->id,
-              'attribute_id' => $idAtributo->id,
-              'attribute_value_id' => $idValorAtributo->id,
-            ]);
-          }
+      // **Paso 4: Manejo de manuales**
+      if ($request->hasFile("manuales")) {
+        // Eliminar manual anterior si existe
+        if ($producto->manuales && file_exists(public_path($producto->manuales))) {
+          unlink(public_path($producto->manuales));
         }
-      }
-    }
 
-    DB::delete('delete from product_xproducts where product_id = ?', [$id]);
-    if (!is_null($tagsSeleccionados)) {
-      $this->TagsXProducts($id, $tagsSeleccionados);
+        $file = $request->file('manuales');
+        $routearchive = 'storage/archivos/productos/';
+        $nombrearchive = Str::random(10) . '_' . $file->getClientOriginalName();
+
+        if (!is_dir(public_path($routearchive))) {
+          mkdir(public_path($routearchive), 0777, true);
+        }
+
+        $file->move(public_path($routearchive), $nombrearchive);
+        $data['manuales'] = $routearchive . $nombrearchive;
+      }
+
+      // **Paso 5: Actualizar el producto en la base de datos**
+      $producto->update([
+        'producto' => $request->producto,
+        'extract' => $request->extract,
+        'description' => $request->description,
+        'precio' => $request->precio,
+        'stock' => $request->stock,
+        'especificaciones' => $request->especificaciones,
+        'categoria_id' => $request->categoria_id,
+        'brand_id' => $request->brand_id,
+        'destacado' => $request->has('destacado'),
+        'album' => "storage/images/albums/{$mainFolder}/{$request->producto}",
+        'imagen' => $data['imagen'] ?? $producto->imagen,
+        'manuales' => $data['manuales'] ?? $producto->manuales,
+      ]);
+      // Actualizar el álbum y la carpeta en el sistema de archivos
+      $this->updateAlbumAndFolder($oldTitle, $request->producto);
+
+      return redirect()->route('products.index')->with('success', 'Producto actualizado exitosamente.');
+    } catch (ValidationException $e) {
+      return redirect()->back()->withErrors($e->validator)->withInput();
+    } catch (\Throwable $th) {
+      return redirect()->route('products.edit', $id)->with('error', 'Error al actualizar el producto.');
     }
-    $this->actualizarEspecificacion($especificaciones);
-    return redirect()->route('products.index')->with('success', 'Producto editado exitosamente.');
   }
 
   /**
@@ -618,7 +336,7 @@ class ProductsController extends Controller
   }
 
   public function updateVisible(Request $request)
-  { 
+  {
 
     // $cantidad = $this->contardestacados();
 
@@ -644,104 +362,66 @@ class ProductsController extends Controller
     return response()->json(['message' => 'registro actualizado']);
   }
 
+  public function uploadImages(Request $request, Album $album)
+  {
+    $request->validate([
+      'images.*' => 'required|image|mimes:png,jpg|max:2048',
+    ]);
 
-  public function contardestacados(){
+    if ($request->hasFile('images')) {
+      $manager = new ImageManager(new Driver());
 
-    $cantidad = Products::where('status', '=', 1)->where('visible', '=', 1)->where('destacar', '=', 1)->count();
-    return  $cantidad;
-  }
+      foreach ($request->file('images') as $file) {
+        $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
+        $img = $manager->read($file);
+        $ruta = 'storage/images/albums/Productos/' . $album->name . '/';
 
-
-  public function borrarimg(Request $request){
-    try {
-      //code...
-      $imagenGaleria = Galerie::find($request->id);
-      $rutaCompleta  = $imagenGaleria->imagen;
-      if (file_exists($rutaCompleta)) {
-        // Intentar eliminar el archivo
-        if (unlink($rutaCompleta)) {
-            // Archivo eliminado con éxito
-           
-        } 
-      }
-      $imagenGaleria->delete();
-      return response()->json(['message'=>'imagen eliminada con exito ']);
-    } catch (\Throwable $th) {
-      //throw $th;
-      return response()->json(['message'=>'no se ha podido eliminar la imagen '], 400);
-
-    }
-  }
-
-
-  public function borrarFichaTecnica(Request $request){
-    try {
-       
-        $obtenerproducto = Products::find($request->id);
-
-        if (!$obtenerproducto) {
-            return response()->json(['message' => 'Producto no encontrado'], 404);
+        if (!is_dir(public_path($ruta))) {
+          mkdir(public_path($ruta), 0777, true);
         }
 
-      
-        $rutaCompleta = $obtenerproducto->url_fichatecnica . $obtenerproducto->name_fichatecnica;
+        $img->save(public_path($ruta . $nombreImagen));
 
-      
-        if (file_exists($rutaCompleta)) {
-            
-            if (unlink($rutaCompleta)) {
-               
-                $obtenerproducto->url_fichatecnica = "";
-                $obtenerproducto->name_fichatecnica = "";
-                $obtenerproducto->update();
-                
-                return response()->json(['message' => 'Ficha Técnica eliminada con éxito']);
-            } else {
-                return response()->json(['message' => 'No se pudo eliminar el archivo físico'], 500);
-            }
-        } else {
-            return response()->json(['message' => 'El archivo no existe'], 404);
-        }
+        $album->images()->create([
+          'url_image' => $ruta . $nombreImagen,
+          'name_image' => $nombreImagen,
+        ]);
+      }
 
-    } catch (\Throwable $th) {
-        return response()->json(['message' => 'No se ha podido eliminar la Ficha Técnica', 'error' => $th->getMessage()], 400);
+      $album = Album::findOrFail($album->id);
+      $album->load('images');
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Imágenes cargadas exitosamente.',
+        'album' => $album,
+      ]);
     }
-}
 
-
-  public function borrarHojaSeguridad(Request $request){
-    try {
-       
-      $obtenerproducto = Products::find($request->id);
-
-      if (!$obtenerproducto) {
-          return response()->json(['message' => 'Producto no encontrado'], 404);
-      }
-
-    
-      $rutaCompleta = $obtenerproducto->url_docriesgo . $obtenerproducto->name_docriesgo;
-
-    
-      if (file_exists($rutaCompleta)) {
-          
-          if (unlink($rutaCompleta)) {
-             
-              $obtenerproducto->url_docriesgo = "";
-              $obtenerproducto->name_docriesgo = "";
-              $obtenerproducto->update();
-              
-              return response()->json(['message' => 'Hoja de seguridad eliminada con éxito']);
-          } else {
-              return response()->json(['message' => 'No se pudo eliminar el archivo físico'], 500);
-          }
-      } else {
-          return response()->json(['message' => 'El archivo no existe'], 404);
-      }
-
-  } catch (\Throwable $th) {
-      return response()->json(['message' => 'No se ha podido eliminar la Hoja de seguridad', 'error' => $th->getMessage()], 400);
+    return response()->json([
+      'error' => true,
+      'message' => 'No se pudo subir las imágenes.',
+    ]);
   }
 
-}
+  public function destroyImage(AlbumImage $image)
+  {
+    try {
+      if ($image->url_image && file_exists($image->url_image)) {
+        unlink($image->url_image);
+      }
 
+      $image->delete();
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Imagen eliminada correctamente.'
+      ]);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Ocurrió un problema al eliminar la imagen.'
+      ], 500);
+    }
+  }
 }

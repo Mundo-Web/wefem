@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('components.public.footer', function ($view) {
             // Obtener los datos del footer
-            $general = General::all(); // Suponiendo que tienes un modelo Footer y un método footerData() en él
+            $general = General::first(); // Suponiendo que tienes un modelo Footer y un método footerData() en él
             // Pasar los datos a la vista
             $politicDev = PolyticsCondition::first();
             $termsAndCondicitions = TermsAndCondition::first();
@@ -41,20 +41,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with(['general' => $general, 'politicDev' => $politicDev, 'termsAndCondicitions' => $termsAndCondicitions]);
         });
 
-        View::composer('components.public.header', function ($view) {
-            // Obtener los datos del footer
-            $submenucategorias = Category::all(); // Suponiendo que tienes un modelo Footer y un método footerData() en él
-            $submenucolecciones = Collection::all();
-            $general = General::all();
-            // Pasar los datos a la vista
-            $view->with('submenucategorias', $submenucategorias)
-                ->with('submenucolecciones', $submenucolecciones)
-                ->with('general', $general);
-        });
+
 
         View::composer('components.public.matrix', function ($view) {
 
-            $general = General::all();
+            $general = General::first();
             // Pasar los datos a la vista
             $view->with('general', $general);
         });

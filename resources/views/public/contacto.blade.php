@@ -6,38 +6,36 @@
 
 
 @section('content')
-    <main class="bg-white">
+    <main class="bg-white ">
 
 
-        <section class="max-w-7xl mx-auto">
-
-            <div class="w-full flex gap-4 pt-32">
+        <section class="w-full relative pt-32">
+            <div class="absolute left-0 transform  ">
+                <img src="{{ asset('images/img/background/bg-contacto.png') }}" alt="" class="w-20">
+            </div>
+            <div class="max-w-7xl mx-auto  flex gap-4 ">
                 <div class="w-1/2  ">
                     <div class="w-10/12 flex flex-col justify-start items-start gap-8">
 
-                        <h2 class="text-colorAzulOscuro text-text44 font-bold">A nuestro amable equipo le encantaría saber de
-                            usted</h2>
+                        <h2 class="text-colorAzulOscuro text-text44 font-bold">{{ $contactoview->titleSection }}</h2>
                         <p class=" text-colorParrafo text-text16 font-light" data-aos="fade-down">
-                            Donec vehicula, lectus vel pharetra semper, justo massa pharetra nunc, non venenatis ante augue
-                            quis
-                            est.</p>
+                            {{ $contactoview->subtitleSection }}</p>
 
                         <div class="flex flex-col gap-2 items-start justify-start" data-aos="fade-down">
                             <p class="text-colorRojo text-text18 font-semibold">Horario de oficina</p>
 
                             <p class="text-colorParrafo text-text16 font-light w-full leading-tight">
-                                @foreach ($general as $item)
-                                    {!! str_replace(',', '<br>', $item->schedule) !!}
-                                @endforeach
+
+                                {!! str_replace(',', '<br>', $general->schedule) !!}
+
                             </p>
                         </div>
                         <div class="flex flex-col gap-2 items-start  justify-start">
 
                             <p class="text-colorRojo text-text18 font-semibold">Nuestra Dirección</p>
                             <p class="text-textAzul group-hover:text-white text-base font-gotham_book w-full leading-tight">
-                                @foreach ($general as $item)
-                                    {{ $item->address }} - {{ $item->district }} - {{ $item->city }}
-                                @endforeach
+                                {{ $general->address }} - {{ $general->district }} - {{ $general->city }}
+
                             </p>
                         </div>
 
@@ -45,18 +43,18 @@
                             <p class="text-colorRojo text-text18 font-semibold">Ponerse en Contacto</p>
                             <p data-aos="fade-down"
                                 class="text-textAzul group-hover:text-textAzul text-base font-gotham_book w-full leading-tight">
-                                @foreach ($general as $item)
-                                    @if ($item->cellphone && $item->office_phone)
-                                        {{ $item->cellphone ?? 'Ingrese nro. celular' }} /
-                                        {{ $item->office_phone ?? 'Ingrese nro. telefónico' }}
-                                    @elseif($item->cellphone && empty($item->office_phone))
-                                        {{ $item->cellphone ?? 'Ingrese nro. celular' }}
-                                    @elseif($item->office_phone && empty($item->cellphone))
-                                        {{ $item->office_phone ?? 'Ingrese nro. telefónico' }}
-                                    @else
-                                        <p>No hay información disponible para este ítem.</p>
-                                    @endif
-                                @endforeach
+
+                                @if ($general->cellphone && $general->office_phone)
+                                    {{ $general->cellphone ?? 'Ingrese nro. celular' }} /
+                                    {{ $general->office_phone ?? 'Ingrese nro. telefónico' }}
+                                @elseif($general->cellphone && empty($general->office_phone))
+                                    {{ $general->cellphone ?? 'Ingrese nro. celular' }}
+                                @elseif($general->office_phone && empty($general->cellphone))
+                                    {{ $general->office_phone ?? 'Ingrese nro. telefónico' }}
+                                @else
+                                    <p>No hay información disponible para este ítem.</p>
+                                @endif
+
                             </p>
                         </div>
                     </div>
@@ -66,8 +64,8 @@
                 </div>
                 <form id="formContactos" class="w-full md:w-1/2" method="POST" action="{{ route('guardarContactos') }}">
                     @csrf
-                    <h2 class="text-colorAzulOscuro text-text32 font-bold">Ponerse en Contacto</h2>
-                    <p class="text-colorParrafo text-text16 font-light my-8">Donec vehicula...</p>
+                    <h2 class="text-colorAzulOscuro text-text32 font-bold">{{ $contactoview->titleForm }}</h2>
+                    <p class="text-colorParrafo text-text16 font-light my-8">{{ $contactoview->subtitleForm }}</p>
 
                     <div class="grid grid-cols-2 gap-4">
                         <label class="text-colorAzulOscuro text-text12 w-full leading-tight">Nombres
@@ -139,8 +137,8 @@
         <!--Seccion FAQs-->
         <section class="max-w-7xl mx-auto flex mt-12">
             <div class="w-1/2">
-                <h2 class="text-text32 font-bold text-colorAzulOscuro">Preguntas frecuentes</h2>
-                <p class="text-colorParrafo font-light text-text16">Todo lo que necesitas saber sobre nuestro servicio.</p>
+                <h2 class="text-text32 font-bold text-colorAzulOscuro">{{ $contactoview->titleFaqs }}</h2>
+                <p class="text-colorParrafo font-light text-text16">{{ $contactoview->subtitleFaqs }}</p>
             </div>
             <div class="w-1/2">
                 @foreach ($faqs as $faq)
@@ -148,7 +146,7 @@
                         <!-- Pregunta -->
                         <h4 @click="open = !open"
                             class="cursor-pointer flex justify-between items-center text-text16 font-semibold text-colorRojo py-3">
-                            {{ $faq->question }}
+                            {{ $faq->pregunta }}
 
                             <div class="h-6 w-6 border-2 border-[#ed1b2f] rounded-full flex items-center justify-center">
                                 <i x-show="!open" class="fa-solid fa-plus"></i>
@@ -163,7 +161,7 @@
                             x-transition:leave-start="opacity-100 max-h-screen" x-transition:leave-end="opacity-0 max-h-0"
                             class="text-gray-500 overflow-hidden">
                             <p class="pt-3">
-                                {{ $faq->answer }}
+                                {{ $faq->respuesta }}
                             </p>
                         </div>
                     </div>
@@ -172,67 +170,65 @@
         </section>
         <!--Seccion Contactar-->
         <section class="max-w-7xl mx-auto my-12">
-            <section class="bg-colorBackgroundAzulClaro rounded-xl p-8 w-full ">
-                <div class="mt-6 flex justify-center">
-                    <div x-data="{
-                        currentIndex: 0,
-                        images: [],
-                        async init() {
-                            const response = await fetch('/imagenes'); // Cambia esto por tu endpoint real
-                            this.images = await response.json();
-                        },
-                        next() {
-                            this.currentIndex = (this.currentIndex + 1) % this.images.length;
-                        },
-                        prev() {
-                            this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
-                        }
-                    }" class="w-full">
-                        <!-- Contenedor principal -->
-                        <div class="relative overflow-hidden">
-                            <!-- Imágenes -->
-                            <div class="flex transition-transform duration-500"
-                                :style="'transform: translateX(-' + (currentIndex * 100) + '%)'">
-                                <template x-for="(image, index) in images" :key="index">
-                                    <div class="min-w-full">
-                                        <img :src="image.image" alt="Imagen" class="w-full object-cover h-64">
-                                    </div>
-                                </template>
-                            </div>
-
-                            <!-- Botones de navegación -->
-                            <button @click="prev()"
-                                class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full">
-                                &#8592;
-                            </button>
-                            <button @click="next()"
-                                class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black text-white p-2 rounded-full">
-                                &#8594;
-                            </button>
-                        </div>
-
-                        <!-- Indicadores -->
-                        <div class="flex justify-center mt-4 space-x-2">
-                            <template x-for="(image, index) in images" :key="index">
-                                <button @click="currentIndex = index"
-                                    :class="currentIndex === index ? 'bg-red-500' : 'bg-gray-300'"
-                                    class="w-4 h-4 rounded-full"></button>
+            <section class="bg-colorBackgroundAzulClaro rounded-xl p-8 w-full relative overflow-hidden z-0 ">
+                <div class="absolute -left-16  transform  rotate-[85deg] -z-10">
+                    <img src="{{ asset('images/img/background/bg-footer.png') }}" alt="" class="w-full"
+                        style=" filter: opacity(10%);">
+                </div>
+                <div class="mt-6 flex justify-center items-center z-20">
+                    <div x-data="carousel()" class="w-full flex justify-center items-center relative overflow-hidden">
+                        <!-- Contenedor de las imágenes -->
+                        <div class="relative flex w-[300px] h-[100px] justify-center items-center">
+                            <template x-for="(image, index) in visibleImages" :key="index">
+                                <div class="absolute transition-all duration-500 flex items-center justify-center "
+                                    :class="{
+                                        'w-14 h-14 z-10 left-1/2 transform -translate-x-1/2': index === 1,
+                                        /* Imagen central */
+                                        'w-12 h-12 z-0 opacity-80 left-1/4': index === 0,
+                                        /* Izquierda */
+                                        'w-12 h-12 z-0 opacity-80 right-1/4': index === 2 /* Derecha */
+                                    }">
+                                    <img :src="image.image" alt="Imagen"
+                                        class="object-cover w-full h-full rounded-full border-2 border-white bg-colorBackgroundAzulOscuro">
+                                </div>
                             </template>
                         </div>
                     </div>
                 </div>
+                <script>
+                    function carousel() {
+                        return {
+                            images: [],
+                            currentIndex: 0,
+                            get visibleImages() {
+                                let total = this.images.length;
+                                if (total < 3) return this.images; // Si hay menos de 3 imágenes, mostrarlas todas
+                                let prev = (this.currentIndex - 1 + total) % total;
+                                let next = (this.currentIndex + 1) % total;
+                                return [this.images[prev], this.images[this.currentIndex], this.images[next]];
+                            },
+                            async init() {
+                                const response = await fetch('/imagenes');
+                                this.images = await response.json();
+                                this.startAutoSlide();
+                            },
+                            startAutoSlide() {
+                                setInterval(() => {
+                                    this.currentIndex = (this.currentIndex + 1) % this.images.length;
+                                }, 3000); // Cambia cada 3 segundos
+                            }
+                        }
+                    }
+                </script>
 
-
-                <div class="text-center max-w-md mx-auto">
-                    <h2 class="text-text24 font-semibold text-colorAzulOscuro">¿Aún tienes preguntas?</h2>
-                    <p class="text-colorParrafo mt-2 text-text16">No encuentras la respuesta que buscas? Por favor chatea
-                        con nuestro
-                        amigable equipo.</p>
+                <div class="text-center max-w-md mx-auto z-20">
+                    <h2 class="text-text24 font-semibold text-colorAzulOscuro">{{ $contactoview->titleSlider }}</h2>
+                    <p class="text-colorParrafo mt-2 text-text16">{{ $contactoview->subtitleSlider }}</p>
                 </div>
 
-                <div class="mt-6 text-center">
+                <div class="mt-6 text-center z-20">
                     <button
-                        class="bg-colorBackgroundRed text-white px-6 py-3 rounded-full hover:bg-colorBackgroundRed transition duration-300">
+                        class=" bg-colorBackgroundRed text-white px-6 py-3 rounded-full hover:bg-colorBackgroundRed transition duration-300">
                         Ponerse en contacto
                     </button>
                 </div>

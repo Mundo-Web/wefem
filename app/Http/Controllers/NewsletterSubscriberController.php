@@ -69,105 +69,105 @@ class NewsletterSubscriberController extends Controller
         //
     }
 
-    public function showSubscripciones(){
-        
-        $subscripciones = NewsletterSubscriber::orderBy('created_at','desc')->where('is_verified', true)->where('active', '=', 1)->get();
-        
-        return view('pages.subscripciones.index', compact('subscripciones'));
+    public function showSubscripciones()
+    {
 
+        $subscripciones = NewsletterSubscriber::orderBy('created_at', 'desc')->get();
+
+        return view('pages.subscripciones.index', compact('subscripciones'));
     }
 
-    public function saveSubscripciones(Request $request){
-        
+    public function saveSubscripciones(Request $request)
+    {
+
         $request->validate(['email' => 'required|email']);
         $token = Crypto::randomUUID();
-        $data = $request->all() ; 
-        // $data['nombre'] = $data['full_name'];
-        // NewsletterSubscriber::create($data);
+        $data = $request->all();
+
         NewsletterSubscriber::create([
-          'email' => $data['email'],
-          'verification_token' => $token,
-      ]);
+            'email' => $data['email'],
+            'verification_token' => $token,
+        ]);
 
         $verificationLink = route('verify', ['token' => $token]);
 
         $this->validarCorreo($data, $verificationLink);
-        
-        return response()->json(['message'=> 'Suscrito Correctamente']);
 
+        return response()->with('success', 'Subscrito  exitosamente.');
     }
 
-    public function saveSubscripciones2(Request $request){
-        
-      $request->validate([
-        'email' => 'required|email',
-      ]);
+    public function saveSubscripciones2(Request $request)
+    {
 
-      $token = Crypto::randomUUID();
-      $data = $request->all();
+        $request->validate([
+            'email' => 'required|email',
+        ]);
 
-     
-      $existingSubscriber = NewsletterSubscriber::where('email', $data['email'])
-          ->where('active', 0)
-          ->where('is_verified', 0)
-          ->first();
-
-      if ($existingSubscriber) {
-          return response()->json(['message' => 'Usuario existente sin verificar. Revise su bandeja de entrada'], 400);
-      }
-
-    
-      NewsletterSubscriber::create([
-          'email' => $data['email'],
-          'nombre' => $data['full_name'],
-          'verification_token' => $token,
-      ]);
-
-      $verificationLink = route('verify', ['token' => $token]);
-
-      $this->validarCorreo($data, $verificationLink);
-
-      return response()->json(['message' => 'Enlace de verificación enviado a su bandeja de entrada']);
-
-  }
+        $token = Crypto::randomUUID();
+        $data = $request->all();
 
 
-  public function verify($token)
-  {
-      $subscriber = NewsletterSubscriber::where('verification_token', $token)->first();
+        $existingSubscriber = NewsletterSubscriber::where('email', $data['email'])
+            ->where('active', 0)
+            ->where('is_verified', 0)
+            ->first();
 
-      if (!$subscriber) {
-          // return redirect('/')->with('error', 'Token de verificación inválido.');
-          session()->flash('error', 'Token de verificación inválido.');
-      }
-
-      $subscriber->update([
-          'is_verified' => true,
-          'verification_token' => null,
-          'active' => 1,
-      ]);
-
-      $this->envioCorreoAdmin($subscriber);
-      $this->envioCorreoCliente($subscriber);
-
-      session()->flash('success', 'Tu suscripción ha sido confirmada.');
-      // return redirect('/')->with('success', 'Tu suscripción ha sido confirmada.');
-      return redirect('/');
-  }
+        if ($existingSubscriber) {
+            return response()->json(['message' => 'Usuario existente sin verificar. Revise su bandeja de entrada'], 400);
+        }
 
 
-    private function validarCorreo($data, $verificationLink){
-     
-      $generales = General::first();
-      $appUrl = env('APP_URL');
-      $name = 'Redconex';
-      $mensaje = "Confirmacion de correo electrónico";
-      $mail = EmailConfig::config($name, $mensaje);
+        NewsletterSubscriber::create([
+            'email' => $data['email'],
+            'nombre' => $data['full_name'],
+            'verification_token' => $token,
+        ]);
 
-      try {
-        $mail->addAddress($data['email']);
-        $mail->Body =
-              '<!DOCTYPE html>
+        $verificationLink = route('verify', ['token' => $token]);
+
+        $this->validarCorreo($data, $verificationLink);
+
+        return response()->json(['message' => 'Enlace de verificación enviado a su bandeja de entrada']);
+    }
+
+
+    public function verify($token)
+    {
+        $subscriber = NewsletterSubscriber::where('verification_token', $token)->first();
+
+        if (!$subscriber) {
+            // return redirect('/')->with('error', 'Token de verificación inválido.');
+            session()->flash('error', 'Token de verificación inválido.');
+        }
+
+        $subscriber->update([
+            'is_verified' => true,
+            'verification_token' => null,
+            'active' => 1,
+        ]);
+
+        $this->envioCorreoAdmin($subscriber);
+        $this->envioCorreoCliente($subscriber);
+
+        session()->flash('success', 'Tu suscripción ha sido confirmada.');
+        // return redirect('/')->with('success', 'Tu suscripción ha sido confirmada.');
+        return redirect('/');
+    }
+
+
+    private function validarCorreo($data, $verificationLink)
+    {
+
+        $generales = General::first();
+        $appUrl = env('APP_URL');
+        $name = 'Redconex';
+        $mensaje = "Confirmacion de correo electrónico";
+        $mail = EmailConfig::config($name, $mensaje);
+
+        try {
+            $mail->addAddress($data['email']);
+            $mail->Body =
+                '<!DOCTYPE html>
               <html>
                   <head>
                       <meta charset="utf-8" />
@@ -737,12 +737,11 @@ class NewsletterSubscriberController extends Controller
               
         ';
 
-          $mail->isHTML(true);
-          $mail->send();
-      } catch (\Throwable $th) {
-          //throw $th;
-      }
-
+            $mail->isHTML(true);
+            $mail->send();
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     private function envioCorreoAdmin($data)
@@ -753,10 +752,10 @@ class NewsletterSubscriberController extends Controller
         $name = 'Administrador';
         $mensaje = "Nueva suscriptor - Redconex";
         $mail = EmailConfig::config($name, $mensaje);
-      
+
         $baseUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/mail';
         $baseUrllink = 'https://' . $_SERVER['HTTP_HOST'] . '/';
-      
+
 
         try {
             $mail->addAddress($emailadmin);
@@ -788,8 +787,8 @@ class NewsletterSubscriberController extends Controller
                         margin: 0 auto;
                         text-align: center;
                         background-image: url(' .
-                              $appUrl .
-                              '/mail/fondo.png);
+                $appUrl .
+                '/mail/fondo.png);
                         background-repeat: no-repeat;
                         background-position: center;
                         background-size: cover;
@@ -808,10 +807,10 @@ class NewsletterSubscriberController extends Controller
                             "
                           >
                               <a href="' .
-                              $appUrl .
-                              '" target="_blank" style="text-align:center" ><img src="' .
-                              $appUrl .
-                              '/mail/logo.png" alt="hpi" /></a>
+                $appUrl .
+                '" target="_blank" style="text-align:center" ><img src="' .
+                $appUrl .
+                '/mail/logo.png" alt="hpi" /></a>
                           </th>
                         </tr>
                       </thead>
@@ -875,8 +874,8 @@ class NewsletterSubscriberController extends Controller
                             <a
                                target="_blank"
                               href="' .
-                              $appUrl .
-                              '"
+                $appUrl .
+                '"
                               style="
                                 text-decoration: none;
                                 background-color: #E29720;
@@ -914,7 +913,7 @@ class NewsletterSubscriberController extends Controller
 
 
     private function envioCorreoCliente($data)
-    { 
+    {
         $generales = General::first();
         // $name = $data['full_name'];
         $name = 'Suscriptor';
@@ -922,9 +921,9 @@ class NewsletterSubscriberController extends Controller
         $mail = EmailConfig::config($name, $mensaje);
         $appUrl = env('APP_URL');
         $baseUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/mail';
-        $baseUrllink = 'https://' . $_SERVER['HTTP_HOST'] . '/';      
-       
-     
+        $baseUrllink = 'https://' . $_SERVER['HTTP_HOST'] . '/';
+
+
 
         try {
             $mail->addAddress($data['email']);
@@ -956,8 +955,8 @@ class NewsletterSubscriberController extends Controller
                         margin: 0 auto;
                         text-align: center;
                         background-image: url(' .
-                              $appUrl .
-                              '/mail/fondo.png);
+                $appUrl .
+                '/mail/fondo.png);
                         background-repeat: no-repeat;
                         background-position: center;
                         background-size: cover;
@@ -976,10 +975,10 @@ class NewsletterSubscriberController extends Controller
                             "
                           >
                               <a href="' .
-                              $appUrl .
-                              '" target="_blank" style="text-align:center" ><img src="' .
-                              $appUrl .
-                              '/mail/logo.png" alt="hpi" /></a>
+                $appUrl .
+                '" target="_blank" style="text-align:center" ><img src="' .
+                $appUrl .
+                '/mail/logo.png" alt="hpi" /></a>
                           </th>
                         </tr>
                       </thead>
@@ -1043,8 +1042,8 @@ class NewsletterSubscriberController extends Controller
                             <a
                                target="_blank"
                               href="' .
-                              $appUrl .
-                              '"
+                $appUrl .
+                '"
                               style="
                                 text-decoration: none;
                                 background-color: #E29720;
@@ -1076,5 +1075,4 @@ class NewsletterSubscriberController extends Controller
             //throw $th;
         }
     }
-    
 }

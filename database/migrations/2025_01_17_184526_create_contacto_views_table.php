@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('contacto_views', function (Blueprint $table) {
             $table->id();
-            
-            $table->string('subtitle1section')->nullable();
-            $table->string('title1section')->nullable();
-            $table->string('title1section2')->nullable();
 
-            $table->text('title2section')->nullable();
-            $table->text('description2section')->nullable();
+            $table->string('titleSection')->nullable();
+            $table->string('subtitleSection')->nullable();
+            $table->string('titleForm')->nullable();
+            $table->text('subtitleForm')->nullable();
 
-            $table->string('title3section')->nullable();
-            $table->string('title3section2')->nullable();
+            $table->string('titleFaqs')->nullable();
+            $table->string('subtitleFaqs')->nullable();
+            $table->string('titleSlider')->nullable();
+            $table->string('subtitleSlider')->nullable();
 
             $table->timestamps();
         });

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\AttributesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataFeedController;
@@ -20,7 +21,9 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\TestimonyController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\CategoryPostController;
 use App\Http\Controllers\CertificadosController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\ContactoViewController;
@@ -56,6 +59,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\TermsAndConditionController;
 use App\Models\AboutUs;
+use App\Models\CategoryPost;
 use App\Models\Microcategory;
 use App\Models\NewsletterSubscriber;
 use App\Models\Price;
@@ -150,7 +154,7 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
         Route::get('/dashboard/fintech', [DashboardController::class, 'fintech'])->name('fintech');
 
         //messages
-        Route::resource('/mensajes', MessageController::class);
+        Route::resource('/mensajes', MessageController::class); #using
         Route::post('/mensajes/borrar', [MessageController::class, 'borrar'])->name('mensajes.borrar');
 
         Route::resource('/politicas-de-devolucion', PolyticsConditionController::class);
@@ -159,17 +163,17 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
 
         //Datos Generales
         Route::resource('/datosgenerales', GeneralController::class);
-        Route::resource('/homeview', HomeViewController::class);
-        Route::resource('/contactoview', ContactoViewController::class);
-        Route::resource('/nosotrosview', NosotrosViewController::class);
-        Route::resource('/innovacionesview', InnovacionViewController::class);
+        Route::resource('/homeview', HomeViewController::class); #using
+        Route::resource('/contactoview', ContactoViewController::class); #using
+        Route::resource('/nosotrosview', NosotrosViewController::class); #using
+
         Route::resource('/productosview', ProductosViewController::class);
 
         //Servicios
-        Route::resource('/servicios', ServiceController::class);
-        Route::post('/servicios/deleteService', [ServiceController::class, 'deleteService'])->name('servicio.deleteService');
-        Route::post('/servicios/updateVisible', [ServiceController::class, 'updateVisible'])->name('servicio.updateVisible');
-
+        Route::resource('/servicios', ServiceController::class); #using
+        Route::post('/servicios/deleteService', [ServiceController::class, 'deleteService'])->name('servicio.deleteService'); #using
+        Route::post('/servicios/updateVisible', [ServiceController::class, 'updateVisible'])->name('servicio.updateVisible'); #using
+        Route::post('/servicios/page/update/{id}', [ServiceController::class, 'updatePageServicio'])->name('servicio.page.update'); #using
 
 
         //Testimonies
@@ -181,32 +185,21 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
         Route::resource('/categorias', CategoryController::class);
         Route::post('/categorias/deleteCategory', [CategoryController::class, 'deleteCategory'])->name('categorias.deleteCategory');
         Route::post('/categorias/updateVisible', [CategoryController::class, 'updateVisible'])->name('categorias.updateVisible');
+
+        //Marcas
+        Route::resource('/marcas', BrandController::class);
+        Route::post('/marcas/deleteBrand', [BrandController::class, 'deleteBrand'])->name('marcas.deleteBrand');
+        Route::post('/marcas/updateVisible', [BrandController::class, 'updateVisible'])->name('marcas.updateVisible');
         // Route::get('/categorias/contarCategorias', [CategoryController::class, 'contarCategoriasDestacadas'] )->name('categorias.contarCategoriasDestacadas');
 
 
-        //Subcategorías
-        Route::resource('/subcategorias', SubcategoryController::class);
-        Route::post('/subcategorias/deleteSubcategory', [SubcategoryController::class, 'deleteSubcategory'])->name('subcategorias.deleteSubcategory');
-        Route::post('/subcategorias/updateVisible', [SubcategoryController::class, 'updateVisible'])->name('subcategorias.updateVisible');
-        // Route::get('/subcategorias/contarSubCategoriasDestacadas', [SubcategoryController::class, 'contarSubCategoriasDestacadas'] )->name('subcategorias.contarSubCategoriasDestacadas');
 
 
-        //Microcategorias
-        Route::resource('/microcategorias', MicrocategoryController::class);
-        Route::post('/microcategorias/deleteMicrocategory', [MicrocategoryController::class, 'deleteMicrocategory'])->name('microcategorias.deleteMicrocategory');
-        Route::post('/microcategorias/updateVisible', [MicrocategoryController::class, 'updateVisible'])->name('microcategorias.updateVisible');
 
-        //Descargables
-        Route::resource('/descargables', DescargablesController::class);
-        Route::post('/descargables/deleteDownload', [DescargablesController::class, 'deleteDownload'])->name('descargables.deleteDownload');
-        Route::post('/descargables/updateVisible', [DescargablesController::class, 'updateVisible'])->name('descargables.updateVisible');
-
-        //Certificados
-        Route::resource('/certificados', CertificadosController::class);
-        Route::post('/certificados/deleteCertificado', [CertificadosController::class, 'deleteCerticado'])->name('certificados.deleteCertificado');
-        Route::post('/certificados/updateVisible', [CertificadosController::class, 'updateVisible'])->name('certificados.updateVisible');
-
-
+        //Categorías Blog
+        Route::resource('/categoriasPost', CategoryPostController::class);
+        Route::post('/categoriasPost/deleteCategory', [CategoryPostController::class, 'deleteCategory'])->name('categoriasPost.deleteCategory');
+        Route::post('/categoriasPost/updateVisible', [CategoryPostController::class, 'updateVisible'])->name('categoriasPost.updateVisible');
 
         //Blog
         Route::resource('/blog', BlogController::class);
@@ -255,54 +248,25 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
         Route::resource('/products', ProductsController::class);
         Route::post('/products/updateVisible', [ProductsController::class, 'updateVisible'])->name('products.updateVisible');
         Route::post('/products/borrar', [ProductsController::class, 'borrar'])->name('products.borrar');
-        Route::post('/products/borrarimg', [ProductsController::class, 'borrarimg'])->name('activity.borrarimg');
-        Route::post('/products/borrarficha', [ProductsController::class, 'borrarFichaTecnica'])->name('activity.borrarficha');
-        Route::post('/products/borrarhoja', [ProductsController::class, 'borrarHojaSeguridad'])->name('activity.borrarhoja');
+        Route::get('/products/album/{id}', [ProductsController::class, 'showAlbum'])->name('products.showAlbum');
+        Route::post('/products/{album}/upload', [ProductsController::class, 'uploadImages'])->name('products.uploadImages'); // Subir imágenes
+        Route::delete('/products/images/{image}', [ProductsController::class, 'destroyImage'])->name('products.images.destroy');
 
         //Preguntas frecuentes
         Route::resource('/faqs', FaqsController::class);
         Route::post('/faqs/updateVisible', [FaqsController::class, 'updateVisible'])->name('faqs.updateVisible');
         Route::post('/faqs/borrar', [FaqsController::class, 'borrar'])->name('faqs.borrar');
 
-        //Sliders   
-        Route::resource('/slider', SliderController::class);
-        Route::post('/slider/updateVisible', [SliderController::class, 'updateVisible'])->name('slider.updateVisible');
-        Route::post('/slider/deleteSlider', [SliderController::class, 'deleteSlider'])->name('slider.deleteSlider');
 
-        //Liquidacion   
-        Route::resource('/liquidacion', LiquidacionController::class);
-        Route::post('/liquidacion/updateVisible', [LiquidacionController::class, 'updateVisible'])->name('liquidacion.updateVisible');
-        Route::post('/liquidacion/deleteSlider', [LiquidacionController::class, 'deleteLiquidacion'])->name('liquidacion.deleteLiquidacion');
-
-        //Mis Marcas
-        Route::resource('/mismarcas', MisMarcasController::class);
-        Route::post('/mismarcas/updateVisible', [MisMarcasController::class, 'updateVisible'])->name('mismarcas.updateVisible');
-        Route::post('/mismarcas/deleteMisMarcas', [MisMarcasController::class, 'deleteMisMarcas'])->name('mismarcas.deleteMisMarcas');
-
-        //Mis Clientes
-        Route::resource('/misclientes', MisClientesController::class);
-        Route::post('/misclientes/updateVisible', [MisClientesController::class, 'updateVisible'])->name('misclientes.updateVisible');
-        Route::post('/misclientes/deleteMisClientes', [MisClientesController::class, 'deleteMisClientes'])->name('misclientes.deleteMisClientes');
-
-        //Galeria
-        Route::resource('/galerie', GalerieController::class);
-        Route::post('/galerie/updateVisible', [GalerieController::class, 'updateVisible'])->name('galerie.updateVisible');
-        Route::post('/galerie/borrar', [GalerieController::class, 'borrar'])->name('galerie.borrar');
-
-        //Colecciones
-        Route::resource('/colecciones', CollectionController::class);
-        Route::post('/colecciones/deleteCollection', [CollectionController::class, 'deleteCollection'])->name('collection.deleteCollection');
-        Route::post('/colecciones/updateVisible', [CollectionController::class, 'updateVisible'])->name('collection.updateVisible');
-
-        //Pedidos
-        Route::get('/orders', [PedidosController::class, 'listadoPedidos'])->name('orders');
-        Route::get('/orders/{id}', [PedidosController::class, 'verPedido'])->name('verPedido');
 
         //Suscripciones
         Route::get('/subscripciones', [NewsletterSubscriberController::class, 'showSubscripciones'])->name('subscripciones');
 
-        //Cotizaciones
-        Route::get('/cotizaciones', [CotizacionController::class, 'showCotizaciones'])->name('cotizaciones');
+
+        //Crud Album Imagenes
+        Route::resource('/albums', AlbumController::class);
+        Route::post('/albums/{album}/upload', [AlbumController::class, 'uploadImages'])->name('albums.upload'); // Subir imágenes
+        Route::delete('/albums/images/{image}', [AlbumController::class, 'destroyImage'])->name('albums.images.destroy');
 
         Route::get(
             '/templates',

@@ -55,7 +55,7 @@
     <div class="flex justify-end max-w-7xl mx-auto z-[100] relative">
         <div class="fixed bottom-6 sm:bottom-[2rem] lg:bottom-[4rem] z-20 cursor-pointer">
             <a target="_blank" id="whatsapp-toggle"
-                href="https://api.whatsapp.com/send?phone={{ $general[0]->whatsapp }}&text={{ $general[0]->mensaje_whatsapp }}">
+                href="https://api.whatsapp.com/send?phone={{ $general->whatsapp }}&text={{ $general->mensaje_whatsapp }}">
                 <img src="{{ asset('images/svg/wsp.svg') }}" alt="whatsapp"
                     class="mr-3 w-16 h-16 md:w-[85px] md:h-[85px]">
             </a>

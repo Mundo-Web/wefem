@@ -354,8 +354,10 @@
             <div class="max-w-7xl mx-auto flex justify-between items-end py-16">
                 <p class="w-1/3 text-text32 text-white"><x-custom.texto-titulo :text="$home->titleNewsletter" style="font-bold" />
                 </p>
-                <form class="w-1/3 flex items-center justify-center relative border-b-2 border-white py-2">
-                    <input type="text"
+                <form action="{{ route('subscripciones.guardar') }}" method="POST"
+                    class="w-1/3 flex items-center justify-center relative border-b-2 border-white py-2">
+                    @csrf
+                    <input type="text" id="email" name="email"
                         class="placeholder:text-white w-full pr-12 pl-3 py-2 text-white bg-transparent outline-none border-none focus:border-none shadow-none text-text14 focus:outline-none focus:ring-0 ring-transparent"
                         placeholder="Correo Electrónico" />
 

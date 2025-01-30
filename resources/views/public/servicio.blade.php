@@ -117,20 +117,20 @@
     <main>
 
         <!-- Header Section -->
-        <div class='h-[185px] px-[5%] w-full bg-cover bg-red-500 flex flex-col justify-center'
-            style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url('{{ asset('images/img/imagencatalogo.png') }}');">
-
+        <div class="h-[200px] w-full bg-cover bg-colorBackgroundAzulOscuro flex flex-col justify-center"
+            style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url('{{ asset($servicioPage->imagen) }}'); background-position: center center; background-size: cover; background-attachment: fixed;">
         </div>
 
         <!-- Subheader -->
         <section class="text-center py-8 px-4 max-w-3xl mx-auto">
             <div class=" bg-opacity-50 flex items-center justify-center">
-                <h1 class="text-colorAzulOscuro text-text48 font-semibold">Servicios diseñados para <span
-                        class="text-colorRojo font-bold">transformar</span> tu conectividad</h1>
+                <h1 class="text-colorAzulOscuro text-text48 font-semibold">
+                    <x-custom.texto-titulo :text="$servicioPage->titulo" style="text-colorRojo" />
+                </h1>
             </div>
-            <p class="text-colorParrafo text-text16 ">Desde soluciones rápidas y efectivas hasta gestión
-                integral,
-                en Dar Telecom ofrecemos servicios personalizados para cubrir las necesidades de tu hogar o negocio.</p>
+            <p class="text-colorParrafo text-text16 ">
+                {{ $servicioPage->subtitulo }}
+            </p>
         </section>
 
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row gap-8">

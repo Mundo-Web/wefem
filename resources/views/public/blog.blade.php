@@ -25,8 +25,7 @@
                     <a href="{{ route('detalleBlog', $lastpost->id) }}">
                         <div class="flex flex-col w-full bg-white bg-opacity-10 overflow-hidden rounded-xl text-left">
                             <div class="flex flex-row justify-center">
-                                <img class="w-full h-[300px]  object-cover rounded-xl"
-                                    src="{{ asset($lastpost->url_image . $lastpost->name_image) }}"
+                                <img class="w-full h-[300px]  object-cover rounded-xl" src="{{ $lastpost->imagen }}"
                                     onerror="this.onerror=null;this.src='{{ asset('images/img/noimagen.jpg') }}';" />
                             </div>
                             <div class="py-6 flex flex-col gap-3">
@@ -34,9 +33,9 @@
                                 <h2 class=" text-colorAzulOscuro text-text24 line-clamp-3 font-bold">
                                     {{ $lastpost->title }}</h2>
                                 <div class=" text-colorParrafo text-18 text-justify line-clamp-3">
-                                    {!! $lastpost->extract ?? $lastpost->description !!}</div>
+                                    {!! $lastpost->extracto ?? $lastpost->descripcion !!}</div>
                                 <p class="flexjustify-start gap-4 text-colorRojo text-text14 font-medium">
-                                    <span>29 de julio de 2023</span>
+                                    <span>{{ \Carbon\Carbon::parse($lastpost->fecha_publicacion)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}</span>
                                     .
                                     <span>Leido hace 5 min</span>
                                 </p>
@@ -52,7 +51,7 @@
                         <a href="{{ route('detalleBlog', $postr->id) }}" class="flex gap-4">
                             <div class="w-2/5">
                                 <img class="h-full w-full object-cover rounded-xl"
-                                    src="{{ asset($postr->url_image . $postr->name_image) }}"
+                                    src="{{ asset($postr->imagen . $postr->titulo) }}"
                                     onerror="this.onerror=null;this.src='{{ asset('images/img/noimagen.jpg') }}';" />
                             </div>
                             <div class="flex flex-col gap-3 justify-center items-start w-3/5 p-3 cursor-pointer">
@@ -63,7 +62,7 @@
                                     </h2>
                                 </div>
                                 <div class=" text-colorParrafo text-18 text-justify line-clamp-3">
-                                    {!! $lastpost->extract ?? $lastpost->description !!}</div>
+                                    {!! $lastpost->extracto ?? $lastpost->descripcion !!}</div>
                                 <p class="flexjustify-start gap-4 text-colorRojo text-text14 font-medium">
                                     <span>29 de julio de 2023</span>
                                     .
@@ -102,7 +101,7 @@
                                 <a href="{{ route('detalleBlog', $post->id) }}">
                                     <div class="flex flex-row justify-center">
                                         <img class="w-full h-[300px] object-cover rounded-xl"
-                                            src="{{ asset($post->url_image . $post->name_image) }}"
+                                            src="{{ asset($post->imagen . $post->titulo) }}"
                                             onerror="this.onerror=null;this.src='{{ asset('images/img/noimagen.jpg') }}';" />
                                     </div>
                                     <div class=" flex flex-col gap-3 mt-4">
@@ -114,7 +113,7 @@
                                             </h2>
                                         </div>
                                         <div class=" text-colorParrafo text-18 text-justify line-clamp-3">
-                                            {!! $post->extract ?? $post->description !!}</div>
+                                            {!! $post->extracto ?? $post->descripcion !!}</div>
                                         <p class="flexjustify-start gap-4 text-colorRojo text-text14 font-medium">
                                             <span>29 de julio de 2023</span>
                                             .
