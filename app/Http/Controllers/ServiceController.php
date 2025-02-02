@@ -4,19 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use App\Models\Album;
+use App\Models\AlbumImage;
 use App\Models\ClientLogos;
 use App\Models\General;
 use App\Models\Service;
 use App\Models\ServiceView;
 use Illuminate\Http\Request;
-
-
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 
 use Intervention\Image\Drivers\Gd\Driver;
 //use Illuminate\Support\Facades\Image;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Validation\ValidationException;
 use Intervention\Image\ImageManager;
 
 class ServiceController extends Controller
@@ -51,37 +53,80 @@ class ServiceController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'subtitle' => 'nullable|string|max:255',
-            //'icono' => 'required|file|mimes:svg', // Aceptar solo SVG, con un tamaño máximo de 2 MB
+            'icono' => 'required|file|mimes:svg',
             'descripcion_breve' => 'required|string',
             'beneficios' => 'required|string',
-            'descripcion_extensa' => 'required|string',
-
+            'descripcion_extensa' => 'nullable|string',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        //tamaño imagenes 808x445 
-        $service = new Service();
+        try {
+            // Generar slug único
+            $slug = Str::slug($request->title);
+            while (Service::where('slug', $slug)->exists()) {
+                $slug = Str::slug($request->title) . '-' . uniqid();
+            }
+
+            // Crear la carpeta principal "Servicios" si no existe
+            $mainFolder = 'Servicios';
+            $pathMainFolder = public_path('storage/images/albums/' . $mainFolder);
+            if (!is_dir($pathMainFolder)) {
+                mkdir($pathMainFolder, 0777, true);
+            }
+
+            // Crear la subcarpeta con el nombre del servicio
+            $subFolder = $slug;
+            $pathSubFolder = $pathMainFolder . '/' . $subFolder;
+            if (!is_dir($pathSubFolder)) {
+                mkdir($pathSubFolder, 0777, true);
+            }
+
+            // Crear el álbum del servicio
+            $ServicesAlbum = Album::firstOrCreate(
+                ['name' => 'Servicios'],
+                ['description' => 'Contenedor principal para los Servicios.']
+            );
+
+            $album = Album::updateOrCreate(
+                ['name' => $subFolder],
+                ['parent_id' => $ServicesAlbum->id]
+            );
+
+            // Guardar el servicio
+            $service = new Service();
+            $service->title = $request->title;
+            $service->slug = $slug;
+            $service->subtitle = $request->subtitle;
+            $service->beneficios = $request->beneficios;
+            $service->descripcion_breve = $request->descripcion_breve;
+            $service->descripcion_extensa = $request->descripcion_extensa;
 
 
-        if ($request->hasFile("icono")) {
-            $file = $request->file('icono');
-            $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
-            $ruta = 'storage/images/servicios/';
+            // Guardar el icono
+            if ($request->hasFile("icono")) {
+                $file = $request->file('icono');
+                $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
+                $ruta = 'storage/images/servicios/';
 
-            // Mover el archivo directamente sin procesarlo
-            $file->move($ruta, $nombreImagen);
+                if (!file_exists(public_path($ruta))) {
+                    mkdir(public_path($ruta), 0777, true);
+                }
 
-            $service->icono = $ruta . $nombreImagen;
+                $file->move(public_path($ruta), $nombreImagen);
+                $service->icono = $ruta . $nombreImagen;
+            }
+
+            $service->save();
+
+            // Subir imágenes de la galería
+            $this->uploadImages($request, $album);
+
+            return redirect()->route('servicios.index')->with('success', 'Servicio creado exitosamente.');
+        } catch (\Throwable $th) {
+            return redirect()->route('servicios.create')
+                ->with('error', 'Error al crear el servicio: ' . $th->getMessage())
+                ->withInput();
         }
-
-        $service->title = $request->title;
-        $service->subtitle = $request->subtitle;
-        $service->beneficios = $request->beneficios;
-        $service->descripcion_breve = $request->descripcion_breve;
-        $service->descripcion_extensa = $request->descripcion_extensa;
-
-        $service->save();
-
-        return redirect()->route('servicios.index')->with('success', 'Servicio creado exitosamente.');
     }
 
     /**
@@ -99,8 +144,13 @@ class ServiceController extends Controller
     {
 
         $servicios = Service::find($id);
+        $albumName = $servicios->slug;
+        $album = Album::where('name', $albumName)->withCount('images', 'children')->first();
 
-        return view('pages.service.edit', compact('servicios'));
+        if ($album) {
+            $album->load('children', 'images');
+        }
+        return view('pages.service.edit', compact('servicios', 'album'));
     }
 
     /**
@@ -146,13 +196,65 @@ class ServiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $service = Service::findOrfail($id);
+        DB::beginTransaction(); // Iniciar una transacción para asegurar la atomicidad
 
-        $service->status = false;
+        try {
+            // Obtener el producto
+            $servicio = Service::findOrFail($request->id);
 
-        $service->save();
+            // Obtener el álbum asociado al producto
+            $album = Album::where('name', $servicio->slug)->first();
+
+            if ($album) {
+                // Eliminar las imágenes asociadas al álbum
+                foreach ($album->images as $image) {
+                    // Eliminar el archivo de imagen del servidor
+                    if (file_exists(public_path($image->url_image))) {
+                        unlink(public_path($image->url_image));
+                    }
+                    // Eliminar el registro de la imagen
+                    $image->delete();
+                }
+
+                // Eliminar el álbum
+                $servicio->delete();
+
+                // Eliminar la carpeta del álbum
+                $folderPath = public_path("storage/images/albums/Servicios/{$servicio->slug}");
+                if (is_dir($folderPath)) {
+                    // Eliminar la carpeta y su contenido
+                    array_map('unlink', glob("$folderPath/*")); // Eliminar archivos dentro de la carpeta
+                    rmdir($folderPath); // Eliminar la carpeta
+                }
+            }
+
+            if (File::exists(public_path($servicio->icono))) {
+                File::delete(public_path($servicio->icono));
+            }
+            // Eliminar el producto (soft delete)
+            // $product->status = 0;
+            $servicio->delete();
+
+            DB::commit(); // Confirmar la transacción
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Servicio, álbum e imágenes eliminados correctamente.',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Revertir la transacción en caso de error
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Ocurrió un problema al eliminar el producto y sus recursos asociados.',
+                    'error' => $e->getMessage(),
+                ],
+                500
+            );
+        }
     }
 
 
@@ -163,9 +265,7 @@ class ServiceController extends Controller
         //Busco el servicio con id como parametro
         $service = Service::findOrfail($id);
         // Elimina el archivo anterior si existe
-        if (File::exists(public_path($service->icono))) {
-            File::delete(public_path($service->icono));
-        }
+
 
         $service->delete();
 
@@ -238,5 +338,71 @@ class ServiceController extends Controller
         $servicioPage->save();
 
         return back()->with('success', 'Registro actualizado correctamente');
+    }
+    public function uploadImages(Request $request, Album $album)
+    {
+        $request->validate([
+            'images.*' => 'required|image|mimes:png,jpg|max:2048',
+        ]);
+
+        if ($request->hasFile('images')) {
+            $manager = new ImageManager(new Driver());
+
+            foreach ($request->file('images') as $file) {
+                $nombreImagen = Str::random(10) . '_' . $file->getClientOriginalName();
+                $img = $manager->read($file);
+                $ruta = 'storage/images/albums/Servicios/' . $album->name . '/';
+
+                if (!is_dir(public_path($ruta))) {
+                    mkdir(public_path($ruta), 0777, true);
+                }
+
+
+                $img->save(public_path($ruta . $nombreImagen));
+
+                $album->images()->create([
+                    'url_image' => $ruta . $nombreImagen,
+                    'name_image' => $nombreImagen,
+                ]);
+            }
+
+            $album = Album::findOrFail($album->id);
+            $album->load('images');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Imágenes cargadas exitosamente.',
+                'album' => $album,
+            ]);
+        }
+
+        return response()->json([
+            'error' => true,
+            'message' => 'No se pudo subir las imágenes.',
+        ]);
+    }
+
+    public function destroyImage(AlbumImage $image)
+    {
+        try {
+            if ($image->url_image && file_exists($image->url_image)) {
+                unlink($image->url_image);
+            }
+
+            $album = $image->album; // Obtener el álbum al que pertenece la imagen
+            $album->load('images');
+            $image->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Imagen eliminada correctamente.',
+
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocurrió un problema al eliminar la imagen.'
+            ], 500);
+        }
     }
 }

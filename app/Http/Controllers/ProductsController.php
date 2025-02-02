@@ -74,6 +74,7 @@ class ProductsController extends Controller
   /**
    * Store a newly created resource in storage.
    */
+
   public function store(Request $request)
   {
 
@@ -93,6 +94,14 @@ class ProductsController extends Controller
     ]);
 
     $data = $request->all();
+    // Verificar si ya existe un producto con el mismo nombre (excluyendo el producto actual)
+    $existingSlug = Products::where('slug', Str::slug($request->producto))->first();
+    if ($existingSlug) {
+      $data['slug'] = Str::slug($request->producto) . '-' . uniqid();
+    } else {
+      $data['slug'] = Str::slug($request->producto);
+    }
+
 
     try {
       // **Paso 1: Crear la carpeta principal "Productos" si no existe**
@@ -103,7 +112,7 @@ class ProductsController extends Controller
       }
 
       // **Paso 2: Crear la subcarpeta con el nombre del producto**
-      $subFolder = ucfirst(strtolower($request->producto)); // Convertimos el nombre para evitar errores
+      $subFolder = $data['slug']; // usamos el slug del producto como nombre de la carpeta
       $pathSubFolder = $pathMainFolder . '/' . $subFolder;
       if (!is_dir($pathSubFolder)) {
         mkdir($pathSubFolder, 0777, true);
@@ -146,13 +155,34 @@ class ProductsController extends Controller
         $data['manuales'] = $routearchive . $nombrearchive;
       }
 
+      if ($request->has('en_oferta')) {
+        $data['precio_oferta'] = $request->precio_oferta;
+        $data['porcentaje_oferta'] = round((100 - ($request->precio_oferta * 100) / $request->precio), 0);
+      }
+
       // **Paso 6: Guardar el producto en la base de datos**
       $producto = new Products();
       $producto->producto = $request->producto;
       $producto->extract = $request->extract;
       $producto->description = $request->description;
+
+
       $producto->precio = $request->precio;
       $producto->stock = $request->stock;
+      $producto->peso_empaque = $request->peso_empaque;
+      $producto->tipo_vendedor = $request->tipo_vendedor ?? 'Vendedor verificado';
+
+      $producto->precio_oferta =  $data['precio_oferta'] ?? '';
+      $producto->en_oferta = $request->has('en_oferta');
+      $producto->porcentaje_oferta = $data['porcentaje_oferta'] ?? '';
+      $producto->devolucion = $request->has('devolucion');
+      $producto->envio_gratis = $request->has('envio_gratis');
+      $producto->garantia_entrega = $request->has('garantia_entrega');
+
+      $producto->slug = $data['slug'];
+
+
+
       $producto->especificaciones = $request->especificaciones;
       $producto->categoria_id = $request->categoria_id;
       $producto->brand_id = $request->brand_id;
@@ -163,6 +193,9 @@ class ProductsController extends Controller
       $producto->manuales = $data['manuales'] ?? null;
 
       $producto->save();
+
+      $album = Album::where('name', $data['slug'])->withCount('images', 'children')->first();
+      $this->uploadImages($request, $album);
 
       return redirect()->route('products.index')->with('success', 'Publicación creada exitosamente.');
     } catch (ValidationException $e) {
@@ -191,10 +224,8 @@ class ProductsController extends Controller
     $marcas = Brand::all();
     $categorias = Category::all();
     // Extraer solo el nombre del producto desde la ruta en "album"
-    $albumPath = $producto->album; // Ejemplo: "storage/images/albums/Productos/MiProducto"
-    $albumParts = explode('/', $albumPath);
-    $albumName = end($albumParts); // Obtiene "MiProducto"
-    // Buscar el álbum en la base de datos
+    $albumName = $producto->slug; // Ejemplo: "storage/images/albums/Productos/MiProducto"
+
     $album = Album::where('name', $albumName)->withCount('images', 'children')->first();
     $album->load('children', 'images');
     return view('pages.products.edit', compact('producto', 'categorias',  'marcas', 'album'));
@@ -217,35 +248,33 @@ class ProductsController extends Controller
   {
     $request->validate([
       'producto' => 'required|string|max:255',
-      'extract' => 'nullable|string|max:255',
-      'description' => 'nullable|string',
-      'precio' => 'nullable|numeric|min:0',
-      'stock' => 'nullable|numeric|min:0',
+      'extract' => 'required|string|max:255',
+      'description' => 'required|string',
+      'precio' => 'required|numeric|min:0',
+      'stock' => 'required|numeric|min:0',
       'categoria_id' => 'required|exists:categories,id',
       'brand_id' => 'required|exists:brands,id',
-      'especificaciones' => 'nullable|string',
-      //'destacado' => 'nullable|boolean',
-      //'visible' => 'nullable|boolean',
-      //'status' => 'nullable|boolean',
+      'especificaciones' => 'required|string',
+
+      'precio_oferta' => 'nullable|numeric|min:0',
+
+      'stock' => 'required|numeric|min:0',
+
+
+      'peso_empaque' => 'required|numeric|min:0',
+
+      'tipo_vendedor' => 'nullable|string|min:0',
+
     ]);
     $producto = Products::findOrFail($id);
-    // Guardar el título anterior para actualizar el álbum y la carpeta
-    $oldTitle = $producto->producto;
 
-    // Verificar si ya existe un producto con el mismo nombre (excluyendo el producto actual)
-    $existingProduct = Products::where('producto', $request->producto)->where('id', '!=', $id)->first();
-    if ($existingProduct) {
-      return redirect()->back()
-        ->withInput()
-        ->with('error', 'Ya existe un producto con ese nombre.');
-    }
     try {
       $data = $request->all();
 
 
       // **Paso 1: Obtener la carpeta actual del producto**
       $mainFolder = 'Productos';
-      $subFolder = $oldTitle;
+      $subFolder = $producto->slug;
       $pathSubFolder = public_path("storage/images/albums/{$mainFolder}/{$subFolder}");
 
       if (!is_dir($pathSubFolder)) {
@@ -295,7 +324,11 @@ class ProductsController extends Controller
         $file->move(public_path($routearchive), $nombrearchive);
         $data['manuales'] = $routearchive . $nombrearchive;
       }
-
+      if ($request->has('en_oferta')) {
+        $data['precio_oferta'] = $request->precio_oferta;
+        $data['porcentaje_oferta'] = round((100 - ($request->precio_oferta * 100) / $request->precio), 0);
+      }
+      //dump('PROD-' . strtoupper(substr($request->categoria_id, 0, 3)) . '-' . strtoupper(substr($request->producto, 0, 3)) . '-' . uniqid());
       // **Paso 5: Actualizar el producto en la base de datos**
       $producto->update([
         'producto' => $request->producto,
@@ -303,6 +336,18 @@ class ProductsController extends Controller
         'description' => $request->description,
         'precio' => $request->precio,
         'stock' => $request->stock,
+        'peso_empaque' => $request->peso_empaque,
+        'tipo_vendedor' => $request->tipo_vendedor ?? 'Vendedor verificado',
+
+        'precio_oferta' =>  $data['precio_oferta'] ?? '',
+        'en_oferta' => $request->has('en_oferta'),
+        'porcentaje_oferta' => $data['porcentaje_oferta'] ?? '',
+        'devolucion' => $request->has('devolucion'),
+        'envio_gratis' => $request->has('envio_gratis'),
+        'garantia_entrega' => $request->has('garantia_entrega'),
+
+
+
         'especificaciones' => $request->especificaciones,
         'categoria_id' => $request->categoria_id,
         'brand_id' => $request->brand_id,
@@ -311,8 +356,7 @@ class ProductsController extends Controller
         'imagen' => $data['imagen'] ?? $producto->imagen,
         'manuales' => $data['manuales'] ?? $producto->manuales,
       ]);
-      // Actualizar el álbum y la carpeta en el sistema de archivos
-      $this->updateAlbumAndFolder($oldTitle, $request->producto);
+
 
       return redirect()->route('products.index')->with('success', 'Producto actualizado exitosamente.');
     } catch (ValidationException $e) {
@@ -327,12 +371,67 @@ class ProductsController extends Controller
    */
   public function borrar(Request $request)
   {
-    //softdelete
-    DB::delete('delete from galeries where product_id = ?', [$request->id]);
+    DB::beginTransaction(); // Iniciar una transacción para asegurar la atomicidad
 
-    $product = Products::find($request->id);
-    $product->status = 0;
-    $product->save();
+    try {
+      // Obtener el producto
+      $product = Products::findOrFail($request->id);
+
+      // Obtener el álbum asociado al producto
+      $album = Album::where('name', $product->slug)->first();
+
+      if ($album) {
+        // Eliminar las imágenes asociadas al álbum
+        foreach ($album->images as $image) {
+          // Eliminar el archivo de imagen del servidor
+          if (file_exists(public_path($image->url_image))) {
+            unlink(public_path($image->url_image));
+          }
+          // Eliminar el registro de la imagen
+          $image->delete();
+        }
+
+        // Eliminar el álbum
+        $album->delete();
+
+        // Eliminar la carpeta del álbum
+        $folderPath = public_path("storage/images/albums/Productos/{$product->slug}");
+        if (is_dir($folderPath)) {
+          // Eliminar la carpeta y su contenido
+          array_map('unlink', glob("$folderPath/*")); // Eliminar archivos dentro de la carpeta
+          rmdir($folderPath); // Eliminar la carpeta
+        }
+      }
+
+      // Eliminar manuales asociados al producto
+      if ($product->manuales && file_exists(public_path($product->manuales))) {
+        unlink(public_path($product->manuales));
+      }
+
+      // Eliminar la imagen principal del producto
+      if ($product->imagen && file_exists(public_path($product->imagen))) {
+        unlink(public_path($product->imagen));
+      }
+
+      // Eliminar el producto (soft delete)
+      // $product->status = 0;
+      $product->delete();
+
+      DB::commit(); // Confirmar la transacción
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Producto, álbum e imágenes eliminados correctamente.',
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack(); // Revertir la transacción en caso de error
+
+      return response()->json([
+        'success' => false,
+        'message' => 'Ocurrió un problema al eliminar el producto y sus recursos asociados.',
+        'error' => $e->getMessage(),
+      ], 500);
+    }
   }
 
   public function updateVisible(Request $request)
@@ -411,11 +510,12 @@ class ProductsController extends Controller
         unlink($image->url_image);
       }
 
+      $album = $image->album; // Obtener el álbum al que pertenece la imagen
       $image->delete();
 
       return response()->json([
         'success' => true,
-        'message' => 'Imagen eliminada correctamente.'
+        'message' => 'Imagen eliminada correctamente.',
       ]);
     } catch (\Exception $e) {
       return response()->json([

@@ -1,8 +1,6 @@
  @extends('components.public.matrix', ['pagina' => 'blog'])
- @section('titulo', 'Post')
- @section('meta_title', $meta_title)
- @section('meta_description', $meta_description)
- @section('meta_keywords', $meta_keywords)
+ @section('titulo', $post->titulo)
+
  @section('css_importados')
 
  @stop
@@ -15,38 +13,58 @@
          <section class="pt-32 max-w-7xl mx-auto">
              <div class="flex flex-col text-center items-center max-w-6xl mx-auto">
                  <div class="flex gap-4">
-                     <h3 class="font-bold text-colorRojo text-text16"> Categoria </h3>
+                     <h3 class="font-bold text-colorRojo text-text16"> {{ $post->category->nombre }} </h3>
                      <span class="font-bold text-colorRojo text-text16">|</span>
                      <h3 class="font-bold text-colorRojo text-text16 ">Publicado
-                         {{ \Carbon\Carbon::parse($post->created_at)->translatedFormat('d F, Y') }}</h3>
+                         {{ \Carbon\Carbon::parse($post->fecha_publicacion)->translatedFormat('d F, Y') }}</h3>
                  </div>
-                 <h2 class=" text-colorAzulOscuro text-text48 font-bold">{{ $post->title }}
+                 <h2 class=" text-colorAzulOscuro text-text48 font-bold">{{ $post->titulo }}
                  </h2>
              </div>
          </section>
 
 
-         <section class=" max-w-7xl mx-auto pb-12">
+         <section class=" max-w-7xl mx-auto pb-12 mt-8">
 
-             @if ($post->url_image)
+             @if ($post->imagen)
                  <div class="w-full" data-aos="fade-up" data-aos-offset="150">
-                     <img src="{{ asset($post->url_image . $post->name_image) }}" alt="catedral"
+                     <img src="{{ asset($post->imagen) }}" alt="{{ $post->titulo }}"
                          class="w-full h-[500px] object-cover hidden md:block rounded-xl" />
-                     <img src="{{ asset($post->url_image . $post->name_image) }}" alt="catedral"
+                     <img src="{{ asset($post->imagen) }}" alt="{{ $post->titulo }}"
                          class="w-full h-[250px] object-cover block md:hidden rounded-xl" />
                  </div>
              @endif
 
-             <div class="flex flex-col gap-2 text-colorParrafo  text-text16 py-4">
-                 {!! $post->description !!}
+             <div class="prose prose-lg max-w-7xl mt-8 text-start">
+                 {!! $post->descripcion !!}
              </div>
-             <div class="flex text-colorRojo flex-col gap-2">
+             <div class="flex text-colorRojo flex-col gap-2 mt-8">
                  <p class="font-bold text-text16"> compartir</p>
+
+                 <!-- Botones para compartir -->
                  <div class="flex gap-4">
-                     <i class="fa-solid fa-link"></i>
-                     <i class="fa-brands fa-linkedin"></i>
-                     <i class="fa-brands fa-x-twitter"></i>
-                     <i class="fa-brands fa-facebook"></i>
+                     <!-- Copiar enlace -->
+                     <button onclick="copyLink()" class="px-3 py-2 bg-colorBackgroundAzulClaro rounded-full">
+                         <i class="fa-solid fa-link"></i>
+                     </button>
+
+                     <!-- Compartir en LinkedIn -->
+                     <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode(url()->current()) }}"
+                         target="_blank" class="px-3 py-2 bg-colorBackgroundAzulClaro rounded-full">
+                         <i class="fa-brands fa-linkedin"></i>
+                     </a>
+
+                     <!-- Compartir en X (Twitter) -->
+                     <a href="https://twitter.com/intent/tweet?text={{ urlencode($post->titulo) }}&url={{ urlencode(url()->current()) }}"
+                         target="_blank" class="px-3 py-2 bg-colorBackgroundAzulClaro rounded-full">
+                         <i class="fa-brands fa-x-twitter"></i>
+                     </a>
+
+                     <!-- Compartir en Facebook -->
+                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
+                         target="_blank" class="px-3 py-2 bg-colorBackgroundAzulClaro rounded-full">
+                         <i class="fa-brands fa-facebook"></i>
+                     </a>
                  </div>
              </div>
 
@@ -70,30 +88,32 @@
 
                                  @foreach ($postsrelacionados as $post)
                                      <div class="swiper-slide">
-                                         <a href="{{ route('detalleBlog', $post->id) }}">
+                                         <a href="{{ route('detalleBlog', $post->slug) }}">
                                              <div data-aos="fade-down" class="flex flex-col w-full">
-                                                 <a href="{{ route('detalleBlog', $post->id) }}">
+                                                 <a href="{{ route('detalleBlog', $post->slug) }}">
                                                      <div class="flex flex-row justify-center">
                                                          <img class="w-full h-[300px] object-cover rounded-xl"
-                                                             src="{{ asset($post->url_image . $post->name_image) }}"
+                                                             src="{{ asset($post->imagen) }}"
                                                              onerror="this.onerror=null;this.src='{{ asset('images/img/noimagen.jpg') }}';" />
                                                      </div>
                                                      <div class=" flex flex-col gap-3 mt-4">
 
                                                          <div class="flex flex-col justify-center items-start">
-                                                             <p class="text-text16 font-bold text-colorRojo">Categoria</p>
+                                                             <p class="text-text16 font-bold text-colorRojo">
+                                                                 {{ $post->category->nombre }}</p>
                                                              <h2
                                                                  class=" text-colorAzulOscuro text-text24 line-clamp-3 font-bold">
-                                                                 {{ $post->title }}
+                                                                 {{ $post->titulo }}
                                                              </h2>
                                                          </div>
                                                          <div class=" text-colorParrafo text-18 text-justify line-clamp-3">
-                                                             {!! $post->extract ?? $post->description !!}</div>
+                                                             {!! $post->extracto ?? $post->descripcion !!}</div>
                                                          <p
                                                              class="flexjustify-start gap-4 text-colorRojo text-text14 font-medium">
-                                                             <span>29 de julio de 2023</span>
+                                                             <span>{{ \Carbon\Carbon::parse($post->fecha_publicacion)->translatedFormat('d F, Y') }}</span>
                                                              .
-                                                             <span>Leido hace 5 min</span>
+
+                                                             <span id="last-read-{{ $post->id }}">Cargando...</span>
                                                          </p>
                                                      </div>
                                                  </a>
@@ -144,6 +164,91 @@
                  clickable: true,
              },
          });
+     </script>
+     <script>
+         // Función para calcular el tiempo relativo
+         function getRelativeTime(diffInMinutes) {
+             if (diffInMinutes < 1) {
+                 return "Leído hace menos de un minuto";
+             } else if (diffInMinutes < 60) {
+                 return `Leído hace ${diffInMinutes} ${diffInMinutes === 1 ? 'minuto' : 'minutos'}`;
+             } else if (diffInMinutes < 1440) {
+                 const diffInHours = Math.floor(diffInMinutes / 60);
+                 return `Leído hace ${diffInHours} ${diffInHours === 1 ? 'hora' : 'horas'}`;
+             } else {
+                 const diffInDays = Math.floor(diffInMinutes / 1440);
+                 return `Leído hace ${diffInDays} ${diffInDays === 1 ? 'día' : 'días'}`;
+             }
+         }
+
+
+         // Función para actualizar el texto del último tiempo leído
+         function updateLastReadTime(postId) {
+             const spanElement = document.getElementById(`last-read-${postId}`);
+
+             if (!spanElement) return;
+
+             // Obtener la última lectura del localStorage
+             const lastRead = localStorage.getItem(`blog_${postId}_last_read`);
+
+             if (lastRead) {
+                 const lastReadDate = new Date(lastRead);
+                 const now = new Date();
+                 const diffInMinutes = Math.floor((now - lastReadDate) / (1000 * 60));
+
+                 // Mostrar el tiempo relativo
+                 spanElement.innerText = getRelativeTime(diffInMinutes);
+             } else {
+                 spanElement.innerText = "No ha sido leído aún.";
+             }
+         }
+
+
+         // Función para registrar la lectura en localStorage
+         function markAsRead(postId) {
+             localStorage.setItem(`blog_${postId}_last_read`, new Date().toISOString());
+             updateLastReadTime(postId); // Actualizar el texto después de marcar como leído
+         }
+
+
+         document.addEventListener("DOMContentLoaded", function() {
+             const postId = {{ $post->id }};
+             localStorage.setItem(`blog_${postId}_last_read`, new Date().toISOString());
+             updateLastReadTime({{ $post->id }});
+
+         });
+
+         // Actualizar el tiempo de lectura para los relacionados con el posts abierto al cargar la página
+         document.addEventListener("DOMContentLoaded", function() {
+             @foreach ($postsrelacionados as $post)
+                 updateLastReadTime({{ $post->id }}); // Solo actualizar el texto, no marcar como leído
+             @endforeach
+         });
+     </script>
+     <script>
+         function copyLink() {
+             const link = "{{ url()->current() }}";
+             navigator.clipboard.writeText(link).then(() => {
+
+                 Swal.fire({
+
+                     icon: "success",
+                     title: "Enlace copiado al portapapeles.",
+                     showConfirmButton: false,
+                     timer: 1500
+
+                 });
+             }).catch(err => {
+                 wal.fire({
+
+                     icon: "error",
+                     title: "Error al copiar el enlaces.",
+                     showConfirmButton: false,
+                     timer: 1500
+
+                 });
+             });
+         }
      </script>
 
  @stop

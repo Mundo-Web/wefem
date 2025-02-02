@@ -1,14 +1,15 @@
 <x-app-layout title="Editar Blog">
 
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-        <form action="{{ route('blog.update', $blog->id) }} " method="POST" enctype="multipart/form-data">
+        <form id="blog-form" action="{{ route('blog.update', $blog->id) }} " method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <input name="id" type="hidden" value={{ $blog->id }}></input>
             <div
                 class="col-span-full xl:col-span-8 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
                 <header class="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
-                    <h2 class="font-semibold text-slate-800 dark:text-slate-100 text-2xl tracking-tight">Edición de post:
+                    <h2 class="font-semibold text-slate-800 dark:text-slate-100 text-2xl tracking-tight">Edición de
+                        post:
                         {{ $blog->titulo }}</h2>
                 </header>
 
@@ -77,17 +78,15 @@
                                         aria-describedby="user_avatar_help" id="user_avatar" type="file">
                                 </div>
                             </div>
-
-
                             <div class="md:col-span-5">
                                 <label for="descripcion">Descripción Extensa</label>
                                 <div class="relative mb-2 mt-2">
-
-                                    <textarea type="text" id="descripcion" name="descripcion" value=""
-                                        class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Ingrese texto">{{ $blog->descripcion }}</textarea>
+                                    <div id="description-editor" class="w-full min-h-[200px]"></div>
+                                    <input type="hidden" name="descripcion" id="descripcion">
                                 </div>
                             </div>
+
+
 
                             <div class="md:col-span-5 text-right mt-6 flex justify-between">
                                 <div class="inline-flex items-end">
@@ -110,24 +109,69 @@
 
 
     <script>
-        $('document').ready(function() {
+        document.addEventListener("DOMContentLoaded", function() {
+            const toolbarOptions = [
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote'],
+                ['link', 'image', 'video'],
 
-            tinymce.init({
-                selector: 'textarea#descripcion',
-                height: 500,
-                plugins: [
-                    'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview',
-                    'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                    'insertdatetime', 'table'
-                ],
-                toolbar: 'undo redo | blocks | ' +
-                    'bold italic backcolor | alignleft aligncenter ' +
-                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                    'removeformat | help',
-                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px;}'
+                [{
+                    'list': 'ordered'
+                }, {
+                    'list': 'bullet'
+                }, {
+                    'list': 'check'
+                }],
+                [{
+                    'script': 'sub'
+                }, {
+                    'script': 'super'
+                }],
+                [{
+                    'indent': '-1'
+                }, {
+                    'indent': '+1'
+                }],
+                [{
+                    'header': [1, 2, 3, 4, 5, 6, false]
+                }],
+                [{
+                    'color': []
+                }, {
+                    'background': []
+                }],
+
+                [{
+                    'align': []
+                }]
+            ];
+
+            // Inicializar Quill para Descripción Extensa
+            const quillDescription = new Quill('#description-editor', {
+                modules: {
+                    toolbar: toolbarOptions
+                },
+                placeholder: 'Escriba la descripción aquí...',
+                theme: 'snow',
+                height: 300
             });
 
-        })
+
+
+            // 1️⃣ **Recuperar contenido desde la base de datos**
+            const descriptionData = `{!! $blog->descripcion ?? '' !!}`;
+
+
+            // 2️⃣ **Insertar contenido en Quill (usar clipboard.dangerouslyPasteHTML)**
+            quillDescription.clipboard.dangerouslyPasteHTML(descriptionData);
+
+
+            // Obtener los valores de Quill antes de enviar el formulario
+            document.getElementById("blog-form").addEventListener("submit", function() {
+                document.getElementById("descripcion").value = quillDescription.root.innerHTML;
+
+            });
+        });
     </script>
 
 </x-app-layout>

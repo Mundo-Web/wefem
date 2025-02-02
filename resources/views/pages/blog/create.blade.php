@@ -60,13 +60,12 @@
                             </div>
 
 
+
                             <div class="md:col-span-5">
                                 <label for="descripcion">Descripción Extensa</label>
                                 <div class="relative mb-2 mt-2">
-
-                                    <textarea type="text" id="descripcion" name="descripcion" value=""
-                                        class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Ingrese texto"></textarea>
+                                    <div id="description-editor" class="w-full min-h-[200px]"></div>
+                                    <input type="hidden" name="descripcion" id="descripcion">
                                 </div>
                             </div>
 
@@ -104,24 +103,63 @@
     </div>
 
     <script>
-        $('document').ready(function() {
+        document.addEventListener("DOMContentLoaded", function() {
+            const toolbarOptions = [
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote'],
+                ['link', 'image', 'video'],
 
-            tinymce.init({
-                selector: 'textarea#descripcion',
-                height: 500,
-                plugins: [
-                    'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview',
-                    'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                    'insertdatetime', 'table'
-                ],
-                toolbar: 'undo redo | blocks | ' +
-                    'bold italic backcolor | alignleft aligncenter ' +
-                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                    'removeformat | help',
-                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px;}'
+                [{
+                    'list': 'ordered'
+                }, {
+                    'list': 'bullet'
+                }, {
+                    'list': 'check'
+                }],
+                [{
+                    'script': 'sub'
+                }, {
+                    'script': 'super'
+                }],
+                [{
+                    'indent': '-1'
+                }, {
+                    'indent': '+1'
+                }],
+                [{
+                    'header': [1, 2, 3, 4, 5, 6, false]
+                }],
+                [{
+                    'color': []
+                }, {
+                    'background': []
+                }],
+
+                [{
+                    'align': []
+                }]
+            ];
+
+            // Inicializar Quill para Descripción Extensa
+            const quillDescription = new Quill('#description-editor', {
+                modules: {
+                    toolbar: toolbarOptions
+                },
+                placeholder: 'Escriba la descripción aquí...',
+                theme: 'snow',
+                height: 300
             });
 
-        })
+            // Actualizar los campos ocultos antes de enviar el formulario
+            const form = document.getElementById('blog-form');
+            form.addEventListener('submit', function(event) {
+                // Actualizar el campo oculto "description" con el contenido de Quill
+                document.getElementById('descripcion').value = quillDescription.root.innerHTML;
+                // Continuar con el envío del formulario
+                return true;
+            });
+
+        });
     </script>
 
 </x-app-layout>

@@ -102,16 +102,88 @@
             transition: opacity 0.3s ease-in-out;
         }
     </style>
+    <style>
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
 
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+
+        .swiper {
+            width: 100%;
+            height: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .swiper-slide {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .mySwiper2 {
+            height: 75%;
+            width: 100%;
+        }
+
+        .mySwiper {
+            margin-top: 2rem;
+            height: 25%;
+            box-sizing: border-box;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mySwiper .swiper-slide {
+            opacity: 0.4;
+        }
+
+        .mySwiper .swiper-slide-thumb-active {
+            opacity: 1;
+
+        }
+
+        .mySwiper .swiper-slide-thumb-active img {
+            border-color: #ed1b2f
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 5rem;
+            height: 5rem;
+            object-fit: contain;
+            border: 4px solid #FFFFFF;
+        }
+    </style>
 
 
 @stop
 
 
 @section('content')
-    <main>
+    <main class="bg-white">
         <!-- Hero Section -->
-        <section class="relative h-screen">
+        <section class="relative h-screen" data-aos="zoom-in" data-aos-offset="150" data-aos-duration="1000"
+            data-aos-delay="200">
             <video class="absolute top-0 left-0 w-full h-full object-cover" autoplay loop muted>
                 <source src="{{ asset('images/img/background/backgroundInicio.mp4') }}" type="video/mp4" />
                 Tu navegador no soporta la reproducción de videos.
@@ -125,7 +197,7 @@
                     {{ $home->subtitleHero }}
                 </p>
                 <div class="mt-8">
-                    <a href="#"
+                    <a href="{{ route('servicios') }}" target="_blank"
                         class="inline-block bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white text-base font-semibold px-6 py-3 rounded-full shadow">
                         Descubre nuestros servicios
                     </a>
@@ -135,7 +207,8 @@
 
 
         <!-- Services Section -->
-        <section class="py-16 bg-white relative">
+        <section class="py-16  relative" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+            data-aos-delay="200">
             <!-- Imagen superpuesta -->
             <div class="absolute left-0  -bottom-0  transform translate-y-1/2">
                 <img src="{{ asset('images/img/background/bg-cable.png') }}" alt="" class="w-96">
@@ -152,16 +225,17 @@
 
                 <div class="w-1/2 grid grid-cols-1 md:grid-cols-2  gap-6">
 
-                    @foreach ($servicios as $servicio)
-                        <div class="bg-colorBackgroundAzulClaro p-6 rounded-lg shadow-md text-start">
-                            <div class="group-hover:hidden  w-12 h-12  bg-black mb-4"
-                                style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: cover; mask-repeat: no-repeat;"">
+                    @foreach ($servicios->take(4) as $servicio)
+                        <div class="bg-colorBackgroundAzulClaro p-6 rounded-lg shadow-md text-start" data-aos="fade-up"
+                            data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
+                            <div class="group-hover:hidden  w-12 h-12  bg-black mb-4 "
+                                style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;"">
                             </div>
                             <h3 class="text-text28 font-semibold mb-2 text-colorAzulOscuro">{{ $servicio->title }}</h3>
                             <p class="text-colorParrafo line-clamp-2 mb-4 text-text16">
                                 {{ $servicio->descripcion_breve }}
                             </p>
-                            <a href="#"
+                            <a href="{{ route('servicios') }}"
                                 class="bg-colorBackgroundRed hover:bg-colorBackgroundRed rounded-full text-white font-semibold px-4 py-2 inline-block">Ver
                                 más</a>
                         </div>
@@ -178,7 +252,7 @@
         </section>
 
         <!--Seccion productos-->
-        <section class="pb-16 bg-white">
+        <section class="pb-16 " data-aos="zoom-in" data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
 
             <div class="mt-16 bg-white  container mx-auto">
                 <div class="  flex flex-col  items-center">
@@ -189,7 +263,7 @@
                         <p class="text-colorParrafo mb-12 text-text16">
                             {{ $home->subtitleProductos }}.
                         </p>
-                        <a href="#"
+                        <a href="{{ route('catalogo.all') }}"
                             class=" bg-colorBackgroundAzul hover:bg-colorBackgroundAzulOscuro text-white font-semibold px-6 py-3 rounded-full text-text16 ">Ver
                             más
                             equipos</a>
@@ -199,17 +273,21 @@
                 <div class="grid grid-cols-1 md:grid-cols-3  gap-6">
 
                     @foreach ($productos as $producto)
-                        <div
-                            class="bg-colorBackgroundAzulClaro h-max p-4 shadow-md text-start group cursor-pointer rounded-xl">
-                            <div class="mb-4 w-full h-[212px] bg-white rounded-xl">
-                                <img src="{{ $producto->imagen }}" alt="ISP Ready" class=" w-full h-full object-contain">
-                            </div>
-                            <h3 class="text-text28 font-semibold mb-2 text-colorAzulOscuro">{{ $producto->producto }}
-                            </h3>
-                            <p class="text-colorParrafo mb-4 text-text16 line-clamp-2">{{ $producto->extract }}</p>
-                            <a href="#"
-                                class="group-hover:w-full duration-300 ease-in-out group-hover:text-center group-hover:bg-colorBackgroundAzul bg-colorBackgroundRed  rounded-full text-white font-semibold px-4 py-2 inline-block">Ver
-                                más</a>
+                        <div class="bg-colorBackgroundAzulClaro h-max p-4 shadow-md text-start group cursor-pointer rounded-xl"
+                            data-aos="zoom-in" data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
+                            <a href="{{ route('producto', $producto->slug) }}">
+                                <div class="mb-4 w-full h-[212px] bg-white rounded-xl">
+                                    <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->producto }}"
+                                        class=" w-full h-full object-contain">
+                                </div>
+                                <h3 class="text-text28 font-semibold mb-2 text-colorAzulOscuro">
+                                    {{ $producto->producto }}
+                                </h3>
+                                <p class="text-colorParrafo mb-4 text-text16 line-clamp-2">{{ $producto->extract }}</p>
+                                <a href="{{ route('producto', $producto->slug) }}"
+                                    class="group-hover:w-full duration-300 ease-in-out group-hover:text-center group-hover:bg-colorBackgroundAzul bg-colorBackgroundRed  rounded-full text-white font-semibold px-4 py-2 inline-block">Ver
+                                    más</a>
+                            </a>
                         </div>
                     @endforeach
 
@@ -226,7 +304,8 @@
 
 
         <!-- Sección de Testimonios -->
-        <section class=" mt-32 bg-colorBackgroundAzul ">
+        <section class=" mt-32 bg-colorBackgroundAzul " data-aos="fade-down" data-aos-offset="150" data-aos-duration="1000"
+            data-aos-delay="200">
             <div class=" relative ">
                 <!-- Imagen superpuesta -->
                 <div class="absolute left-0  top-0 transform rotate-180">
@@ -245,132 +324,139 @@
 
                 </div>
                 <!-- Contenido textual -->
-                <div class="container  justify-start  flex lg:justify-end  lg:rounded-xl order-1 py-16">
+                <div class="max-w-7xl mx-auto  justify-start  flex lg:justify-end  lg:rounded-xl order-1 py-16"
+                    data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
                     <div class="lg:w-7/12 lg:p-8 flex items-center justify-center flex-col">
-                        <h2 class="text-text36 font-bold text-textWhite mb-4 text-center"> Con Dar Telecom, nuestra
-                            conectividad mejoró
-                            significativamente. <span class="text-colorRojo">El
-                                soporte técnico</span> es excepcional.</h2>
-                        <p class="text-white text-text24"><span class="text-colorRojo">Alejandra Neyra, </span>
-                            Lima - Perú</p>
-                        <div class="mt-12 flex justify-center space-x-4">
+                        <!-- Slider main container -->
+                        <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
+                            class="swiper mySwiper2" data-aos="fade-left" data-aos-offset="150" data-aos-duration="1000"
+                            data-aos-delay="200">
+                            <div class="swiper-wrapper">
+                                @foreach ($testimonios as $testimonio)
+                                    <div class="swiper-slide">
 
-                            <img src="https://i.ibb.co/mSmGhwv/cc6e3e60f69ecac1443984f93e6078eb.png" alt="Avatar 1"
-                                class="w-20 h20 rounded-full border-2 border-white">
+                                        <h2 class="text-text36 font-bold text-textWhite mb-4 text-center">
+                                            <x-custom.texto-titulo :text="$testimonio->testimonie" style="text-colorRojo" />
+                                        </h2>
+                                        <p class="text-white text-text24"><span
+                                                class="text-colorRojo">{{ $testimonio->name }},
+                                            </span>
+                                            {{ $testimonio->departamento }} - {{ $testimonio->pais }}</p>
+                                    </div>
+                                @endforeach
 
-                            <img src="https://i.ibb.co/n3NFXXs/969a7d7f009059cfa5c45bc3cfc941ae.png" alt="Avatar 2"
-                                class="w-20 h-20 rounded-full border-2 border-white">
 
-
-                            <img src="https://i.ibb.co/Sstnnfy/5701db8d4318f0d93edd1f4b64493b37.png" alt="Avatar 3"
-                                class="w-20 h-20 rounded-full border-2 border-white">
-
-
+                            </div>
 
                         </div>
+                        <div thumbsSlider="" class="swiper mySwiper">
+                            <div class="swiper-wrapper" style="display: flex; justify-content: center;">
+                                @foreach ($testimonios as $testimonio)
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset($testimonio->ocupation) }}"
+                                            class="w-20 h-20 rounded-full border-2 border-white object-contain" />
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <script>
+                            const swiper = new Swiper(".mySwiper", {
+                                loop: true,
+                                spaceBetween: 10,
+                                slidesPerView: 8,
+                                freeMode: true,
+                                watchSlidesProgress: true,
+                            });
+                            var swiper2 = new Swiper(".mySwiper2", {
+                                loop: true,
+                                spaceBetween: 10,
+
+                                thumbs: {
+                                    swiper: swiper,
+                                },
+                            });
+                        </script>
+
+
 
                     </div>
+
                 </div>
+            </div>
             </div>
         </section>
 
 
         <!-- Blog Section -->
-        <section class="py-16 bg-white">
-            <div class="container mx-auto">
+        <section class="py-16 bg-white" data-aos="zoom-up" data-aos-offset="150" data-aos-duration="1000"
+            data-aos-delay="200">
+            <div class="max-w-7xl mx-auto">
                 <h2 class="text-text40 font-bold text-center text-colorAzulOscuro">
                     <x-custom.texto-titulo :text="$home->titleBlogs" style="text-colorRojo" />
                 </h2>
                 <p class="mt-4 text-center text-colorParrafo text-text16">
                     {{ $home->subtitltBlogs }}
                 </p>
-                <div class="grid grid-cols-2 gap-8 mt-8">
+                <div class="grid grid-cols-2 gap-8 mt-8" data-aos="fade-up" data-aos-offset="150"
+                    data-aos-duration="1000" data-aos-delay="200">
                     <!-- Blog Card 1 -->
-                    <div class="bg-colorBackgroundAzulClaro shadow-lg rounded-xl overflow-hidden p-4">
-                        <img src="https://i.ibb.co/0m1RRf2/6cb07b5025576e2522606ac566b7493d.png" alt="Blog 1"
-                            class="w-full h-[247px] object-cover rounded-xl mb-2">
 
-                        <span class="text-text14 text-colorRojo font-bold pt-2">Categoría</span>
-                        <h3 class="mt-2 text-text24 font-semibold text-gray-800">
-                            Nullam quis justo ut lorem fermentum rhoncus in id eros.
-                        </h3>
-                        <p class="mt-4 text-gray-600 text-text16">
-                            Vivamus vel pharetra mauris. Proin vitae erat est. Morbi ornare ipsum magna, non mattis leo
-                            consectetur at.
-                        </p>
-                        <a href="#"
-                            class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full text-text18">Ver
-                            más</a>
+                    <div class="bg-colorBackgroundAzulClaro shadow-lg rounded-xl overflow-hidden p-4" data-aos="zoom-in"
+                        data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
+                        <a href="{{ route('detalleBlog', $mostRecentPost->slug) }}">
+                            <img src="{{ asset($mostRecentPost->imagen) }}" alt="Blog 1"
+                                class="w-full h-[247px] object-cover rounded-xl mb-2">
 
+                            <span
+                                class="text-text14 text-colorRojo font-bold pt-2">{{ $mostRecentPost->category->nombre }}</span>
+                            <h3 class="mt-2 text-text24 font-semibold text-gray-800">
+                                {{ $mostRecentPost->titulo }}
+                            </h3>
+                            <p class="mt-4 text-gray-600 text-text16 line-clamp-2">
+                                {{ $mostRecentPost->extracto }}
+                            </p>
+                            <a href="{{ route('detalleBlog', $mostRecentPost->slug) }}"
+                                class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full text-text18">Ver
+                                más</a>
+                        </a>
                     </div>
 
-                    <div class="grid gap-8">
-                        <!-- Blog Card 2 -->
-                        <div class="bg-colorBackgroundAzulClaro shadow-lg rounded-lg overflow-hidden flex gap-4 p-4 ">
-                            <img src="https://i.ibb.co/0sKrXH0/654c5532b9e47b24181e8fa44e48026a.png" alt="Blog 2"
-                                class="w-[212px] h-[212px] object-cover rounded-xl">
-                            <div class="">
-                                <span class="text-text14 text-colorRojo font-bold">Categoría</span>
-                                <h3 class=" text-text24 font-semibold text-colorAzulOscuro">
-                                    Morbi ornare ipsum magna, non mattis leo consectetur.
-                                </h3>
-                                <p class="mt-2 text-colorParrafo text-text16">
-                                    Sed vulputate lobortis sapien, ut consectetur magna suscipit vel. Class aptent taciti
-                                    sociosqu.
-                                </p>
-                                <a href="#"
-                                    class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full">Leer
-                                    más</a>
-                            </div>
-                        </div>
 
-                        <!-- Blog Card 3 -->
-                        <div class="bg-colorBackgroundAzulClaro shadow-lg rounded-lg overflow-hidden flex gap-4 p-4 ">
-                            <img src="https://i.ibb.co/0sKrXH0/654c5532b9e47b24181e8fa44e48026a.png" alt="Blog 2"
-                                class="w-[212px] h-[212px] object-cover rounded-xl">
-                            <div class="">
-                                <span class="text-text14 text-colorRojo font-bold">Categoría</span>
-                                <h3 class=" text-text24 font-semibold text-colorAzulOscuro">
-                                    Morbi ornare ipsum magna, non mattis leo consectetur.
-                                </h3>
-                                <p class="mt-2 text-colorParrafo text-text16">
-                                    Sed vulputate lobortis sapien, ut consectetur magna suscipit vel. Class aptent taciti
-                                    sociosqu.
-                                </p>
-                                <a href="#"
-                                    class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full">Leer
-                                    más</a>
-                            </div>
-                        </div>
+                    <div class="grid  gap-4">
+                        <!-- Blog Card 2 -->
+                        @foreach ($nextTwoRecentPosts as $post)
+                            <a href="{{ route('detalleBlog', $post->slug) }}" class=" w-full">
+                                <div
+                                    class="bg-colorBackgroundAzulClaro shadow-lg rounded-lg  overflow-hidden flex gap-4 p-4 ">
+                                    <img src="{{ asset($post->imagen) }}" alt="Blog 2"
+                                        class="w-[212px] h-[212px] object-cover rounded-xl">
+                                    <div class="">
+                                        <span
+                                            class="text-text14 text-colorRojo font-bold">{{ $post->category->nombre }}</span>
+                                        <h3 class=" text-text24 font-semibold text-colorAzulOscuro line-clamp-2">
+                                            {{ $post->titulo }}
+                                        </h3>
+                                        <p class="mt-2 text-colorParrafo text-text16 line-clamp-2">
+                                            {{ $post->extracto }}
+                                        </p>
+                                        <a href="{{ route('detalleBlog', $post->slug) }}"
+                                            class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full">Leer
+                                            más</a>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+
+
+
                     </div>
                 </div>
             </div>
         </section>
         <!-- Newsletter Section -->
-        <section class="bg-colorBackgroundRed relative">
-            <div class="absolute left-0 top-1/2 transform  -translate-y-1/2">
-                <img src="{{ asset('images/img/background/bg-newsletter.png') }}" alt="" class="w-20">
-            </div>
-            <div class="max-w-7xl mx-auto flex justify-between items-end py-16">
-                <p class="w-1/3 text-text32 text-white"><x-custom.texto-titulo :text="$home->titleNewsletter" style="font-bold" />
-                </p>
-                <form action="{{ route('subscripciones.guardar') }}" method="POST"
-                    class="w-1/3 flex items-center justify-center relative border-b-2 border-white py-2">
-                    @csrf
-                    <input type="text" id="email" name="email"
-                        class="placeholder:text-white w-full pr-12 pl-3 py-2 text-white bg-transparent outline-none border-none focus:border-none shadow-none text-text14 focus:outline-none focus:ring-0 ring-transparent"
-                        placeholder="Correo Electrónico" />
 
-
-                    <button
-                        class="absolute right-0 py-2 px-4 rounded-full text-text14 text-white bg-colorBackgroundAzul hover:bg-colorBackgroundAzul active:bg-colorBackgroundAzul duration-150 outline-none shadow-none ">
-                        Enviar
-                        <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
-                    </button>
-                </form>
-            </div>
-
-        </section>
+        @include('components.custom.newsletter-section')
+        <!-- Footer Section -->
 
 
 

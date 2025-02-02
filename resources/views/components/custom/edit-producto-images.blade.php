@@ -57,7 +57,7 @@
 
      function uploadImages(event) {
          let formData = new FormData(document.getElementById('uploadImagesForm'));
-
+         //pre filtro
          fetch('{{ route('products.uploadImages', $album->id) }}', {
                  method: 'POST',
                  headers: {
@@ -177,6 +177,7 @@
              // Cuando el lector cargue el archivo, establecer la imagen
              reader.onload = function(e) {
                  img.src = e.target.result;
+                 //agregar atributo name a la imagen/ CLASE DE LA IMAGEN
              };
 
              // Leer el archivo como una URL de datos
@@ -190,6 +191,7 @@
              deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
              deleteButton.onclick = function() {
                  imageWrapper.remove(); // Eliminar la imagen y el botón de la previsualización
+                 //agregar referemcia a la previsualizacion
              };
 
              // Agregar la imagen y el botón al contenedor

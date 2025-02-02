@@ -106,6 +106,21 @@
         #descripcion_extensa>p {
             margin-bottom: 1rem;
         }
+
+        /* En tu archivo CSS */
+        aside nav ul li.active {
+            background-color: #ed1b2f;
+            /* Color de fondo para el elemento activo */
+            color: white;
+            /* Color de texto para el elemento activo */
+        }
+
+        aside nav ul li.active div {
+            background-color: #FFFFFF;
+            /* Color de fondo para el elemento activo */
+
+
+        }
     </style>
 
 
@@ -124,11 +139,12 @@
         <!-- Subheader -->
         <section class="text-center py-8 px-4 max-w-3xl mx-auto">
             <div class=" bg-opacity-50 flex items-center justify-center">
-                <h1 class="text-colorAzulOscuro text-text48 font-semibold">
+                <h1 class="text-colorAzulOscuro text-text48 font-bold" data-aos="fade-up" data-aos-offset="150"
+                    data-aos-duration="1000" data-aos-delay="200">
                     <x-custom.texto-titulo :text="$servicioPage->titulo" style="text-colorRojo" />
                 </h1>
             </div>
-            <p class="text-colorParrafo text-text16 ">
+            <p class="text-colorParrafo text-text16 my-8 ">
                 {{ $servicioPage->subtitulo }}
             </p>
         </section>
@@ -136,19 +152,19 @@
         <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row gap-8">
             <!-- Sidebar -->
             <aside class="md:w-1/4">
-                <nav class="bg-white shadow-md rounded-lg">
-                    <ul class="flex gap-4 flex-col">
-                        @foreach ($servicios as $servicio)
-                            <li
-                                class="group rounded-xl flex items-center gap-4 p-4  text-text20 font-semibold bg-colorBackgroundAzulClaro hover:bg-colorBackgroundRed text-colorAzulOscuro hover:text-white transition-all duration-300">
-
+                <nav class="">
+                    <ul class="flex gap-4 flex-col" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+                        data-aos-delay="200">
+                        @foreach ($servicios as $index => $servicio)
+                            <li data-id="{{ $servicio->id }}"
+                                class="cursor-pointer group rounded-xl flex items-center gap-4 p-4 text-text20 font-semibold bg-colorBackgroundAzulClaro hover:bg-colorBackgroundRed text-colorAzulOscuro hover:text-white transition-all duration-300 {{ $index === 0 ? 'active' : '' }}">
                                 <div class="group-hover:hidden h-7 w-7 bg-black"
-                                    style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: cover; mask-repeat: no-repeat;"">
+                                    style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
                                 </div>
-                                <img src="{{ asset($servicio->icono) }}" alt="ISP Ready"
-                                    class="hidden h-7 w-7 fill-black group-hover:inline-block" />
-                                <a href="#" class=" ">ISP
-                                    Ready</a>
+                                <div class="hidden group-hover:inline-block h-7 w-7 bg-white"
+                                    style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
+                                </div>
+                                <a href="#" class="servicio-link">{{ $servicio->title }}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -156,35 +172,13 @@
             </aside>
 
             <!-- Main Content -->
-            <main class="md:w-3/4 bg-white mb-16">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h2 class="text-colorRojo text-text32 font-extrabold">{{ $servicio->title }}</h2>
-                        <h3 class="text-text32 font-semibold mb-4">{{ $servicio->subtitle }}</h3>
-                    </div>
-                    <a href="#"
-                        class="bg-[#0E1D42]  hover:bg-[#0E1D42] text-white font-semibold py-3 rounded-full px-5 text-base">Cotiza
-                        tu Plan</a>
-                </div>
+            <main class="md:w-3/4 bg-white mb-16" id="main-content" data-aos="fade-up" data-aos-offset="150"
+                data-aos-duration="1000" data-aos-delay="200">
+                <!-- El contenido del primer servicio se mostrará por defecto -->
 
-                <div class="mb-8">
-                    <img src="https://s3-alpha-sig.figma.com/img/bef5/bb24/2fa5df3ee43127653a3acfc33e66e954?Expires=1738540800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=eq2u1hmqrlxw1Rmq54FtH6uOkwuTV1tcL04PAD0Je5rNy~4ES5j01bFvix7Tv~Bm5W1Ye2cJftwRk5yWBLrXsFfbXS1mfBLBac4BD6~FIRXYPHR8PDKnGPrk~AbNwFDpFm1CHeYK2PoVuzNMgGDXlg4nYzKxyVuFy8zpsBsfhJ9QPb9j1bSaAvFDFvmnlpQKnRk8mrV0Taa5vsGX4jpjsn1yqXhA1BMlhPkd92z8h~qEM5K11awbTp7mqXT6vIPFTl3yH5RIbbSjfuwHDkFP-fL8JAODc2rI78YGem5tVaK4vgIs3G55lu2jQ1kejIdEHeBw5tet-lHYKjssSyWCXA__"
-                        alt="Service" class="w-full h-[472px] object-cover rounded-lg">
-                </div>
-                <div id="descripcion_extensa" class="text-colorParrafo text-text18">
-                    {!! $servicio->descripcion_extensa !!}
-                </div>
+                @include('components.custom.component-servicio', $servicio)
 
 
-                <!-- Benefits Section -->
-                <x-custom.servicio-beneficio :text="$servicio->beneficios" :icono="$servicio->icono" />
-
-                <!-- Call to Action -->
-                <div class="text-start mt-8">
-                    <a href="#"
-                        class="bg-colorBackgroundAzul rounded-full text-white py-3 px-6  hover:bg-colorBackgroundAzulOscuro">Cotizar
-                        Servicio</a>
-                </div>
             </main>
         </div>
 
@@ -199,6 +193,46 @@
 
 @section('scripts_importados')
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarItems = document.querySelectorAll('aside nav ul li');
+            const mainContent = document.getElementById('main-content');
+
+            // Función para cargar el contenido del servicio
+            function loadServicioContent(servicioId) {
+                fetch(`/servicios/${servicioId}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        mainContent.innerHTML = data;
+                    })
+                    .catch(error => console.error('Error al cargar el servicio:', error));
+            }
+
+            // Manejar el clic en los elementos del sidebar
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // Remover la clase 'active' de todos los elementos
+                    sidebarItems.forEach(i => i.classList.remove('active'));
+
+                    // Agregar la clase 'active' al elemento seleccionado
+                    item.classList.add('active');
+
+                    // Obtener el ID del servicio y cargar su contenido
+                    const servicioId = item.getAttribute('data-id');
+                    loadServicioContent(servicioId);
+                });
+            });
+
+            // Cargar el contenido del primer servicio por defecto
+            if (sidebarItems.length > 0) {
+                const firstItem = sidebarItems[0];
+                const servicioId = firstItem.getAttribute('data-id');
+                loadServicioContent(servicioId);
+            }
+        });
+    </script>
 
 @stop
 

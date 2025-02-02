@@ -30,6 +30,8 @@
     <!-- Include the Quill library -->
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 
+    <!--Include SummerNote-->
+
     <!-- DataTable -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.tailwindcss.css">
@@ -53,9 +55,16 @@
     <script src="https://cdn.tiny.cloud/1/sy8uuf9c95s4ieqt8cm4ysooyvzx2qwm8fgs34071vfbxnan/tinymce/7/tinymce.min.js"
         referrerpolicy="origin"></script>
 
+    <!-- Include stylesheet -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -111,6 +120,7 @@
     @yield('scripts_importados')
 
 </body>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         @if ($errors->any())
@@ -142,5 +152,9 @@
         @endif
     });
 </script>
+
+<!-- Include the Quill library -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/es.min.js"></script>
 
 </html>

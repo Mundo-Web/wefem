@@ -82,13 +82,16 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/nosotros', [IndexController::class, 'nosotros'])->name('nosotros');
 Route::get('/innovaciones', [IndexController::class, 'innovaciones'])->name('innovaciones');
 Route::get('/servicios', [IndexController::class, 'servicios'])->name('servicios');
+// routes/web.php
+Route::get('/servicios/{id}', [IndexController::class, 'showServicios'])->name('servicios.view');
+
 Route::get('/comentario', [IndexController::class, 'comentario'])->name('comentario');
 Route::post('/comentario/nuevo', [IndexController::class, 'hacerComentario'])->name('nuevocomentario');
 Route::get('/contacto', [IndexController::class, 'contacto'])->name('contacto');
 Route::get('/descargables/{filtro}', [IndexController::class, 'catalogosDescargables'])->name('descargables');
 Route::get('/blog', [IndexController::class, 'blog'])->name('blog.all');
 Route::get('/blog/{filtro}', [IndexController::class, 'blog'])->name('blog');
-Route::get('/post/{id}', [IndexController::class, 'detalleBlog'])->name('detalleBlog');
+Route::get('/post/{slug}', [IndexController::class, 'detalleBlog'])->name('detalleBlog');
 //probando alpine js
 Route::get('/imagenes', [IndexController::class, 'imagenes'])->name('imagenes');
 Route::post('/guardarSubscriptor', [IndexController::class, ''])->name('guardarSubscriptor');
@@ -104,7 +107,7 @@ Route::get('/pago', [IndexController::class, 'pago'])->name('pago');
 Route::post('/procesar/pago', [IndexController::class, 'procesarPago'])->name('procesar.pago');
 Route::post('/agradecimiento', [IndexController::class, 'agradecimiento'])->name('agradecimiento');
 /* Catálogo y producto */
-Route::get('/producto/{id}', [IndexController::class, 'producto'])->name('producto');
+Route::get('/producto/{slug}', [IndexController::class, 'productoShow'])->name('producto');
 Route::get('/catalogo', [IndexController::class, 'catalogo'])->name('catalogo.all');
 Route::get('/catalogo/{filtro}', [IndexController::class, 'catalogo'])->name('catalogo');
 Route::post('carrito/buscarProducto', [CarritoController::class, 'buscarProducto'])->name('carrito.buscarProducto');
@@ -174,6 +177,9 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
         Route::post('/servicios/deleteService', [ServiceController::class, 'deleteService'])->name('servicio.deleteService'); #using
         Route::post('/servicios/updateVisible', [ServiceController::class, 'updateVisible'])->name('servicio.updateVisible'); #using
         Route::post('/servicios/page/update/{id}', [ServiceController::class, 'updatePageServicio'])->name('servicio.page.update'); #using
+        Route::post('/servicios/borrar', [ServiceController::class, 'destroy'])->name('servicio.borrar');
+        Route::post('/servicios/{album}/upload', [ServiceController::class, 'uploadImages'])->name('servicio.uploadImages'); // Subir imágenes
+        Route::delete('/servicios/images/{image}', [ServiceController::class, 'destroyImage'])->name('servicio.images.destroy');
 
 
         //Testimonies

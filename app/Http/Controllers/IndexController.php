@@ -7,6 +7,7 @@ use App\Http\Requests\StoreIndexRequest;
 use App\Http\Requests\UpdateIndexRequest;
 use App\Models\AboutUs;
 use App\Models\AddressUser;
+use App\Models\Album;
 use App\Models\Attributes;
 use App\Models\AttributesValues;
 use App\Models\Blog;
@@ -73,21 +74,71 @@ class IndexController extends Controller
   {
 
     $home = HomeView::first();
-    $productos = Products::all();
+    $productos = Products::latest()
+      ->take(6)
+
+      ->get();
 
 
     $general = General::all();
 
-    $servicios = Service::take(4)->get();
+    $servicios = Service::take(4)->latest()->get();
 
-    return view('public.index', compact('home', 'productos', 'general', 'servicios'));
+    // Obtener el blog más reciente
+    $mostRecentPost = Blog::where('visible', true)
+      ->latest()
+      ->with('category')
+      ->first();
+
+    // Obtener los siguientes 2 blogs más recientes (excluyendo el más reciente)
+    $nextTwoRecentPosts = Blog::where('visible', true)
+      ->whereNotIn('id', [$mostRecentPost->id])
+      ->latest()
+      ->take(2)
+      ->with('category')
+      ->get();
+
+    $testimonios = Testimony::where('status', '=', 1)->where('visible', '=', 1)->get();
+
+    return view('public.index', compact('home', 'productos', 'general', 'servicios', 'mostRecentPost', 'nextTwoRecentPosts', 'testimonios'));
   }
-  public function servicios()
+  public function servicios(Request $request)
   {
     $servicios = Service::where('visible', '=', 1)->get();
-    $servicio = Service::where('visible', '=', 1)->first();
+    $servicio = null;
+    // Obtener el servicio específico si se proporciona un ID
+    if ($request->id) {
+      $servicio = Service::where('visible', 1)->findOrFail($request->id);
+      if (!$servicio) {
+        // Si no se encuentra el servicio, redirigir o mostrar un error
+        return redirect()->route('servicios')->with('error', 'Servicio no encontrado.');
+      }
+    } else {
+      // Si no se proporciona un ID, mostrar el primer servicio visible
+      $servicio = Service::where('visible', 1)->first();
+    }
+
     $servicioPage = ServiceView::first();
-    return view('public.servicio', compact('servicios', 'servicio', 'servicioPage'));
+
+
+    $albumName = $servicio->slug;
+    $album = Album::where('name', $albumName)->withCount('images', 'children')->first();
+    $album->load('children', 'images');
+    $general = General::first();
+    return view('public.servicio', compact('servicios', 'servicio', 'servicioPage', 'general', 'album'));
+  }
+
+  public function showServicios($id)
+  {
+    $general = General::first();
+    $servicio = Service::findOrFail($id);
+    // Extraer solo el nombre del producto desde la ruta en "album"
+    $albumName = $servicio->slug;
+
+    // Buscar el álbum en la base de datos
+    $album = Album::where('name', $albumName)->withCount('images', 'children')->first();
+    $album->load('children', 'images');
+    return view('components.custom.component-servicio', ['servicio' => $servicio, 'general' => $general, 'album' => $album]);
   }
 
   public function coleccion($filtro)
@@ -556,6 +607,23 @@ class IndexController extends Controller
     );
   }
 
+
+  public function productoShow($slug)
+  {
+    $producto = Products::where('slug', '=', $slug)->with('category')->with('brand')->first();
+
+    $productoRelacionado = Products::where('categoria_id', '=', $producto->categoria_id)->where('id', '!=', $producto->id)->latest()->take(3)->get();
+
+    // Extraer solo el nombre del producto desde la ruta en "album"
+    $albumName = $producto->slug;
+
+    // Buscar el álbum en la base de datos
+    $album = Album::where('name', $albumName)->withCount('images', 'children')->first();
+    $album->load('children', 'images');
+
+    return view('public.product', compact('producto', 'productoRelacionado', 'album')); //compact('')
+  }
+
   public function producto(string $id)
   {
 
@@ -660,61 +728,52 @@ class IndexController extends Controller
 
   public function blog(Request $request, string $filtro = null)
   {
-    try {
-      $categorias = Category::where('visible', '=', 1)->get();
 
-      if ($filtro == 0) {
-        $posts = Blog::where('visible', '=', 1)->get();
+    $generales = General::all()->first();
+    // Obtener el blog más reciente
+    $mostRecentPost = Blog::where('visible', true)
+      ->latest()
+      ->with('category')
+      ->first();
 
-        $categoria = Category::where('visible', '=', 1)->get();
-
-        // $lastpost = Blog::where('status', '=', 1)->where('visible', '=', 1)->orderBy('created_at', 'desc')->first();
-
-        // $lastpost = $posts->last();
-
-        // $restopost = $posts->reject(function ($post) use ($lastpost) {
-        //   return $post->id === $lastpost->id;
-        // });
-
-      } else {
-        $posts = Blog::where('visible', '=', 1)->where('category_id', '=', $filtro)->get();
-
-        $categoria = Category::where('visible', '=', 1)->where('id', '=', $filtro)->get();
-
-        // $lastpost = Blog::where('status', '=', 1)->where('visible', '=', 1)->orderBy('created_at', 'desc')->where('category_id', '=', $filtro)->first();
-
-        // $lastpost = $posts->last();
-
-        // $restopost = $posts->reject(function ($post) use ($lastpost) {
-        //   return $post->id === $lastpost->id;
-        // });
-      }
-
-      $postsgeneral = Blog::where('visible', '=', 1)->get();
-
-      $lastpost = $postsgeneral->last();
-
-      return view('public.blog', compact('posts', 'categoria', 'categorias', 'filtro', 'lastpost', 'postsgeneral'));
-    } catch (\Throwable $th) {
-    }
-  }
-
-  public function detalleBlog($id)
-  {
-    $post = Blog::where('status', '=', 1)->where('visible', '=', 1)->where('id', '=', $id)->first();
-
-    $postsrelacionados = Blog::where('status', '=', 1)
-      ->where('visible', '=', 1)
-      ->where('category_id', '=', $post->category_id)
-      ->where('id', '!=', $post->id) // Excluir el post actual
-      ->take(6)
+    // Obtener los siguientes 2 blogs más recientes (excluyendo el más reciente)
+    $nextTwoRecentPosts = Blog::where('visible', true)
+      ->whereNotIn('id', [$mostRecentPost->id])
+      ->latest()
+      ->take(2)
+      ->with('category')
       ->get();
 
-    $meta_title = $post->meta_title ?? $post->title;
-    $meta_description = $post->meta_description  ?? Str::limit($post->extract, 160);
-    $meta_keywords = $post->meta_keywords ?? '';
+    // Obtener todos los blogs restantes (excluyendo los 3 anteriores)
+    $excludedIds = $nextTwoRecentPosts->pluck('id')->push($mostRecentPost->id)->toArray();
 
-    return view('public.post', compact('meta_title', 'meta_description', 'meta_keywords', 'post', 'postsrelacionados'));
+    $remainingPosts = Blog::where('visible', true)
+      ->whereNotIn('id', $excludedIds)
+      ->latest()
+      ->take(6)
+      ->with('category')
+      ->get();
+
+    return view('public.blog', compact('generales', 'mostRecentPost', 'nextTwoRecentPosts', 'remainingPosts'));
+  }
+
+  public function detalleBlog($slug)
+  {
+    $post = Blog::where('slug', '=', $slug)
+      ->with('category')
+      ->first();
+
+    $postsrelacionados = Blog::where('visible', '=', 1)
+      ->where('category_post_id', '=', $post->category_post_id)
+      ->where('id', '!=', $post->id) // Excluir el post actual
+      ->take(3)
+      ->latest()
+      ->with('category')
+      ->get();
+
+
+
+    return view('public.post', compact('post', 'postsrelacionados'));
   }
 
   public function catalogosDescargables($filtro)

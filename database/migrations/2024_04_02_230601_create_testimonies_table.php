@@ -18,10 +18,12 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('ocupation')->nullable();
             $table->text('testimonie')->nullable();
+            $table->string('departamento')->nullable();
+            $table->string('pais')->nullable();
             $table->boolean('visible')->default(false);
             $table->boolean('status')->default(false);
 
-            
+
             $table->timestamps();
         });
     }

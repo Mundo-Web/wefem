@@ -29,84 +29,23 @@
         <div class="space-y-8">
             <!-- Pages group Maestros -->
             <div>
-                <h3 class="text-xs uppercase text-slate-500 font-semibold pl-3">
-                    <span class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6"
-                        aria-hidden="true">•••</span>
-                    <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">Dar Telecom - Backend</span>
-                </h3>
+
                 <ul class="mt-3">
 
-                    <!-- Messages -->
-                    <!-- Messages -->
-                    <li
-                        class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['mensajes'])) {{ 'bg-slate-900' }} @endif">
-                        <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['mensajes'])) {{ 'hover:text-slate-200' }} @endif"
-                            href="{{ route('mensajes.index') }}">
-                            <div class="flex items-center justify-between">
-                                <div class="grow flex items-center">
-                                    <i class="fa-solid fa-message"></i>
-                                    <span
-                                        class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Mensajes</span>
-                                </div>
-                                <!-- Badge -->
-                                <div class="flex flex-shrink-0 ml-2">
-                                    @if ($mensajes !== 0)
-                                        <span
-                                            class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-indigo-500 px-2 rounded">
-                                            {{ $mensajes }}
-                                        </span>
-                                    @endif
 
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <x-menu.item id="subscripciones" href="{{ route('subscripciones') }}" icon="fas fa-address-card">
-                        Subscripciones
-                    </x-menu.item>
-                    <x-menu.item id="datosgenerales" href="{{ route('datosgenerales.edit', 1) }}"
-                        icon="fas fa-undo-alt">
-                        Datos Generales
-                    </x-menu.item>
-                    <x-menu.item id="homeview" href="{{ route('homeview.edit', 1) }}" icon="fas fa-address-card">
-                        Landing Page
-                    </x-menu.item>
-                    <x-menu.item id="nosotrosview" href="{{ route('nosotrosview.edit', 1) }}"
-                        icon="fas fa-address-card">
-                        Acerca de Nosotros
-                    </x-menu.item>
-
-                    <x-menu.item id="servicios" href="{{ route('servicios.index') }}" icon="fas fa-address-card">
-                        Servicios
-                    </x-menu.item>
-
-                    <x-menu.item id="contactoview" href="{{ route('contactoview.edit', 1) }}"
-                        icon="fas fa-address-card">
-                        Contacto
-                    </x-menu.item>
-                    <x-menu.item id="politicas-de-devolucion" href="{{ route('politicas-de-devolucion.edit', 1) }}"
-                        icon="fas fa-undo-alt">
-                        Politicas de Privacidad
-                    </x-menu.item>
-
-                    <x-menu.item id="terminos-y-condiciones" href="{{ route('terminos-y-condiciones.edit', 1) }}"
-                        icon="fas fa-undo-alt">
-                        Terminos y Condiciones
-                    </x-menu.item>
-
-                    <x-menu.item id="testimonios" href="{{ route('testimonios.index') }}" icon="fas fa-address-card">
-                        Testimonios
-                    </x-menu.item>
 
 
                     <x-menu.group title="Productos">
+                        <x-menu.item id="servicios" href="{{ route('servicios.index') }}" icon="fas fa-address-card">
+                            Servicios
+                        </x-menu.item>
                         <x-menu.item id="categorias" href="{{ route('categorias.index') }}"
                             icon="fas fa-list-alt">Categorías</x-menu.item>
                         <x-menu.item id="marcas" href="{{ route('marcas.index') }}"
                             icon="fas fa-list-alt">Marcas</x-menu.item>
                         {{-- <x-menu.item id="subcategory" href="{{ route('subcategorias.index') }}" icon="fas fa-list-alt">Subcategorías</x-menu.item> --}}
                         {{-- <x-menu.item id="microcategory" href="{{ route('microcategorias.index') }}" icon="fas fa-list-alt">Microcategorías</x-menu.item> --}}
-                        <x-menu.item id="product" href="{{ route('products.index') }}"
+                        <x-menu.item id="products" href="{{ route('products.index') }}"
                             icon="fas fa-pager">Productos</x-menu.item>
                     </x-menu.group>
 
@@ -117,6 +56,81 @@
                             Blog
                         </x-menu.item>
                     </x-menu.group>
+                    <x-menu.group title="Testimonios">
+                        <x-menu.item id="testimonios" href="{{ route('testimonios.index') }}"
+                            icon="fas fa-address-card">
+                            Testimonios
+                        </x-menu.item>
+                        <x-menu.item id="testimonios" href="{{ route('testimonios.index') }}"
+                            icon="fas fa-address-card">
+                            Citas Trabajores
+                        </x-menu.item>
+                    </x-menu.group>
+                    <x-menu.group title="Correos">
+                        <li
+                            class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if (in_array(Request::segment(2), ['mensajes'])) {{ 'bg-slate-900' }} @endif">
+                            <a class="block text-slate-200 hover:text-white truncate transition duration-150 @if (in_array(Request::segment(2), ['mensajes'])) {{ 'hover:text-slate-200' }} @endif"
+                                href="{{ route('mensajes.index') }}">
+                                <div class="flex items-center justify-between">
+                                    <div class="grow flex items-center">
+                                        <i class="fa-solid fa-message"></i>
+                                        <span
+                                            class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Mensajes</span>
+                                    </div>
+                                    <!-- Badge -->
+                                    <div class="flex flex-shrink-0 ml-2">
+                                        @if ($mensajes !== 0)
+                                            <span
+                                                class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-indigo-500 px-2 rounded">
+                                                {{ $mensajes }}
+                                            </span>
+                                        @endif
+
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+                        <x-menu.item id="subscripciones" href="{{ route('subscripciones') }}"
+                            icon="fas fa-address-card">
+                            Subscripciones
+                        </x-menu.item>
+                    </x-menu.group>
+
+                    <x-menu.group title="Administrador de Pagina">
+
+                        <x-menu.item id="datosgenerales" href="{{ route('datosgenerales.edit', 1) }}"
+                            icon="fas fa-undo-alt">
+                            Datos Generales
+                        </x-menu.item>
+                        <x-menu.item id="homeview" href="{{ route('homeview.edit', 1) }}" icon="fas fa-address-card">
+                            Landing Page
+                        </x-menu.item>
+                        <x-menu.item id="nosotrosview" href="{{ route('nosotrosview.edit', 1) }}"
+                            icon="fas fa-address-card">
+                            Acerca de Nosotros
+                        </x-menu.item>
+
+
+
+                        <x-menu.item id="contactoview" href="{{ route('contactoview.edit', 1) }}"
+                            icon="fas fa-address-card">
+                            Contacto
+                        </x-menu.item>
+                        <x-menu.item id="politicas-de-devolucion" href="{{ route('politicas-de-devolucion.edit', 1) }}"
+                            icon="fas fa-undo-alt">
+                            Politicas de Privacidad
+                        </x-menu.item>
+
+                        <x-menu.item id="terminos-y-condiciones" href="{{ route('terminos-y-condiciones.edit', 1) }}"
+                            icon="fas fa-undo-alt">
+                            Terminos y Condiciones
+                        </x-menu.item>
+
+
+
+                    </x-menu.group>
+
                 </ul>
 
             </div>

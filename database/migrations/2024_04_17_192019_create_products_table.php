@@ -17,9 +17,26 @@ return new class extends Migration
             $table->string('extract')->nullable();
             $table->text('description')->nullable();
 
-            $table->decimal('precio', 12, 2)->default(0)->nullable();
+
             $table->boolean('destacado')->default(false);
-            $table->decimal('stock', 12, 2)->default(0)->nullable();
+
+
+            // Precios y descuentos
+            $table->decimal('precio', 10, 2);
+            $table->boolean('en_oferta')->default(false);
+            $table->decimal('precio_oferta', 10, 2)->nullable();
+            $table->decimal('porcentaje_oferta', 10, 2)->nullable();
+
+            // Inventario
+            $table->integer('stock')->default(0);
+            $table->string('sku')->unique();
+
+            // Información adicional
+            $table->decimal('peso_empaque', 10, 2)->nullable();
+            $table->boolean('devolucion')->default(true);
+            $table->string('tipo_vendedor')->default('Vendedor verificado');
+            $table->boolean('garantia_entrega')->default(true);
+            $table->boolean('envio_gratis')->default(true);
 
             $table->string('imagen')->nullable();
 
@@ -27,6 +44,7 @@ return new class extends Migration
 
             $table->text('album')->nullable();
             $table->text('manuales')->nullable();
+            $table->string('slug')->unique();
 
             $table->unsignedBigInteger('categoria_id')->nullable();
 

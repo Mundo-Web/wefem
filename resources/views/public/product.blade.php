@@ -1,380 +1,190 @@
-@extends('components.public.matrix', ['pagina' => 'catalogo'])
+@extends('components.public.matrix', ['pagina' => $producto->producto])
 
 @section('titulo', 'Producto')
-@section('meta_title', $meta_title)
-@section('meta_description', $meta_description)
-@section('meta_keywords', $meta_keywords)
 
 @section('css_importados')
-    <style>
-        .active {
-            border: 2px solid #FF5E14;
-        }
 
-        .ckeditor-content ul {
-            list-style-type: disc; /* Muestra bullets (puntos) */
-            padding-left: 20px; /* Sangría para listas */
-            margin: 10px 0; /* Margen superior e inferior */
-        }
 
-        .ckeditor-content ol {
-            list-style-type: decimal; /* Números para listas ordenadas */
-            padding-left: 20px;
-            margin: 10px 0;
-        }
-
-        .ckeditor-content li {
-            margin-bottom: 5px; /* Espacio entre ítems */
-        }
-    </style>
-    
 @stop
 
 
 @section('content')
-    @php
-        function capitalizeFirstLetter($string)
-        {
-            return ucfirst($string);
-        }
-    @endphp
+
 
 
 
     <main>
-        <section class="w-full px-[5%] py-10 lg:py-20">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
-                
-                <div class="flex flex-col justify-start items-center gap-5">
-                    <div id="containerProductosdetail"
-                        class="w-full flex justify-center items-center aspect-[3/2] overflow-hidden">
-                        <img src="{{ asset($producto->imagen) }}" alt="computer" class="w-full h-full object-cover"
-                            data-aos="fade-up" data-aos-offset="150"
-                            onerror="this.onerror=null;this.src='/images/img/noimagen.jpg';">
+        <div class="max-w-7xl mx-auto pt-32">
+            <div class="bg-white rounded-lg flex gap-12">
+                <div class="w-1/2">
+                    <div class="bg-colorBackgroundAzulClaro p-6 rounded-xl">
+                        <img id="mainImage" class="w-full rounded-xl " src="{{ asset($producto->imagen) }}"
+                            alt="{{ $producto->producto }}">
                     </div>
-                    <x-product-slider :product="$producto" />
-                </div>    
-
-
-
-                <div class="flex flex-col justify-start items-center gap-5">
-                    <div class="flex flex-col w-full" data-aos="fade-up" data-aos-offset="150">
-                        
-
-                        <div class="flex flex-col gap-5 w-full lg:max-w-lg">
-                            <h2 id="nombreproducto" class="leading-tight text-[#54340E] font-bignoodle text-5xl">
-                                {{ $producto->producto }}</h2>
-                          
-                            <div class="text-[#54340E] font-latoregular font-normal ckeditor-content">
-                                    {!! $producto->description !!}</div>
-
-
-                            <div class="flex flex-row justify-start items-end gap-2">
-                                @if ($producto->descuento == 0)
-                                    <p class="leading-tight font-latoregular font-semibold text-4xl  text-[#54340E]">
-                                       S/. {{$producto->precio}}</p>
-                                @else
-                                    <p class="leading-tight font-latoregular font-semibold text-4xl  text-[#54340E]">S/ {{ $producto->descuento }} </p>
-                                    <p class="leading-tight font-latoregular text-2xl font-semibold text-[#54340E] line-through"> S/ {{ $producto->precio }}</p>
-                                
-                                @endif  
-                            </div>    
-
-                            
-                            <div class="flex flex-row">
-                                <div target="_blank" id="chatonline" class="cursor-pointer py-2 rounded-xl bg-[#F07407] flex flex-row w-auto px-6 justify-center items-center gap-2 mt-5">
-                                    <a class="text-white font-latoregular text-center">Hacer mi pedido</a>
-                                </div> 
+                    <div class="grid grid-cols-5 mt-4 gap-4">
+                        <div class="bg-colorBackgroundAzulClaro p-2 rounded-xl">
+                            <img class="w-full h-auto rounded-lg cursor-pointer" src="{{ asset($producto->imagen) }}"
+                                alt="{{ $producto->producto }}" onclick="changeImage(this)">
+                        </div>
+                        @foreach ($album->images as $image)
+                            <div class="bg-colorBackgroundAzulClaro p-2 rounded-xl">
+                                <img class="w-full h-auto rounded-lg cursor-pointer" src="{{ asset($image->url_image) }}"
+                                    alt="{{ $image->name_image }}" onclick="changeImage(this)">
                             </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="w-1/2">
+                    <p class="text-colorParrafo text-text16 font-medium">{{ $producto->category->name }}</p>
+                    <h1 class="text-text40 font-semibold text-colorAzulOscuro ">{{ $producto->producto }}</h1>
+                    <p class="text-colorParrafo font-normal text-text16 mt-2">{{ $producto->extract }}</p>
+
+                    @if ($producto->en_oferta)
+                        <p class="text-colorAzulOscuro text-text28 font-bold mt-4">S/ {{ $producto->precio_oferta }}
+                            <span class="text-colorParrafo text-text20  font-medium line-through">S/
+                                {{ $producto->precio }}</span>
+                        @else
+                        <p class="text-colorAzulOscuro text-text28 font-bold mt-4">S/ {{ $producto->precio }}</p>
+                    @endif
+                    </p>
+                    <div class="mt-4">
+                        <label for="cantidad" class="text-colorParrafo text-text14 mr-4">Cantidad</label>
+                        <input type="number" id="cantidad" name="cantidad" value="" placeholder="1" min="1"
+                            class="mt-1 bg-gray-50 border w-20 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
+                   focus:border-blue-500  p-2.5">
+                    </div>
+                    <div class="flex flex-col gap-4 mt-4">
+                        <p class="text-colorParrafo text-text14">Disponibilidad: @if ($producto->stock > 0)
+                                <span class="text-colorAzulOscuro">En stock</span>
+                            @else
+                                <span class="text-colorRojo">Agotado</span>
+                            @endif
+                        </p>
+                        <p class="text-colorParrafo text-text14">Marca: <span
+                                class="text-colorAzulOscuro">{{ $producto->brand->nombre }}</span></p>
+                        <p class="text-colorParrafo text-text14">Peso con empaque:
+                            <span class="text-colorAzulOscuro">{{ $producto->peso_empaque }}</span>
+                        </p>
+                        @if ($producto->devolucion)
+                            <p class="text-colorParrafo text-text14">Producto con devolución</p>
+                        @else
+                            <p class="text-colorParrafo text-text14">Producto sin devolución</p>
+                        @endif
+                        <p class="text-colorParrafo text-text14">Producto de: <span
+                                class="text-colorAzulOscuro">{{ $producto->tipo_vendedor }}</span>
+                        </p>
+                        <p class="text-colorParrafo text-text14">SKU: <span
+                                class="text-colorAzulOscuro">{{ $producto->sku }}</span>
+                        </p>
+
+                    </div>
+
+                    <div class="bg-colorBackgroundAzulClaro  rounded-xl mt-4 p-4 flex flex-col gap-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-text12 text-colorParrafo">Precio: <span
+                                        class="line-through">{{ $producto->precio }}</span></p>
+                                <p class="text-colorAzulOscuro font-bold">Ahorras: S/
+                                    {{ $producto->precio - $producto->precio_oferta }}
+                                    ({{ number_format($producto->porcentaje_oferta, 0) }}%) </p>
+                            </div>
+                            @if ($producto->envio_gratis)
+                                <span class="ml-2 px-4 py-1 bg-colorBackgroundAzulOscuro rounded-full text-white">Envío
+                                    Gratis</span>
+                            @endif
                         </div>
 
-                        {{-- <p class="text-[#082252] text-text16 font-roboto font-normal">{{ $producto->extract }}</p> --}}
-
-                         {{-- @if (!is_null($producto->description))
-                            <div class="flex flex-col gap-5 " data-aos="fade-up" data-aos-offset="150">
-                                <div class="text-[#082252] text-text16 font-normal font-roboto flex flex-col gap-5">
-                                    <p>
-                                        {!! $producto->description !!}
-                                    </p>
-                                </div>
-                            </div>
-                        @endif --}}
-
-                        {{-- <div class="flex justify-between items-center text-white font-roboto font-bold text-text14 gap-5 pt-3"
-                            data-aos="fade-up" data-aos-offset="150">
-                            
-                            @if ($producto->name_fichatecnica)
-                                <a href="{{ asset($producto->url_fichatecnica . $producto->name_fichatecnica) }}" target="_blank" 
-                                    class="cursor-pointer bg-[#FF5E14] flex justify-center items-center w-6/12 py-3 px-4 md:px-10 text-center gap-2 rounded-xl">
-                                    <span>Ficha técnica</span>
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="17" height="17" x="0" y="0"
-                                            viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve"
-                                            class="">
-                                            <g>
-                                                <path
-                                                    d="M382.56 233.376A15.96 15.96 0 0 0 368 224h-64V16c0-8.832-7.168-16-16-16h-64c-8.832 0-16 7.168-16 16v208h-64a16.013 16.013 0 0 0-14.56 9.376c-2.624 5.728-1.6 12.416 2.528 17.152l112 128A15.946 15.946 0 0 0 256 384c4.608 0 8.992-2.016 12.032-5.472l112-128c4.16-4.704 5.12-11.424 2.528-17.152z"
-                                                    fill="#FFFFFF" opacity="1" data-original="#000000" class=""></path>
-                                                <path
-                                                    d="M432 352v96H80v-96H16v128c0 17.696 14.336 32 32 32h416c17.696 0 32-14.304 32-32V352h-64z"
-                                                    fill="#FFFFFF" opacity="1" data-original="#000000" class=""></path>
-                                            </g>
-                                        </svg>
-                                    </div>
-                                </a>                    
+                        <p class="text-colorAzulOscuro text-text14 font-medium flex gap-2 items-center"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17"
+                                fill="none">
+                                <path
+                                    d="M7.66667 15.1654C4.99537 15.1654 3.65973 15.1654 2.82987 14.189C2 13.2128 2 11.6414 2 8.4987C2 5.356 2 3.78465 2.82987 2.80834C3.65973 1.83203 4.99537 1.83203 7.66667 1.83203C10.3379 1.83203 11.6736 1.83203 12.5035 2.80834C13.1715 3.59424 13.3018 4.76572 13.3272 6.83203"
+                                    stroke="#141B34" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M5.33203 5.83203H9.9987M5.33203 9.16536H7.33203" stroke="#141B34"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M13.0715 12.5703C13.6334 12.1612 13.9987 11.4983 13.9987 10.75C13.9987 9.50733 12.9914 8.5 11.7487 8.5H11.582C10.3394 8.5 9.33203 9.50733 9.33203 10.75C9.33203 11.4983 9.6973 12.1612 10.2592 12.5703M13.0715 12.5703C12.7002 12.8405 12.2431 13 11.7487 13H11.582C11.0876 13 10.6305 12.8405 10.2592 12.5703M13.0715 12.5703L13.46 13.7936C13.6082 14.2602 13.6824 14.4935 13.6621 14.6388C13.6199 14.9411 13.3733 15.1656 13.0822 15.1667C12.9423 15.1672 12.7327 15.0572 12.3136 14.8373C12.1338 14.7429 12.044 14.6957 11.952 14.668C11.7647 14.6115 11.566 14.6115 11.3787 14.668C11.2868 14.6957 11.1969 14.7429 11.0172 14.8373C10.598 15.0572 10.3884 15.1672 10.2486 15.1667C9.95743 15.1656 9.71083 14.9411 9.66863 14.6388C9.64836 14.4935 9.7225 14.2602 9.8707 13.7936L10.2592 12.5703"
+                                    stroke="#141B34" />
+                            </svg>
+                            Este producto tiene @if ($producto->garantia_entrega)
+                                <span class=" px-4 py-1 bg-white rounded-full">Garantía de
+                                    Entrega</span>
+                            @else{
+                                <span class="px-4 py-1 bg-white rounded-full">Sin Garantía de
+                                    Entrega</span>
+                                }
                             @endif
-                            
-                            @if ($producto->name_docriesgo)
-                                <a href="{{ asset($producto->url_docriesgo.$producto->name_docriesgo) }}" target="_blank" 
-                                    class="cursor-pointer bg-[#FF5E14] flex justify-center items-center w-6/12 py-3 px-4 md:px-10 text-center gap-2 rounded-xl">
-                                    <span>Hoja de seguridad</span>
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="17" height="17" x="0" y="0"
-                                            viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve"
-                                            class="">
-                                            <g>
-                                                <path
-                                                    d="M382.56 233.376A15.96 15.96 0 0 0 368 224h-64V16c0-8.832-7.168-16-16-16h-64c-8.832 0-16 7.168-16 16v208h-64a16.013 16.013 0 0 0-14.56 9.376c-2.624 5.728-1.6 12.416 2.528 17.152l112 128A15.946 15.946 0 0 0 256 384c4.608 0 8.992-2.016 12.032-5.472l112-128c4.16-4.704 5.12-11.424 2.528-17.152z"
-                                                    fill="#FFFFFF" opacity="1" data-original="#000000" class=""></path>
-                                                <path
-                                                    d="M432 352v96H80v-96H16v128c0 17.696 14.336 32 32 32h416c17.696 0 32-14.304 32-32V352h-64z"
-                                                    fill="#FFFFFF" opacity="1" data-original="#000000" class=""></path>
-                                            </g>
-                                        </svg>
-                                    </div>
-                                </a>
-                            @endif 
-                             
-                        </div> --}}
-
-                        {{-- <div class="flex flex-col items-start justify-start text-white font-roboto font-bold text-text14 gap-5 w-full lg:w-1/2"
-                            data-aos="fade-up" data-aos-offset="150">
-                            <div target="_blank" id="chatonline"
-                                class="cursor-pointer bg-[#FF5E14] flex justify-center items-center w-6/12 py-3 px-4 md:px-10 text-center gap-2 rounded-xl">
-                                <span>Cotizar aquí</span>
-                                <div>
-                                    <svg width="17" height="16" viewBox="0 0 17 16" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M14.1 2.3C12.6 0.8 10.6 0 8.5 0C4.1 0 0.5 3.6 0.5 8C0.5 9.4 0.900006 10.8 1.60001 12L0.5 16L4.70001 14.9C5.90001 15.5 7.2 15.9 8.5 15.9C12.9 15.9 16.5 12.3 16.5 7.9C16.5 5.8 15.6 3.8 14.1 2.3ZM8.5 14.6C7.3 14.6 6.10001 14.3 5.10001 13.7L4.89999 13.6L2.39999 14.3L3.10001 11.9L2.89999 11.6C2.19999 10.5 1.89999 9.3 1.89999 8.1C1.89999 4.5 4.9 1.5 8.5 1.5C10.3 1.5 11.9 2.2 13.2 3.4C14.5 4.7 15.1 6.3 15.1 8.1C15.1 11.6 12.2 14.6 8.5 14.6ZM12.1 9.6C11.9 9.5 10.9 9 10.7 9C10.5 8.9 10.4 8.9 10.3 9.1C10.2 9.3 9.80001 9.7 9.70001 9.9C9.60001 10 9.49999 10 9.29999 10C9.09999 9.9 8.50001 9.7 7.70001 9C7.10001 8.5 6.70001 7.8 6.60001 7.6C6.50001 7.4 6.60001 7.3 6.70001 7.2C6.80001 7.1 6.9 7 7 6.9C7.1 6.8 7.10001 6.7 7.20001 6.6C7.30001 6.5 7.20001 6.4 7.20001 6.3C7.20001 6.2 6.80001 5.2 6.60001 4.8C6.50001 4.5 6.30001 4.5 6.20001 4.5C6.10001 4.5 5.99999 4.5 5.79999 4.5C5.69999 4.5 5.49999 4.5 5.29999 4.7C5.09999 4.9 4.60001 5.4 4.60001 6.4C4.60001 7.4 5.29999 8.3 5.39999 8.5C5.49999 8.6 6.79999 10.7 8.79999 11.5C10.5 12.2 10.8 12 11.2 12C11.6 12 12.4 11.5 12.5 11.1C12.7 10.6 12.7 10.2 12.6 10.2C12.5 9.7 12.3 9.7 12.1 9.6Z"
-                                            fill="white" />
-                                    </svg>
-                                </div>
-                            </div>
-                            
-                            <h2 class="font-roboto font-bold text-text28 text-[#082252]">Obtén una cotización</h2>
-                            
-                            <div class= "">
-                                  <form  id="formProducto">
-                                    @csrf
-                                    <div class="flex flex-col gap-5">
-                                        <div class="relative flex flex-col md:flex-row w-full gap-5"  >
-                                            <input 
-                                                required name="full_name" id="fullNameContacto" type="text" placeholder="Nombre completo"
-                                                class="w-full  py-3 px-4 focus:outline-none font-roboto text-text16 text-[#082252] focus:ring-0 placeholder:text-[#082252] placeholder:text-opacity-40 border-[#082252] border-b transition-all focus:outline-0 border-t-0 border-l-0 border-r-0 focus:font-medium bg-transparent focus:bg-transparent focus:border-[#082252]" />
-                                        </div>
-
-
-                                        <input type="hidden" name="service_product" value="{{ $producto->producto }}"/>
-
-                                         <div class="relative w-full" >
-                                            <input  id="telefonoContacto" name="phone" placeholder="Teléfono" type="tel" maxlength="12" required
-                                                    class="w-full  py-3 px-4 focus:outline-none font-roboto text-text16 text-[#082252] focus:ring-0 placeholder:text-[#082252] placeholder:text-opacity-40 border-[#082252] border-b transition-all focus:outline-0 border-t-0 border-l-0 border-r-0 focus:font-medium bg-transparent focus:bg-transparent focus:border-[#082252]" />
-                                        </div>
-                                        <div class="relative w-full" >
-                                            <input type="email" name="email" placeholder="E-mail" required id="emailContacto"
-                                                class="w-full py-3 px-4 focus:outline-none font-roboto text-text16 text-[#082252] focus:ring-0 placeholder:text-[#082252] placeholder:text-opacity-40 border-[#082252] border-b transition-all focus:outline-0 border-t-0 border-l-0 border-r-0 focus:font-medium bg-transparent focus:bg-transparent focus:border-[#082252]" />
-                                        </div>
-
-                                        <input type="hidden" id="tipo" placeholder="tipo" name="source" value="Producto" />
-
-                                        <div class="relative w-full" >
-                                            <textarea name="message" id="message" rows="2" cols="30"
-                                                class="w-full py-3 px-4 focus:outline-none font-roboto text-text16 text-[#082252] focus:ring-0 placeholder:text-[#082252] placeholder:text-opacity-40 border-[#082252] border-b transition-all focus:outline-0 border-t-0 border-l-0 border-r-0 focus:font-medium bg-transparent focus:bg-transparent focus:border-[#082252]"
-                                                placeholder="Mensaje"></textarea>
-                                        </div>
-                                        <input type="hidden" name="client_width" id="anchodispositivo">
-                                        <input type="hidden" name="client_height" id="largodispositivo">
-                                        <input type="hidden" name="client_latitude" id="latitud">
-                                        <input type="hidden" name="client_longitude" id="longitud">
-                                        <input type="hidden" name="client_system" id="sistema">
-                                        <div class="flex justify-center items-center py-5" 
-                                            >
-                                            <button type="submit"
-                                                class="text-text18 font-roboto font-semibold text-white bg-[#FF5E14] py-3 px-6 w-full text-center rounded-xl">Enviar
-                                                solicitud</button>
-                                        </div>
-                                    </div>
-                                </form>   
-                            </div>
-
-                            <form  id="formContactos">
-                                @csrf
-                                <div class="flex flex-col gap-5">
-                                    <div class="relative w-full"  >
-                                        <input 
-                                            required name="full_name" id="fullNameContacto" type="text" placeholder="Nombre completo"
-                                            class="w-full py-3 px-4 focus:outline-none font-roboto text-text16 text-[#082252] focus:ring-0 placeholder:text-[#082252] placeholder:text-opacity-40 border-[#082252] border-b transition-all focus:outline-0 border-t-0 border-l-0 border-r-0 focus:font-medium bg-transparent focus:bg-transparent focus:border-[#082252]" />
-                                    </div>
-    
-                                    <div class="relative w-full" >
-                                        <input  id="telefonoContacto" name="phone" placeholder="Teléfono" type="tel" maxlength="12" required
-                                            class="w-full py-3 px-4 focus:outline-none font-roboto text-text16 text-[#082252] focus:ring-0 placeholder:text-[#082252] placeholder:text-opacity-40 border-[#082252] border-b transition-all focus:outline-0 border-t-0 border-l-0 border-r-0 focus:font-medium bg-transparent focus:bg-transparent focus:border-[#082252]" />
-                                    </div>
-    
-                                    <div class="relative w-full" >
-                                        <input type="email" name="email" placeholder="E-mail" required id="emailContacto"
-                                            class="w-full py-3 px-4 focus:outline-none font-roboto text-text16 text-[#082252] focus:ring-0 placeholder:text-[#082252] placeholder:text-opacity-40 border-[#082252] border-b transition-all focus:outline-0 border-t-0 border-l-0 border-r-0 focus:font-medium bg-transparent focus:bg-transparent focus:border-[#082252]" />
-                                    </div>
-    
-                                    <input type="hidden" id="tipo" placeholder="tipo" name="source" value="Inicio" />
-    
-                                    <div class="relative w-full" >
-                                        <textarea name="message" id="message" rows="3" cols="30"
-                                            class="w-full py-3 px-4 focus:outline-none font-roboto text-text16 text-[#082252] focus:ring-0 placeholder:text-[#082252] placeholder:text-opacity-40 border-[#082252] border-b transition-all focus:outline-0 border-t-0 border-l-0 border-r-0 focus:font-medium bg-transparent focus:bg-transparent focus:border-[#082252]"
-                                            placeholder="Mensaje"></textarea>
-                                    </div>
-                                    <input type="hidden" name="client_width" id="anchodispositivo">
-                                    <input type="hidden" name="client_height" id="largodispositivo">
-                                    <input type="hidden" name="client_latitude" id="latitud">
-                                    <input type="hidden" name="client_longitude" id="longitud">
-                                    <input type="hidden" name="client_system" id="sistema">
-                                    <div class="flex justify-center items-center py-5" 
-                                        >
-                                        <button type="submit"
-                                            class="text-text18 font-roboto font-semibold text-white bg-[#0C4AC3] md:bg-[#FF5E14] py-4 px-6 w-full text-center rounded-lg">Enviar
-                                            solicitud</button>
-                                    </div>
-                                </div>
-                            </form>
-
-                        </div> --}}
+                        </p>
+                        <p class="text-colorAzulOscuro text-text14 font-medium flex gap-2 items-center"><svg width="16"
+                                height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8.0013 1.83203C5.05578 1.83203 2.66797 3.92137 2.66797 6.4987H13.3346C13.3346 3.92137 10.9468 1.83203 8.0013 1.83203Z"
+                                    stroke="#141B34" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M5.33203 12.0555C5.33203 10.7686 5.56225 10.5 6.66536 10.5H9.33203C10.4352 10.5 10.6654 10.7686 10.6654 12.0555V13.6111C10.6654 14.8981 10.4352 15.1667 9.33203 15.1667H6.66536C5.56225 15.1667 5.33203 14.8981 5.33203 13.6111V12.0555Z"
+                                    stroke="#141B34" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M8.006 12.168H8" stroke="#141B34" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M2.66797 6.5L8.0013 10.5L13.3346 6.5" stroke="#141B34" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Agrega al carrito
+                            para conocer los costos de envío</p>
+                        <p class="text-colorAzulOscuro text-text14 font-medium flex gap-2 items-center"><svg width="16"
+                                height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M6.66536 6.33333L3.51557 2.98374C3.23673 2.68298 3.28138 2.46329 3.61022 2.27308C4.22839 1.91551 4.70996 1.9058 5.36155 2.26339L8.63136 4.05781C8.86416 4.18555 9.09243 4.31504 9.33203 4.38568"
+                                    stroke="#141B34" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M8.33203 9.1101L9.7389 13.6477C9.85376 14.0183 10.056 14.0854 10.3694 13.9058C10.9584 13.568 11.1959 13.178 11.2118 12.4751L11.2917 8.94784C11.3024 8.4767 11.3004 8.01564 11.6654 7.66797"
+                                    stroke="#141B34" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M5.55101 7.3228L6.80897 6.40369L9.75717 4.25422L9.75977 4.25232L9.76477 4.24865C9.83437 4.19772 10.8716 3.44157 11.46 3.18385C12.183 2.86709 12.8566 3.01435 13.5813 3.21675C13.9562 3.32143 14.1436 3.37377 14.2788 3.47143C14.4934 3.62637 14.6329 3.86483 14.6616 4.12566C14.6797 4.29005 14.6319 4.47637 14.5364 4.84902C14.3516 5.56951 14.1441 6.21877 13.5046 6.67833C12.9842 7.05227 11.8017 7.56067 11.7224 7.59453L11.7168 7.597L11.7138 7.59827L8.35317 9.04293L6.9175 9.65833C6.39697 9.88147 6.1367 9.99307 5.95963 10.2001C5.54492 10.685 5.48635 11.5625 5.33157 12.1662C5.24604 12.4999 4.77702 13.078 4.35909 12.9912C4.10107 12.9377 4.09612 12.6147 4.06401 12.4087L3.75483 10.4259C3.6809 9.95173 3.67523 9.942 3.29603 9.64173L1.71041 8.38613C1.54572 8.25573 1.26472 8.09 1.3467 7.84273C1.47949 7.4422 2.22142 7.33047 2.55701 7.4242C3.16426 7.5938 3.96368 7.98247 4.59659 7.87053C4.86683 7.82273 5.0949 7.65607 5.55101 7.3228Z"
+                                    stroke="#141B34" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            Recíbelo entre 18
+                            y 23 días hábiles</p>
+                        <button
+                            class="bg-colorBackgroundRed text-white w-full p-3 rounded-full mt-4 text-lg font-semibold">Comprar</button>
                     </div>
 
-
-                    {{-- <div class="pt-5" data-aos="fade-up" data-aos-offset="150">
-                        @if (is_null($producto->categoria->name))
-                        @else
-                            <p class="font-roboto font-medium text-text14 text-[#082252]">
-                                Categoría: <span
-                                    class="text-[#565656] font-normal text-text14">{{ $producto->categoria->name }}</span>
-                            </p>
-                        @endif
-
-                        @if (is_null($producto->sku))
-                        @else
-                            <p class="font-roboto font-medium text-text14 text-[#082252]">
-                                SKU: <span class="text-[#565656] font-normal text-text14">{{ $producto->sku }}</span>
-                            </p>
-                        @endif
-                    </div> --}}
-                    
                 </div>
             </div>
-            
-            {{-- @php
-                $especificacionf = strip_tags($producto->especificacion);
-                
-            @endphp --}}
-                
-            {{-- @if (!is_null($producto->especificacion) && $especificacionf !== '')
-                <div class="flex flex-col gap-2 pt-10 md:pt-16" data-aos="fade-up" data-aos-offset="150">
-                    <h3 class="font-roboto font-bold text-text28 text-[#082252]">Características técnicas</h3>
-                    <div class="text-[#082252] text-text16 font-normal font-roboto flex flex-col ">
-                        
-                            {!! $producto->especificacion !!}
-                        
-                    </div>
-                </div>
-            @endif --}}
-            
-                
 
-            {{-- @if ($especificaciones->isEmpty())
-            @else
-                <div class="pt-10 md:pt-16 flex flex-col gap-5">
-                    <h3 class="font-roboto font-bold text-text28 text-[#082252]">Características técnicas</h3>
-                    <div class="mx-6" data-aos="fade-up" data-aos-offset="150">
-                        <ul class="font-roboto font-normal text-text16 list-disc text-[#082252]">
-
-                            @foreach ($especificaciones as $item)
-                                <li><span class="font-semibold">{{ capitalizeFirstLetter($item->tittle) }}:</span>
-                                    {{ capitalizeFirstLetter($item->specifications) }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            @endif --}}
-        </section>
-
-
-       
-
-
-        @if ($ProdComplementarios->isEmpty())
-        @else
-            <section class=" justify-center items-center px-[5%] py-10 lg:py-16 bg-white space-y-12">
-
-                <div class="flex flex-col justify-start gap-3 md:flex-row md:justify-between w-full md:items-center">
-                    <h2 class="text-[#54340E] font-bignoodle text-5xl">Nuestros recomendados</h2>
-                    <div class="flex flex-row">
-                        <a href="{{route('catalogo.all')}}">
-                            <div class="bg-[#F07407] text-white rounded-lg px-3 py-1.5 text-base font-latoregular">Ver todos los recomendados</div>
-                        </a>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="swiper slider_productos">
-                        <div class="swiper-wrapper">
-                            @foreach ($ProdComplementarios as $product)
-                                <div class="swiper-slide">   
-                                    <div class="flex flex-col rounded-lg border border-[#DDCCBA] overflow-hidden group cursor-pointer">
-                                        <a href="{{route('producto', $product->id)}}">
-                                            <img
-                                                class="w-full h-full aspect-[3/2] object-cover"
-                                                src="{{asset($product->imagen)}}"
-                                            />
-                                        </a>
-                                        
-                                        <div class="text-[#54340E] font-latobold text-xl px-3 pt-2 pb-3 w-full flex flex-col gap-1">
-                                            <div class="flex flex-col">
-                                                <h2 class="line-clamp-1">{{$product->producto}}</h2>
-                                                <div class="line-clamp-2 font-latoregular text-sm h-9 leading-tight flex flex-col justify-center">
-                                                    {!! $product->extract ?? $product->description !!}
-                                                </div>
-                                                <div class="flex flex-row justify-start items-center gap-2 font-latobold mt-1">
-                                                    @if ($product->descuento == 0)
-                                                        <span class="text-lg">S/ {{$product->precio}}</span>   
-                                                    @else
-                                                        <span class="text-lg">S/ {{$product->descuento}}</span>
-                                                        <span class="text-sm line-through">S/ {{$product->precio}}</span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                
-                                            <a href="{{route('producto', $product->id)}}" class="botonopciones">
-                                                <div class="bg-[#54340E] rounded-lg pt-1 pb-2 text-center ">
-                                                    <span
-                                                        class="bg-[#54340E] text-white font-latoregular text-base text-center w-full"
-                                                        href="{{route('producto', $product->id)}}"
-                                                    >
-                                                        Ordena aqui
-                                                    </span>
-                                                </div>
-                                            </a>
-                                        </div>
+            <div class="my-10">
+                <h2 class="text-2xl font-bold">Productos Relacionados</h2>
+                <div class="grid grid-cols-3 gap-6 mt-4">
+                    @if ($productoRelacionado)
+                        @foreach ($productoRelacionado as $producto)
+                            <div
+                                class="bg-colorBackgroundAzulClaro h-max p-4 shadow-md text-start group cursor-pointer rounded-xl">
+                                <a href="{{ route('producto', $producto->slug) }}">
+                                    <div class="mb-4 w-full h-[212px] bg-white rounded-xl">
+                                        <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->producto }}"
+                                            class=" w-full h-full object-contain">
                                     </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
+                                    <h3 class="text-text28 font-semibold mb-2 text-colorAzulOscuro">
+                                        {{ $producto->producto }}
+                                    </h3>
+                                    <p class="text-colorParrafo mb-4 text-text16 line-clamp-2">{{ $producto->extract }}
+                                    </p>
+                                    <a href="{{ route('producto', $producto->slug) }}"
+                                        class="group-hover:w-full duration-300 ease-in-out group-hover:text-center group-hover:bg-colorBackgroundAzul bg-colorBackgroundRed  rounded-full text-white font-semibold px-4 py-2 inline-block">Ver
+                                        más</a>
+                                </a>
+                            </div>
+                        @endforeach
+                    @else{
+                        <p>No hay productos relacionados</p>
+                        }
+                    @endif
                 </div>
+            </div>
+        </div>
 
-            </section>
-        @endif
+
+
+
+
 
 
 
@@ -382,118 +192,10 @@
 
 @section('scripts_importados')
     <script>
-        const principal = document.querySelector('.principal');
-        const secundarios = document.querySelectorAll('.secundario');
-
-        secundarios.forEach(item => {
-            item.addEventListener('click', function() {
-                const active = document.querySelector('.active');
-                active.classList.remove('active');
-                this.classList.add('active');
-                principal.src = this.src;
-            })
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#chatonline').click(function() {
-
-                function isMobile() {
-                    if (sessionStorage.desktop)
-                        return false;
-                    else if (localStorage.mobile)
-                        return true;
-                    var mobile = ['iphone', 'ipad', 'android', 'blackberry', 'nokia', 'opera mini',
-                        'windows mobile', 'windows phone', 'iemobile'
-                    ];
-                    for (var i in mobile)
-                        if (navigator.userAgent.toLowerCase().indexOf(mobile[i].toLowerCase()) > 0)
-                            return true;
-                    return false;
-                }
-
-                setTimeout(function() {
-
-                    telefono2 = '51992262598';
-                    nombre2 = $('#nombreproducto').text();
-                    mensaje2 = 'send?phone=' + telefono2 +
-                        '&text=Hola, quiero comunicarme con un asesor.%0AEstoy interesad@ en el producto *' +
-                        nombre2 + '*.';
-
-                    if (isMobile()) {
-                        window.open('https://api.whatsapp.com/' + mensaje2, '_blank');
-                    } else {
-                        window.open('https://web.whatsapp.com/' + mensaje2, '_blank');
-                    }
-                }, 200);
-            });
-        });
-    </script>
-
-    <script>
- 
-        // Obtener información del navegador y del sistema operativo
-        const platform = navigator.platform;
-        document.getElementById('sistema').value = platform;
-    
-        // Obtener la geolocalización del usuario (si se permite)
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                document.getElementById('latitud').value = position.coords.latitude;
-                document.getElementById('longitud').value = position.coords.longitude;
-            });
+        function changeImage(element) {
+            document.getElementById('mainImage').src = element.src;
         }
-    
-        // Obtener la página de referencia
-        const referrer = document.referrer;
-        document.getElementById('llegade').value = referrer;
-    
-    
-        // Obtener la resolución de la pantalla
-        const screenWidth = window.screen.width;
-        const screenHeight = window.screen.height;
-        document.getElementById('anchodispositivo').value = screenWidth;
-        document.getElementById('largodispositivo').value = screenHeight;
     </script>
-
-    <script>
-        var swiper = new Swiper(".slider_productos", {
-            slidesPerView: 4,
-            spaceBetween: 30,
-            centeredSlides: false,
-            initialSlide: 0,
-            grabCursor: true,
-            loop: true,
-             autoplay: {
-                delay: 2000, 
-                disableOnInteraction: true,
-            },
-            breakpoints: {
-                0: {
-                    slidesPerView: 1,
-                   
-                },
-                600: {
-                    slidesPerView: 2,
-                   
-                },
-                950: {
-                    slidesPerView: 3,
-                   
-                },
-                1200: {
-                    slidesPerView: 4,
-                   
-                },
-            },
-            pagination: {
-                el: ".swiper-pagination_productos",
-                clickable: true,
-            },
-        });
-    </script>
-
 @stop
 
 @stop

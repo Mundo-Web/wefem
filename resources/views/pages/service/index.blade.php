@@ -64,7 +64,7 @@
                                     <td class="w-80 line-clamp-2">{{ $item->descripcion_breve }}</td>
                                     <td class="px-3 py-2 ">
                                         <div class=" h-10 w-10 bg-colorBackgroundAzulOscuro"
-                                            style="mask-image: url('{{ asset($item->icono) }}'); mask-size: cover; mask-repeat: no-repeat;"">
+                                            style="mask-image: url('{{ asset($item->icono) }}'); mask-size: contain; mask-repeat: no-repeat;"">
                                         </div>
                                     </td>
                                     <td class="w-56 line-clamp-2">{{ $item->beneficios }}</td>
@@ -203,8 +203,8 @@
                 var id = $(this).attr('data-idService');
 
                 Swal.fire({
-                    title: "Seguro que deseas eliminar?",
-                    text: "Vas a eliminar un servicio",
+                    title: "¿Seguro que deseas eliminar?",
+                    text: "Eliminaras el Servicio y sus recursos asociados, ¿Desea continuar?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -216,7 +216,7 @@
 
                         $.ajax({
 
-                            url: '{{ route('servicio.deleteService') }}',
+                            url: '{{ route('servicio.borrar') }}',
                             method: 'POST',
                             data: {
                                 _token: $('input[name="_token"]').val(),

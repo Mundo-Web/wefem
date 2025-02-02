@@ -14,6 +14,8 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+
+
 // Import AOS
 import "aos/dist/aos.css";
 import AOS from "aos";

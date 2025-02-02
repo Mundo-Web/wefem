@@ -13,6 +13,17 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 
+
+.summernote-container .note-editor {
+    border: 1px solid #e2e8f0; /* Usa un color de Tailwind */
+    border-radius: 0.375rem; /* rounded-md en Tailwind */
+}
+
+.summernote-container .note-toolbar {
+    background-color: #f7fafc; /* bg-gray-50 en Tailwind */
+    border-bottom: 1px solid #e2e8f0; /* border-gray-300 en Tailwind */
+}
+
 *{
   font-family: 'Poppins',serif;
 }

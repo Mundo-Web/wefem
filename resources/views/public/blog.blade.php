@@ -20,24 +20,25 @@
 
         <section class="max-w-7xl mx-auto  pt-10 flex gap-10">
             <div class="w-1/2 flex flex-col justify-center" data-aos="fade-down">
-                @if (is_null($lastpost))
+                @if (is_null($mostRecentPost))
                 @else
-                    <a href="{{ route('detalleBlog', $lastpost->id) }}">
+                    <a href="{{ route('detalleBlog', $mostRecentPost->slug) }}">
                         <div class="flex flex-col w-full bg-white bg-opacity-10 overflow-hidden rounded-xl text-left">
                             <div class="flex flex-row justify-center">
-                                <img class="w-full h-[300px]  object-cover rounded-xl" src="{{ $lastpost->imagen }}"
+                                <img class="w-full h-[300px]  object-cover rounded-xl"
+                                    src="{{ asset($mostRecentPost->imagen) }}"
                                     onerror="this.onerror=null;this.src='{{ asset('images/img/noimagen.jpg') }}';" />
                             </div>
                             <div class="py-6 flex flex-col gap-3">
-                                <p class="text-text16 font-bold text-colorRojo">Categoria</p>
+                                <p class="text-text16 font-bold text-colorRojo">{{ $mostRecentPost->category->nombre }}</p>
                                 <h2 class=" text-colorAzulOscuro text-text24 line-clamp-3 font-bold">
-                                    {{ $lastpost->title }}</h2>
+                                    {{ $mostRecentPost->titulo }}</h2>
                                 <div class=" text-colorParrafo text-18 text-justify line-clamp-3">
-                                    {!! $lastpost->extracto ?? $lastpost->descripcion !!}</div>
+                                    {!! $mostRecentPost->extracto ?? $mostRecentPost->descripcion !!}</div>
                                 <p class="flexjustify-start gap-4 text-colorRojo text-text14 font-medium">
-                                    <span>{{ \Carbon\Carbon::parse($lastpost->fecha_publicacion)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}</span>
+                                    <span>{{ \Carbon\Carbon::parse($mostRecentPost->fecha_publicacion)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}</span>
                                     .
-                                    <span>Leido hace 5 min</span>
+                                    <span id="last-read-{{ $mostRecentPost->id }}">Cargando...</span>
                                 </p>
                             </div>
                         </div>
@@ -46,27 +47,26 @@
             </div>
             <div class="w-1/2" data-aos="fade-down">
 
-                @foreach ($postsgeneral->take(2) as $postr)
-                    <div class=" w-full">
-                        <a href="{{ route('detalleBlog', $postr->id) }}" class="flex gap-4">
+                @foreach ($nextTwoRecentPosts as $post)
+                    <div class=" w-full mb-4">
+                        <a href="{{ route('detalleBlog', $post->slug) }}" class="flex gap-4">
                             <div class="w-2/5">
-                                <img class="h-full w-full object-cover rounded-xl"
-                                    src="{{ asset($postr->imagen . $postr->titulo) }}"
+                                <img class="h-full w-full object-cover rounded-xl" src="{{ asset($post->imagen) }}"
                                     onerror="this.onerror=null;this.src='{{ asset('images/img/noimagen.jpg') }}';" />
                             </div>
                             <div class="flex flex-col gap-3 justify-center items-start w-3/5 p-3 cursor-pointer">
-                                <p class="text-text16 font-bold text-colorRojo">Categoria</p>
+                                <p class="text-text16 font-bold text-colorRojo">{{ $post->category->nombre }}</p>
                                 <div class="flex flex-col justify-center items-start h-20">
                                     <h2 class=" text-colorAzulOscuro text-text24 line-clamp-3 font-bold">
-                                        {{ $postr->title }}
+                                        {{ $post->titulo }}
                                     </h2>
                                 </div>
                                 <div class=" text-colorParrafo text-18 text-justify line-clamp-3">
-                                    {!! $lastpost->extracto ?? $lastpost->descripcion !!}</div>
+                                    {!! $post->extracto ?? $post->descripcion !!}</div>
                                 <p class="flexjustify-start gap-4 text-colorRojo text-text14 font-medium">
-                                    <span>29 de julio de 2023</span>
+                                    <span>{{ \Carbon\Carbon::parse($post->fecha_publicacion)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}</span>
                                     .
-                                    <span>Leido hace 5 min</span>
+                                    <span id="last-read-{{ $post->id }}">Cargando...</span>
                                 </p>
                             </div>
 
@@ -96,28 +96,29 @@
                 <div class="w-full">
                     <div class="grid grid-cols-3 gap-10">
 
-                        @foreach ($posts as $post)
+                        @foreach ($remainingPosts as $post)
                             <div data-aos="fade-down" class="flex flex-col w-full">
-                                <a href="{{ route('detalleBlog', $post->id) }}">
+                                <a href="{{ route('detalleBlog', $post->slug) }}">
                                     <div class="flex flex-row justify-center">
                                         <img class="w-full h-[300px] object-cover rounded-xl"
-                                            src="{{ asset($post->imagen . $post->titulo) }}"
+                                            src="{{ asset($post->imagen) }}"
                                             onerror="this.onerror=null;this.src='{{ asset('images/img/noimagen.jpg') }}';" />
                                     </div>
                                     <div class=" flex flex-col gap-3 mt-4">
 
                                         <div class="flex flex-col justify-center items-start">
-                                            <p class="text-text16 font-bold text-colorRojo">Categoria</p>
+                                            <p class="text-text16 font-bold text-colorRojo">{{ $post->category->nombre }}
+                                            </p>
                                             <h2 class=" text-colorAzulOscuro text-text24 line-clamp-3 font-bold">
-                                                {{ $post->title }}
+                                                {{ $post->titulo }}
                                             </h2>
                                         </div>
                                         <div class=" text-colorParrafo text-18 text-justify line-clamp-3">
                                             {!! $post->extracto ?? $post->descripcion !!}</div>
                                         <p class="flexjustify-start gap-4 text-colorRojo text-text14 font-medium">
-                                            <span>29 de julio de 2023</span>
+                                            <span>{{ \Carbon\Carbon::parse($post->fecha_publicacion)->locale('es')->isoFormat('D [de] MMMM [de] YYYY') }}</span>
                                             .
-                                            <span>Leido hace 5 min</span>
+                                            <span id="last-read-{{ $post->id }}">Cargando...</span>
                                         </p>
                                     </div>
                                 </a>
@@ -133,6 +134,69 @@
 
 
 @section('scripts_importados')
+    <script>
+        // Función para calcular el tiempo relativo
+        function getRelativeTime(diffInMinutes) {
+            if (diffInMinutes < 1) {
+                return "Leído hace menos de un minuto";
+            } else if (diffInMinutes < 60) {
+                return `Leído hace ${diffInMinutes} ${diffInMinutes === 1 ? 'minuto' : 'minutos'}`;
+            } else if (diffInMinutes < 1440) {
+                const diffInHours = Math.floor(diffInMinutes / 60);
+                return `Leído hace ${diffInHours} ${diffInHours === 1 ? 'hora' : 'horas'}`;
+            } else {
+                const diffInDays = Math.floor(diffInMinutes / 1440);
+                return `Leído hace ${diffInDays} ${diffInDays === 1 ? 'día' : 'días'}`;
+            }
+        }
+
+        // Función para actualizar el texto del último tiempo leído
+        function updateLastReadTime(postId) {
+            const spanElement = document.getElementById(`last-read-${postId}`);
+
+            if (!spanElement) return;
+
+            // Obtener la última lectura del localStorage
+            const lastRead = localStorage.getItem(`blog_${postId}_last_read`);
+
+            if (lastRead) {
+                const lastReadDate = new Date(lastRead);
+                const now = new Date();
+                const diffInMinutes = Math.floor((now - lastReadDate) / (1000 * 60));
+
+                // Mostrar el tiempo relativo
+                spanElement.innerText = getRelativeTime(diffInMinutes);
+            } else {
+                spanElement.innerText = "No ha sido leído aún.";
+            }
+        }
+
+        // Función para registrar la lectura en localStorage
+        function markAsRead(postId) {
+            localStorage.setItem(`blog_${postId}_last_read`, new Date().toISOString());
+            updateLastReadTime(postId); // Actualizar el texto después de marcar como leído
+        }
+
+        // Actualizar el tiempo de lectura para los posts restantes al cargar la página
+        document.addEventListener("DOMContentLoaded", function() {
+            @foreach ($remainingPosts as $post)
+                updateLastReadTime({{ $post->id }}); // Solo actualizar el texto, no marcar como leído
+            @endforeach
+        });
+
+        // Actualizar el tiempo de lectura para los próximos dos posts recientes al cargar la página
+        document.addEventListener("DOMContentLoaded", function() {
+            @foreach ($nextTwoRecentPosts as $post)
+                updateLastReadTime({{ $post->id }}); // Solo actualizar el texto, no marcar como leído
+            @endforeach
+        });
+
+
+        // Actualizar el tiempo de lectura para el post más reciente al cargar la página
+        document.addEventListener("DOMContentLoaded", function() {
+            updateLastReadTime({{ $mostRecentPost->id }}); // Solo actualizar el texto, no marcar como leído
+        });
+    </script>
 
 
 @stop

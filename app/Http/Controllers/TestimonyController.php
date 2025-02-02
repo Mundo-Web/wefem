@@ -21,8 +21,6 @@ class TestimonyController extends Controller
         $testimony = Testimony::where("status", "=", true)->get();
 
         return view('pages.testimonies.index', compact('testimony'));
-
-        
     }
 
     /**
@@ -33,25 +31,26 @@ class TestimonyController extends Controller
         return view('pages.testimonies.create');
     }
 
-    public function saveImg($file, $route, $nombreImagen){
-		$manager = new ImageManager(new Driver());
-		$img =  $manager->read($file);        
+    public function saveImg($file, $route, $nombreImagen)
+    {
+        $manager = new ImageManager(new Driver());
+        $img =  $manager->read($file);
         // $img->coverDown(198, 72, 'center'); 
-		if (!file_exists($route)) {
-			mkdir($route, 0777, true); // Se crea la ruta con permisos de lectura, escritura y ejecución
-	}
-		$img->save($route . $nombreImagen);
-	}
+        if (!file_exists($route)) {
+            mkdir($route, 0777, true); // Se crea la ruta con permisos de lectura, escritura y ejecución
+        }
+        $img->save($route . $nombreImagen);
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {   
+    {
         $request->validate([
             'name' => 'required',
         ]);
-        
-        $testimony = new Testimony(); 
+
+        $testimony = new Testimony();
 
         if ($request->hasFile("imagen")) {
             $file = $request->file('imagen');
@@ -60,18 +59,19 @@ class TestimonyController extends Controller
             $this->saveImg($file, $routeImg, $nombreImagen);
 
             $testimony->ocupation = $routeImg . $nombreImagen;
-         
         }
 
         $testimony->name = $request->name;
-        $url = $request->video;
-        $testimony->email = $this->getYTVideoId($url);
+        // $url = $request->video;
+        // $testimony->email = $this->getYTVideoId($url);
         $testimony->testimonie = $request->testimonie;
+        $testimony->departamento = $request->departamento;
+        $testimony->pais = $request->pais;
         $testimony->status = 1;
         $testimony->visible = 1;
 
         $testimony->save();
-       
+
         return redirect()->route('testimonios.index')->with('success', 'Testimonio creado');
     }
 
@@ -97,12 +97,12 @@ class TestimonyController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-    {   
+    {
         $request->validate([
             'name' => 'required',
         ]);
-        
-        $testimony = Testimony::findOrfail($id); 
+
+        $testimony = Testimony::findOrfail($id);
 
         if ($request->hasFile("imagen")) {
             $file = $request->file('imagen');
@@ -118,11 +118,11 @@ class TestimonyController extends Controller
 
 
         $url = $request->video;
-        
+
         if ($testimony->email == $url) {
-        $testimony->email == $url;
-        }else{
-        $testimony->email = $this->getYTVideoId($url);
+            $testimony->email == $url;
+        } else {
+            $testimony->email = $this->getYTVideoId($url);
         }
 
         // $testimony->name = $request->name;
@@ -151,7 +151,7 @@ class TestimonyController extends Controller
     {
         $id = $request->id;
         //Busco el servicio con id como parametro
-        $testimony = Testimony::findOrfail($id); 
+        $testimony = Testimony::findOrfail($id);
         //Modifico el status a false
         $testimony->status = false;
         //Guardo 
@@ -163,22 +163,22 @@ class TestimonyController extends Controller
 
 
     private function getYTVideoId($url)
-  {
-      $patterns = [
-        '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', // URL estándar
-        '/(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]+)/', // URL corta
-        '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]+)/', // URL embebida
-        '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)(?:&.*)?/', // URL estándar con parámetros adicionales
-      ];
-      foreach ($patterns as $pattern) {
-        if (preg_match($pattern, $url, $matches)) {
-          return $matches[1];
+    {
+        $patterns = [
+            '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', // URL estándar
+            '/(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]+)/', // URL corta
+            '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]+)/', // URL embebida
+            '/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)(?:&.*)?/', // URL estándar con parámetros adicionales
+        ];
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $url, $matches)) {
+                return $matches[1];
+            }
         }
-      }
-      return null;
-  }
+        return null;
+    }
 
-    
+
     public function updateVisible(Request $request)
     {
         // Lógica para manejar la solicitud AJAX
@@ -190,12 +190,11 @@ class TestimonyController extends Controller
         $status = $request->status;
 
         $testimony = Testimony::findOrFail($id);
-        
+
         $testimony->$field = $status;
 
         $testimony->save();
 
-         return response()->json(['message' => 'Estado modificado.']);
-    
+        return response()->json(['message' => 'Estado modificado.']);
     }
 }

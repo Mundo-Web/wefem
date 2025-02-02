@@ -14,7 +14,7 @@
 
 
             <header class="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
-                <h2 class="font-semibold text-slate-800 dark:text-slate-100 text-2xl tracking-tight">Servicios </h2>
+                <h2 class="font-semibold text-slate-800 dark:text-slate-100 text-2xl tracking-tight">Productos </h2>
             </header>
             <div class="p-3">
 
@@ -39,7 +39,7 @@
                                     <td>{{ $item->producto }}</td>
                                     <td class="px-3 py-2">
                                         @if ($item->imagen)
-                                            <img class="w-16 h-20 object-cover" src="{{ asset($item->imagen) }}"
+                                            <img class="w-16 h-20 object-contain" src="{{ asset($item->imagen) }}"
                                                 alt="">
                                         @endif
                                     </td>
@@ -84,8 +84,8 @@
 
                                     <td class="flex justify-center items-center gap-5 text-center sm:text-right">
 
-                                        <a href="{{ route('products.edit', $item->id) }}"
-                                            class="bg-yellow-400 px-3 py-2 rounded text-white  "><i
+                                        <a data-idProduct="{{ $item->id }}"
+                                            class="btn_edit bg-yellow-400 px-3 py-2 rounded text-white  "><i
                                                 class="fa-regular fa-pen-to-square"></i></a>
 
                                         <form action="" method="POST">
@@ -127,7 +127,13 @@
         new DataTable('#tabladatos', {
             responsive: true
         });
-
+        // Evento para editar productos
+        $(document).on("click", ".btn_edit", function(e) {
+            e.preventDefault();
+            let id = $(this).attr('data-idProduct');
+            let editUrl = "{{ route('products.edit', ':id') }}".replace(':id', id);
+            window.location.href = editUrl;
+        });
         $(document).on("change", ".btn_swithc", function() {
 
             let status = 0;
@@ -141,7 +147,7 @@
                 status = 0;
             }
 
-            console.log(titleService)
+
 
             $.ajax({
                 url: "{{ route('products.updateVisible') }}",
@@ -173,8 +179,8 @@
             let id = $(this).attr('data-idService');
 
             Swal.fire({
-                title: "Seguro que deseas eliminar?",
-                text: "Vas a eliminar un Logo",
+                title: "¿Seguro que deseas eliminar?",
+                text: "Eliminaras el producto y sus recursos asociados, ¿Desea continuar?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -183,6 +189,7 @@
                 cancelButtonText: "Cancelar"
             }).then((result) => {
                 if (result.isConfirmed) {
+
 
                     $.ajax({
 

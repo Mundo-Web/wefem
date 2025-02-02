@@ -15,10 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('breve_historia')->nullable();
+            $table->text('imagen')->nullable();
             $table->text('mision')->nullable();
             $table->text('vision')->nullable();
-            $table->text('imagen')->nullable();
+            $table->text('imagen_vision_mision')->nullable();
             $table->text('cultura_trabajo')->nullable();
+            $table->string('sello_garantia_titulo')->nullable();
+            $table->string('sello_garantia_subtitulo')->nullable();
+            $table->text('sello_garantia_contenido')->nullable();
+            $table->text('imagen_sello_garantia')->nullable();
             $table->timestamps();
         });
     }

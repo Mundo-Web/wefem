@@ -6,12 +6,13 @@
         /* Permite el desplazamiento vertical si el contenido excede la altura del modal */
     }
 </style>
-<footer class="bg-colorBackgroundAzulOscuro relative -z-20 overflow-hidden">
-    <div class="absolute left-0   transform  rotate-[60deg] -z-10">
+<footer class="bg-colorBackgroundAzulOscuro relative  overflow-hidden z-10">
+    <div class="absolute left-0   transform  rotate-[60deg] -z-10 ">
         <img src="{{ asset('images/img/background/bg-footer.png') }}" alt="" class="w-full">
     </div>
-    <div class="grid grid-cols-1 max-w-7xl mx-auto   py-10 lg:py-16 gap-10 md:gap-5">
-        <div class=" grid  grid-cols-2  gap-10 lg:gap-5 col-span-1" data-aos="fade-up" data-aos-offset="150">
+    <div class="grid grid-cols-1 max-w-7xl mx-auto   py-10 lg:py-16 gap-10 md:gap-5 z-50">
+        <div class=" grid  grid-cols-2  gap-10 lg:gap-5 col-span-1" data-aos="fade-up" data-aos-offset="150"
+            data-aos-duration="1000" data-aos-delay="200">
             <div>
                 <a href="{{ route('index') }}">
                     <img src="{{ asset('images/img/logo/DarTelecom.png') }}" class="w-48 h-auto object-cover" />
@@ -80,16 +81,16 @@
         </div>
     </div>
 
-    <div class="flex justify-between items-center gap-3 max-w-7xl mx-auto py-12 border-t-2 border-white">
+    <div class="flex justify-between items-center gap-3 max-w-7xl mx-auto py-12 border-t-2 border-white z-50">
         <a href="#" target="_blank" class="text-white font-gotham_medium  text-sm text-center">Copyright &copy;
             2025 Dar Telecom.
             Reservados todos los derechos</a>
 
         <div class="flex justify-end gap-16 text-white">
-            <a class=" ">
+            <a class="cursor-pointer " id="linkTerminos">
                 Terminos de servicios
             </a>
-            <a class="">
+            <a class="cursor-pointer " id="linkPoliticas">
                 Políticas de privacidad
             </a>
         </div>
