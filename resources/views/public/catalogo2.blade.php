@@ -238,76 +238,106 @@
                             id="dropdown-menu">
                             <div class="py-1 m-4" role="none">
                                 <!-- Opciones de ordenamiento -->
-                                <div class="flex justify-between py-4 sort-item" data-sort-by="default">
+
+                                <div class="flex justify-between py-4 ">
                                     <label for="filter-defecto"
                                         class="flex items-center cursor-pointer w-full justify-between">
-                                        <input type="checkbox" id="filter-defecto" class="hidden peer" />
+                                        <input type="checkbox" id="filter-defecto" class="hidden peer sort-checkbox"
+                                            value="default" />
                                         <span
                                             class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
                                             Orden por defecto
                                         </span>
+                                        <!-- Visual del Checkbox -->
                                         <div
-                                            class="w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
                                             <i class="fa-solid fa-check fa-xs"></i>
+
                                         </div>
                                     </label>
                                 </div>
-                                <div class="flex justify-between py-4 sort-item" data-sort-by="popular">
-                                    <label for="filter-popular"
+
+                                <div class="flex justify-between py-4 ">
+                                    <label for="filter-destacado"
                                         class="flex items-center cursor-pointer w-full justify-between">
-                                        <input type="checkbox" id="filter-popular" class="hidden peer" />
+                                        <input type="checkbox" id="filter-destacado" class="hidden peer sort-checkbox"
+                                            value="destacado" />
                                         <span
                                             class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
                                             Ordenar por popularidad
                                         </span>
+                                        <!-- Visual del Checkbox -->
                                         <div
-                                            class="w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
                                             <i class="fa-solid fa-check fa-xs"></i>
+
                                         </div>
                                     </label>
                                 </div>
-                                <div class="flex justify-between py-4 sort-item" data-sort-by="latest">
-                                    <label for="filter-ultimos"
+
+
+
+
+                                <div class="flex justify-between py-4 ">
+                                    <label for="filter-latest"
                                         class="flex items-center cursor-pointer w-full justify-between">
-                                        <input type="checkbox" id="filter-ultimos" class="hidden peer" />
+                                        <input type="checkbox" id="filter-latest" class="hidden peer sort-checkbox"
+                                            value="latest" />
                                         <span
                                             class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
                                             Orden por los últimos
                                         </span>
+                                        <!-- Visual del Checkbox -->
                                         <div
-                                            class="w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
                                             <i class="fa-solid fa-check fa-xs"></i>
+
                                         </div>
                                     </label>
                                 </div>
-                                <div class="flex justify-between py-4 sort-item" data-sort-by="low_to_high">
-                                    <label for="filter-menor"
+                                <div class="flex justify-between py-4 ">
+                                    <label for="filter-low_to_high"
                                         class="flex items-center cursor-pointer w-full justify-between">
-                                        <input type="checkbox" id="filter-menor" class="hidden peer" />
+                                        <input type="checkbox" id="filter-low_to_high" class="hidden peer sort-checkbox"
+                                            value="low_to_high" />
                                         <span
                                             class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
                                             Ordenar por precio: bajo a alto
                                         </span>
+                                        <!-- Visual del Checkbox -->
                                         <div
-                                            class="w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
                                             <i class="fa-solid fa-check fa-xs"></i>
+
                                         </div>
                                     </label>
                                 </div>
-                                <div class="flex justify-between py-4 sort-item" data-sort-by="high_to_low">
-                                    <label for="filter-mayor"
+
+
+                                <div class="flex justify-between py-4 ">
+                                    <label for="filter-high_to_low"
                                         class="flex items-center cursor-pointer w-full justify-between">
-                                        <input type="checkbox" id="filter-mayor" class="hidden peer" />
+                                        <input type="checkbox" id="filter-high_to_low" class="hidden peer sort-checkbox"
+                                            value="high_to_low" />
                                         <span
                                             class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
                                             Ordenar por precio: alto a bajo
                                         </span>
+                                        <!-- Visual del Checkbox -->
                                         <div
-                                            class="w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
                                             <i class="fa-solid fa-check fa-xs"></i>
+
                                         </div>
                                     </label>
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -530,8 +560,22 @@
             });
 
             // Evento para ordenamiento
-            $('.sort-item').on('click', function() {
-                filters.sort = $(this).data('sort-by');
+            /* $('.sort-item').on('click', function() {
+                 filters.sort = $(this).data('sort-by');
+                 applyFilters();
+             });*/
+            $('.sort-checkbox').on('change', function() {
+                // Desmarcar todos los checkboxes excepto el actual
+                $('.sort-checkbox').not(this).prop('checked', false);
+
+                // Obtener el valor del checkbox seleccionado
+                let sortItem = $(this).is(':checked') ? $(this).val() :
+                'default'; // Si se desmarca, vuelve a 'default'
+
+                // Asignar el nuevo valor a filters.sort
+                filters.sort = sortItem;
+
+                console.log('Orden seleccionado:', sortItem);
                 applyFilters();
             });
         });

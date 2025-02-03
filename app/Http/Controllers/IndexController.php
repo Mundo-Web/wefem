@@ -219,7 +219,7 @@ class IndexController extends Controller
     }
 
     // Ordenar
-    /*switch ($sort) {
+    switch ($sort) {
       case 'low_to_high':
         $products = $products->orderBy('precio', 'asc');
         break;
@@ -229,10 +229,13 @@ class IndexController extends Controller
       case 'latest':
         $products = $products->orderBy('created_at', 'desc');
         break;
+      case 'destacado':
+        $products = $products->orderBy('destacado', 'desc');
+        break;
       default:
-        $products = $products->orderBy('created_at', 'desc');
+        $products = $products->orderBy('id', 'asc');
     }
-*/
+
     // Obtener los productos filtrados
     $productos = $products->get();
 
