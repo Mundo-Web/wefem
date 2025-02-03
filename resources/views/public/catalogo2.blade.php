@@ -111,10 +111,8 @@
 
                                                         </div>
 
-                                                        <input type="number" id="price-min" value="0"
-                                                            class="hidden"></input>
-                                                        <input type="number" id="price-max" value="{{ $precioMaximo }}"
-                                                            class="hidden"></input>
+                                                        <input type="number" id="price-min" class="absolute opacity-0">
+                                                        <input type="number" id="price-max" class="absolute opacity-0">
                                                     </div>
                                                 </div>
                                             </div>
@@ -353,7 +351,7 @@
             const priceMinI = document.getElementById('price-min');
             const priceMaxI = document.getElementById('price-max');
             let maxPrice = {{ $precioMaximo }};
-            let currentRange = [0, 0];
+            let currentRange = [0, {{ $precioMaximo }}];
 
             const updateSlider = () => {
                 const percentLeft = (currentRange[0] / maxPrice) * 100;
@@ -366,8 +364,12 @@
 
                 priceMin.textContent = `s/ ${currentRange[0].toFixed(2)}`;
                 priceMax.textContent = `s/ ${currentRange[1].toFixed(2)}`;
-                priceMinI.value = Number(currentRange[0].toFixed(2));
-                priceMaxI.value = Number(currentRange[1].toFixed(2));
+                priceMinI.value = currentRange[0].toFixed(2);
+                priceMaxI.value = currentRange[1].toFixed(2);
+
+                // Disparar evento jQuery manualmente
+                $('#price-min').trigger('input');
+                $('#price-max').trigger('input');
             };
 
             const onDrag = (event, thumb, index) => {
