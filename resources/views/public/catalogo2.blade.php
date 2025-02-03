@@ -53,12 +53,9 @@
             margin-top: 16px;
         }
     </style>
-
 @stop
 
-
 @section('content')
-
     <main class="pt-36 w-full gap-12">
 
         <section class="flex flex-col gap-4 items-center justify-center max-w-2xl mx-auto px-5">
@@ -113,80 +110,16 @@
                                                             <span id="price-max-span">s/ 0.00</span>
 
                                                         </div>
-                                                        <input hidden id="price-min"></input>
-                                                        <input hidden id="price-max"></input>
+
+                                                        <input type="number" id="price-min" value="0"
+                                                            class="hidden"></input>
+                                                        <input type="number" id="price-max" value="{{ $precioMaximo }}"
+                                                            class="hidden"></input>
                                                     </div>
                                                 </div>
                                             </div>
                                         </details>
-                                        <script>
-                                            document.addEventListener('DOMContentLoaded', () => {
-                                                const slider = document.querySelector('.slider');
-                                                const range = document.querySelector('.slider-range');
-                                                const thumbLeft = document.getElementById('thumb-left');
-                                                const thumbRight = document.getElementById('thumb-right');
-                                                const priceMin = document.getElementById('price-min-span');
-                                                const priceMax = document.getElementById('price-max-span');
-                                                const priceMinI = document.getElementById('price-min');
-                                                const priceMaxI = document.getElementById('price-max');
-                                                let maxPrice = 1000;
-                                                let currentRange = [0, 0];
 
-                                                const updateSlider = () => {
-                                                    const percentLeft = (currentRange[0] / maxPrice) * 100;
-                                                    const percentRight = (currentRange[1] / maxPrice) * 100;
-
-                                                    thumbLeft.style.left = `${percentLeft}%`;
-                                                    thumbRight.style.left = `${percentRight}%`;
-                                                    range.style.left = `${percentLeft}%`;
-                                                    range.style.right = `${100 - percentRight}%`;
-
-                                                    priceMin.textContent = `s/ ${currentRange[0].toFixed(2)}`;
-                                                    priceMax.textContent = `s/ ${currentRange[1].toFixed(2)}`;
-                                                    priceMinI.value = `${
-                                                        currentRange[0].toFixed(2)
-                                                    }`;
-                                                    priceMaxI.value = `${
-                                                        currentRange[1].toFixed(2)
-                                                    }`;
-                                                };
-
-                                                const onDrag = (event, thumb, index) => {
-                                                    const sliderRect = slider.getBoundingClientRect();
-                                                    const offsetX = event.clientX - sliderRect.left;
-                                                    const percent = Math.min(Math.max(0, offsetX / sliderRect.width), 1);
-                                                    const value = Math.round(percent * maxPrice);
-
-                                                    currentRange[index] = index === 0 ?
-                                                        Math.min(value, currentRange[1]) :
-                                                        Math.max(value, currentRange[0]);
-
-                                                    updateSlider();
-                                                };
-
-                                                thumbLeft.addEventListener('mousedown', () => {
-                                                    const moveHandler = (event) => onDrag(event, thumbLeft, 0);
-                                                    const upHandler = () => {
-                                                        document.removeEventListener('mousemove', moveHandler);
-                                                        document.removeEventListener('mouseup', upHandler);
-                                                    };
-                                                    document.addEventListener('mousemove', moveHandler);
-                                                    document.addEventListener('mouseup', upHandler);
-                                                });
-
-                                                thumbRight.addEventListener('mousedown', () => {
-                                                    const moveHandler = (event) => onDrag(event, thumbRight, 1);
-                                                    const upHandler = () => {
-                                                        document.removeEventListener('mousemove', moveHandler);
-                                                        document.removeEventListener('mouseup', upHandler);
-                                                    };
-                                                    document.addEventListener('mousemove', moveHandler);
-                                                    document.addEventListener('mouseup', upHandler);
-                                                });
-
-                                                updateSlider();
-                                            });
-                                        </script>
                                     </div>
                                 </div>
                             </div>
@@ -229,7 +162,8 @@
                                                                 class="flex items-center cursor-pointer w-full justify-between">
                                                                 <!-- Input Checkbox -->
                                                                 <input type="checkbox" id="brand-{{ $brand->id }}"
-                                                                    class="hidden peer" />
+                                                                    class="hidden peer brand-checkbox"
+                                                                    value="{{ $brand->id }}" />
 
                                                                 <!-- Texto del Label -->
                                                                 <span
@@ -285,7 +219,8 @@
                     </div>
 
 
-                    <!--seccion del filtro-->
+
+
                     <div class="relative inline-block text-left short-filter">
                         <div>
                             <button type="button"
@@ -300,159 +235,88 @@
                                 </svg>
                             </button>
                         </div>
-
                         <div class="hidden absolute right-0 z-10 mt-2 w-64 origin-top-right rounded-md bg-white ring-1 ring-black/5 focus:outline-hidden shadow-2xl"
                             role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
                             id="dropdown-menu">
                             <div class="py-1 m-4" role="none">
+                                <!-- Opciones de ordenamiento -->
                                 <div class="flex justify-between py-4 sort-item" data-sort-by="default">
-                                    <!-- Label con estilos dinámicos -->
                                     <label for="filter-defecto"
                                         class="flex items-center cursor-pointer w-full justify-between">
-                                        <!-- Input Checkbox -->
                                         <input type="checkbox" id="filter-defecto" class="hidden peer" />
-
-                                        <!-- Texto del Label -->
                                         <span
-                                            class=" text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
+                                            class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
                                             Orden por defecto
                                         </span>
-
-
-                                        <!-- Visual del Checkbox -->
                                         <div
-                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
-
+                                            class="w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
                                             <i class="fa-solid fa-check fa-xs"></i>
-
                                         </div>
-
-
                                     </label>
                                 </div>
                                 <div class="flex justify-between py-4 sort-item" data-sort-by="popular">
-                                    <!-- Label con estilos dinámicos -->
                                     <label for="filter-popular"
                                         class="flex items-center cursor-pointer w-full justify-between">
-                                        <!-- Input Checkbox -->
                                         <input type="checkbox" id="filter-popular" class="hidden peer" />
-
-                                        <!-- Texto del Label -->
                                         <span
-                                            class=" text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
+                                            class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
                                             Ordenar por popularidad
                                         </span>
-
-
-                                        <!-- Visual del Checkbox -->
                                         <div
-                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
-
+                                            class="w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
                                             <i class="fa-solid fa-check fa-xs"></i>
-
                                         </div>
-
-
                                     </label>
                                 </div>
-
                                 <div class="flex justify-between py-4 sort-item" data-sort-by="latest">
-                                    <!-- Label con estilos dinámicos -->
                                     <label for="filter-ultimos"
                                         class="flex items-center cursor-pointer w-full justify-between">
-                                        <!-- Input Checkbox -->
                                         <input type="checkbox" id="filter-ultimos" class="hidden peer" />
-
-                                        <!-- Texto del Label -->
                                         <span
-                                            class=" text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
+                                            class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
                                             Orden por los últimos
                                         </span>
-
-
-                                        <!-- Visual del Checkbox -->
                                         <div
-                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
-
+                                            class="w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
                                             <i class="fa-solid fa-check fa-xs"></i>
-
                                         </div>
-
-
                                     </label>
                                 </div>
                                 <div class="flex justify-between py-4 sort-item" data-sort-by="low_to_high">
-                                    <!-- Label con estilos dinámicos -->
                                     <label for="filter-menor"
                                         class="flex items-center cursor-pointer w-full justify-between">
-                                        <!-- Input Checkbox -->
                                         <input type="checkbox" id="filter-menor" class="hidden peer" />
-
-                                        <!-- Texto del Label -->
                                         <span
                                             class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
                                             Ordenar por precio: bajo a alto
                                         </span>
-
-
-                                        <!-- Visual del Checkbox -->
                                         <div
-                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
-
+                                            class="w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
                                             <i class="fa-solid fa-check fa-xs"></i>
-
                                         </div>
-
-
                                     </label>
                                 </div>
                                 <div class="flex justify-between py-4 sort-item" data-sort-by="high_to_low">
-                                    <!-- Label con estilos dinámicos -->
                                     <label for="filter-mayor"
                                         class="flex items-center cursor-pointer w-full justify-between">
-                                        <!-- Input Checkbox -->
                                         <input type="checkbox" id="filter-mayor" class="hidden peer" />
-
-                                        <!-- Texto del Label -->
                                         <span
                                             class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
                                             Ordenar por precio: alto a bajo
                                         </span>
-
-
-                                        <!-- Visual del Checkbox -->
                                         <div
-                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
-
+                                            class="w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
                                             <i class="fa-solid fa-check fa-xs"></i>
-
                                         </div>
-
-
                                     </label>
                                 </div>
                             </div>
                         </div>
-                        <script>
-                            function toggleDropdown() {
-                                const dropdown = document.getElementById('dropdown-menu');
-                                const arrowIcon = document.getElementById('arrow-icon');
-
-                                dropdown.classList.toggle('hidden');
-
-                                // Toggle arrow rotation
-                                if (dropdown.classList.contains('hidden')) {
-                                    arrowIcon.style.transform = 'rotate(0deg)';
-                                } else {
-                                    arrowIcon.style.transform = 'rotate(180deg)';
-                                }
-                            }
-                        </script>
                     </div>
                 </div>
                 <!-- Listado de productos- -->
-                <div id="getProductAjax" class="grid grid-cols-3 gap-10">
-                    @include('public._listproduct', ['productos' => $productos])
+                <div id="productList" class="grid grid-cols-3 gap-10">
+                    @include('public._listproduct', $productos)
                 </div>
             </div>
 
@@ -462,10 +326,87 @@
     </main>
 
 
-
-
 @section('scripts_importados')
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown-menu');
+            const arrowIcon = document.getElementById('arrow-icon');
 
+            dropdown.classList.toggle('hidden');
+
+            // Toggle arrow rotation
+            if (dropdown.classList.contains('hidden')) {
+                arrowIcon.style.transform = 'rotate(0deg)';
+            } else {
+                arrowIcon.style.transform = 'rotate(180deg)';
+            }
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slider = document.querySelector('.slider');
+            const range = document.querySelector('.slider-range');
+            const thumbLeft = document.getElementById('thumb-left');
+            const thumbRight = document.getElementById('thumb-right');
+            const priceMin = document.getElementById('price-min-span');
+            const priceMax = document.getElementById('price-max-span');
+            const priceMinI = document.getElementById('price-min');
+            const priceMaxI = document.getElementById('price-max');
+            let maxPrice = {{ $precioMaximo }};
+            let currentRange = [0, 0];
+
+            const updateSlider = () => {
+                const percentLeft = (currentRange[0] / maxPrice) * 100;
+                const percentRight = (currentRange[1] / maxPrice) * 100;
+
+                thumbLeft.style.left = `${percentLeft}%`;
+                thumbRight.style.left = `${percentRight}%`;
+                range.style.left = `${percentLeft}%`;
+                range.style.right = `${100 - percentRight}%`;
+
+                priceMin.textContent = `s/ ${currentRange[0].toFixed(2)}`;
+                priceMax.textContent = `s/ ${currentRange[1].toFixed(2)}`;
+                priceMinI.value = Number(currentRange[0].toFixed(2));
+                priceMaxI.value = Number(currentRange[1].toFixed(2));
+            };
+
+            const onDrag = (event, thumb, index) => {
+                const sliderRect = slider.getBoundingClientRect();
+                const offsetX = event.clientX - sliderRect.left;
+                const percent = Math.min(Math.max(0, offsetX / sliderRect.width), 1);
+                const value = Math.round(percent * maxPrice);
+
+                currentRange[index] = index === 0 ?
+                    Math.min(value, currentRange[1]) :
+                    Math.max(value, currentRange[0]);
+
+                updateSlider();
+            };
+
+            thumbLeft.addEventListener('mousedown', () => {
+                const moveHandler = (event) => onDrag(event, thumbLeft, 0);
+                const upHandler = () => {
+                    document.removeEventListener('mousemove', moveHandler);
+                    document.removeEventListener('mouseup', upHandler);
+                };
+                document.addEventListener('mousemove', moveHandler);
+                document.addEventListener('mouseup', upHandler);
+            });
+
+            thumbRight.addEventListener('mousedown', () => {
+                const moveHandler = (event) => onDrag(event, thumbRight, 1);
+                const upHandler = () => {
+                    document.removeEventListener('mousemove', moveHandler);
+                    document.removeEventListener('mouseup', upHandler);
+                };
+                document.addEventListener('mousemove', moveHandler);
+                document.addEventListener('mouseup', upHandler);
+            });
+
+            updateSlider();
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Captura el click de abrir
@@ -539,89 +480,58 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Variables para almacenar los valores seleccionados
-            let selectedBrands = [];
-            let selectedPriceRange = {
-                min: 0,
-                max: 1000
+        $(document).ready(function() {
+            let filters = {
+                brands: [],
+                priceMin: 0,
+                priceMax: {{ $precioMaximo }},
+                sort: 'default'
             };
-            let selectedSort = 'default';
 
             // Función para aplicar filtros
             function applyFilters() {
                 $.ajax({
-                    url: '{{ route('filter.products') }}',
-                    method: 'GET',
+                    url: '/filter-products',
+                    method: 'POST',
                     data: {
-                        brands: selectedBrands,
-                        price_min: selectedPriceRange.min,
-                        price_max: selectedPriceRange.max,
-                        sort: selectedSort
+                        brands: filters.brands,
+                        price_min: filters.priceMin,
+                        price_max: filters.priceMax,
+                        sort: filters.sort,
+                        _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
-                        // Limpiar el contenedor antes de agregar nuevos datos
-                        // $('#getProductAjax').empty();
-                        // Agregar los nuevos datos al contenedor
-                        $('#getProductAjax').html(response);
+                        $('#productList').html(response);
                     },
                     error: function(error) {
                         console.error('Error al aplicar filtros:', error);
-                        alert(
-                            'Ocurrió un error al aplicar los filtros. Por favor, intenta nuevamente.'
-                        );
                     }
                 });
             }
 
-            // Manejar clics en los filtros de marca
-            document.querySelectorAll('.brand-item').forEach(brand => {
-                brand.addEventListener('click', function() {
-                    const brandId = this.getAttribute('data-brand-id');
-                    const index = selectedBrands.indexOf(brandId);
-
-                    if (index === -1) {
-                        // Marca seleccionada
-                        selectedBrands.push(brandId);
-                        this.classList.add('selected');
-                    } else {
-                        // Marca deseleccionada
-                        selectedBrands.splice(index, 1);
-                        this.classList.remove('selected');
-                    }
-
-                    // Aplicar filtros después de cada cambio
-                    applyFilters();
-                });
-            });
-
-            // Manejar cambios en el rango de precios
-            const priceMinElement = document.getElementById('price-min');
-            const priceMaxElement = document.getElementById('price-max');
-
-            priceMinElement.addEventListener('input', function() {
-                selectedPriceRange.min = parseFloat(this.value);
+            // Evento para marcas
+            $('.brand-checkbox').on('change', function() {
+                let brandId = $(this).val();
+                if ($(this).is(':checked')) {
+                    filters.brands.push(brandId);
+                } else {
+                    filters.brands = filters.brands.filter(id => id != brandId);
+                }
                 applyFilters();
             });
 
-            priceMaxElement.addEventListener('input', function() {
-                selectedPriceRange.max = parseFloat(this.value);
+            // Evento para precios
+            $('#price-min, #price-max').on('input', function() {
+                filters.priceMin = parseFloat($('#price-min').val());
+                filters.priceMax = parseFloat($('#price-max').val());
                 applyFilters();
             });
 
-            // Manejar clics en los filtros de ordenamiento
-            document.querySelectorAll('.sort-item').forEach(sort => {
-                sort.addEventListener('click', function() {
-                    selectedSort = this.getAttribute('data-sort-by');
-                    console.log(selectedSort)
-                    applyFilters();
-                });
+            // Evento para ordenamiento
+            $('.sort-item').on('click', function() {
+                filters.sort = $(this).data('sort-by');
+                applyFilters();
             });
         });
     </script>
-
-
-
-@stop
-
 @stop

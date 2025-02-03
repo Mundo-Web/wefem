@@ -184,128 +184,61 @@ class IndexController extends Controller
     );
   }
 
-  public function catalogo(Request $request, string $filtro = null)
+  public function catalogo(Request $request)
   {
-    try {
-      // Depuración: Registrar los parámetros recibidos
-      /*  \Log::info('Parámetros recibidos:', [
-        'brands' => $request->brands,
-        'price_min' => $request->price_min,
-        'price_max' => $request->price_max,
-        'sort' => $request->sort
-      ]);*/
 
-      // Obtener datos generales
-      $general = General::all();
-      $textoproducto = ProductosView::first();
-      $home = HomeView::first();
-      $brands = Brand::all();
-      $categorias = Category::where('visible', true)->get();
+    // Obtener datos generales
+    $general = General::all();
+    $textoproducto = ProductosView::first();
+    $home = HomeView::first();
+    $brands = Brand::all();
+    $categorias = Category::where('visible', true)->get();
+    $productos = Products::where('visible', true)->get();
+    $precioMaximo = Products::max('precio');
 
-      // Inicializar la consulta de productos
-      $query = Products::query();
-
-      // Filtrar por marcas
-      if ($request->has('brands') && !empty($request->brands)) {
-        $query->whereIn('brand_id', $request->brands);
-      }
-
-      // Filtrar por rango de precios
-      if ($request->has('price_min') && $request->has('price_max')) {
-        $priceMin = floatval($request->price_min);
-        $priceMax = floatval($request->price_max);
-        $query->whereBetween('precio', [$priceMin, $priceMax]);
-      }
-
-      // Ordenar los productos
-      $sort = $request->input('sort', 'default');
-      switch ($sort) {
-        case 'popular':
-          $query->orderBy('popularity', 'desc');
-          break;
-        case 'latest':
-          $query->orderBy('created_at', 'desc');
-          break;
-        case 'low_to_high':
-          $query->orderBy('precio', 'asc');
-          break;
-        case 'high_to_low':
-          $query->orderBy('precio', 'desc');
-          break;
-        default:
-          $query->orderBy('created_at', 'desc');
-          break;
-      }
-
-      // Obtener los productos filtrados
-      $productos = $query->get();
-
-      // Si es una solicitud AJAX, devolver la vista parcial
-      if ($request->ajax()) {
-        return view('public._listproduct', compact('productos'))->render();
-      }
-
-      // Retornar la vista completa
-      return view('public.catalogobk2', compact('brands', 'productos', 'textoproducto', 'general', 'categorias', 'home'));
-    } catch (\Throwable $th) {
-      //  \Log::error('Error en el controlador:', ['message' => $th->getMessage()]);
-      return view('public.catalogobk2')->with('error', 'No se encontraron productos');
-    }
+    // Retornar la vista completa
+    return view('public.catalogo2', compact('brands', 'productos', 'textoproducto', 'general', 'categorias', 'home', 'precioMaximo'));
   }
 
 
 
   public function filterProducts(Request $request)
   {
-    // Obtener los parámetros de la solicitud
-    $brands = $request->input('brands', []); // Marcas seleccionadas
+    // Obtener los parámetros de filtrado
+    $brands = $request->input('brands', []);
+    $priceMin = $request->input('price_min');
+    $priceMax = $request->input('price_max');
+    $sort = $request->input('sort', 'default');
 
-    $priceMin = floatval($request->input('price_min', 0)); // Convierte a número
-    $priceMax = floatval($request->input('price_max', 1000)); // Convierte a número
-    $sort = $request->input('sort', 'default'); // Ordenamiento
+    // Aplicar filtros
+    $products = Products::whereBetween('precio', [$priceMin, $priceMax]);
 
-    // Iniciar la consulta de productos
-    //$query = Products::where('brand_id', $brands)->get();
-    $query = Products::query(); // Inicializa la consulta sin ejecutarla
-    // Filtrar por marcas si se seleccionaron
     if (!empty($brands)) {
-      $query->whereIn('brand_id', $brands);
+      $products = $products->whereIn('brand_id', $brands);
+      dump($products);
     }
 
-    // Filtrar por rango de precios
-    if ($priceMin || $priceMax) {
-      $query->whereBetween('precio', [
-        $priceMin ?: 0,
-        $priceMax ?: 1000
-      ]);
-    }
-
-    // Ordenar los productos según la opción seleccionada
-    switch ($sort) {
-      case 'popular':
-        $query->orderBy('popularity', 'desc'); // Ordenar por popularidad
-        break;
-      case 'latest':
-        $query->orderBy('created_at', 'desc'); // Ordenar por los más recientes
-        break;
+    // Ordenar
+    /*switch ($sort) {
       case 'low_to_high':
-        $query->orderBy('precio', 'asc'); // Ordenar por precio: menor a mayor
+        $products = $products->orderBy('precio', 'asc');
         break;
       case 'high_to_low':
-        $query->orderBy('precio', 'desc'); // Ordenar por precio: mayor a menor
+        $products = $products->orderBy('precio', 'desc');
+        break;
+      case 'latest':
+        $products = $products->orderBy('created_at', 'desc');
         break;
       default:
-        $query->orderBy('created_at', 'desc'); // Orden por defecto
-        break;
+        $products = $products->orderBy('created_at', 'desc');
     }
-
+*/
     // Obtener los productos filtrados
-    $productos = $query->get();
+    $productos = $products->get();
 
     // Retornar la vista parcial con los productos filtrados
     return view('public._listproduct', compact('productos'))->render();
   }
-
 
   public function comentario()
   {
