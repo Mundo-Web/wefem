@@ -109,7 +109,11 @@ Route::post('/agradecimiento', [IndexController::class, 'agradecimiento'])->name
 /* Catálogo y producto */
 Route::get('/producto/{slug}', [IndexController::class, 'productoShow'])->name('producto');
 Route::get('/catalogo', [IndexController::class, 'catalogo'])->name('catalogo.all');
-Route::get('/catalogo/{filtro}', [IndexController::class, 'catalogo'])->name('catalogo');
+//Route::get('/catalogo/{filtro}', [IndexController::class, 'catalogo'])->name('catalogo');
+// Ruta para manejar el filtrado por AJAX
+Route::get('/filter-products', [IndexController::class, 'filterProducts'])->name('filter.products');
+
+
 Route::post('carrito/buscarProducto', [CarritoController::class, 'buscarProducto'])->name('carrito.buscarProducto');
 Route::get('/coleccion/{filtro}', [IndexController::class, 'coleccion'])->name('coleccion');
 Route::get('/liquidacion', [IndexController::class, 'liquidacion'])->name('liquidacion');

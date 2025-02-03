@@ -5,7 +5,7 @@
         </div>
         <h3 class="text-text28 font-semibold mb-2 text-colorAzulOscuro">{{ $item->producto }}</h3>
         <p class="text-colorParrafo mb-4 text-text16 line-clamp-2">{{ $item->extract }}</p>
-        <a href="#"
+        <a href="{{ route('producto', $item->slug) }}"
             class="group-hover:w-full duration-300 ease-in-out group-hover:text-center group-hover:bg-colorBackgroundAzul bg-colorBackgroundRed  rounded-full text-white font-semibold px-4 py-2 inline-block">Ver
             más</a>
     </div>

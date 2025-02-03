@@ -8,17 +8,19 @@
 @section('content')
     <main class=" pt-36 bg-white">
 
-        <section class="  max-w-7xl mx-auto ">
+        <section class="  max-w-7xl mx-auto " data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+            data-aos-delay="200">
             <div class="flex flex-col gap-1  text-left" data-aos="fade-down">
                 <p class="font-gotham_bold text-colorRojo text-text20 ">blog</p>
                 <h2 class="font-gotham_bold text-colorAzul text-text48">Descubre lo mejor:<br />
                     Publicaciones sobre el mundo del internet</h2>
-                <p class="text-colorParrafo text-text18">Praesent non euismod arcu, eu dignissim erat. Aliquam erat
-                    volutpat..</p>
+                <!--p class="text-colorParrafo text-text18">Praesent non euismod arcu, eu dignissim erat. Aliquam erat
+                            volutpat..</p-->
             </div>
         </section>
 
-        <section class="max-w-7xl mx-auto  pt-10 flex gap-10">
+        <section class="max-w-7xl mx-auto  pt-10 flex gap-10" data-aos="fade-up" data-aos-offset="150"
+            data-aos-duration="1000" data-aos-delay="200">
             <div class="w-1/2 flex flex-col justify-center" data-aos="fade-down">
                 @if (is_null($mostRecentPost))
                 @else
@@ -45,10 +47,12 @@
                     </a>
                 @endif
             </div>
-            <div class="w-1/2" data-aos="fade-down">
+            <div class="w-1/2" data-aos="fade-down" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+                data-aos-delay="200">
 
                 @foreach ($nextTwoRecentPosts as $post)
-                    <div class=" w-full mb-4">
+                    <div class=" w-full mb-4" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+                        data-aos-delay="200">
                         <a href="{{ route('detalleBlog', $post->slug) }}" class="flex gap-4">
                             <div class="w-2/5">
                                 <img class="h-full w-full object-cover rounded-xl" src="{{ asset($post->imagen) }}"
@@ -76,7 +80,8 @@
             </div>
         </section>
 
-        <section class="max-w-7xl mx-auto my-20 ">
+        <section class="max-w-7xl mx-auto my-20 " data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+            data-aos-delay="200">
             <div class="flex flex-col">
 
                 <div class="flex flex-col w-full ">
@@ -86,18 +91,16 @@
                     <h2 class=" text-colorAzulOscuro text-text48 font-semibold" data-aos="fade-down">Últimas
                         publicaciones</h2>
 
-                    <p class="text-colorParrafo text-text18 mt-5 mb-10">Nam tempor diam quis urna maximus, ac laoreet arcu
-                        convallis.
-                        Aenean
-                        dignissim nec sem quis
-                        consequat.</p>
+                    <p class="text-colorParrafo text-text18 mt-5 mb-10">Lo mas reciente en nuestro blogs, explora nuevos
+                        contenidos.</p>
                 </div>
 
                 <div class="w-full">
                     <div class="grid grid-cols-3 gap-10">
 
                         @foreach ($remainingPosts as $post)
-                            <div data-aos="fade-down" class="flex flex-col w-full">
+                            <div data-aos="fade-down" class="flex flex-col w-full" data-aos="fade-up" data-aos-offset="150"
+                                data-aos-duration="1000" data-aos-delay="200">
                                 <a href="{{ route('detalleBlog', $post->slug) }}">
                                     <div class="flex flex-row justify-center">
                                         <img class="w-full h-[300px] object-cover rounded-xl"

@@ -24,7 +24,8 @@
          </section>
 
 
-         <section class=" max-w-7xl mx-auto pb-12 mt-8">
+         <section class=" max-w-7xl mx-auto pb-12 mt-8" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+             data-aos-delay="200">
 
              @if ($post->imagen)
                  <div class="w-full" data-aos="fade-up" data-aos-offset="150">
@@ -35,10 +36,12 @@
                  </div>
              @endif
 
-             <div class="prose prose-lg max-w-7xl mt-8 text-start">
+             <div class="prose prose-lg max-w-7xl mt-8 text-start" data-aos="fade-up" data-aos-offset="150"
+                 data-aos-duration="1000" data-aos-delay="200">
                  {!! $post->descripcion !!}
              </div>
-             <div class="flex text-colorRojo flex-col gap-2 mt-8">
+             <div class="flex text-colorRojo flex-col gap-2 mt-8" data-aos="fade-up" data-aos-offset="150"
+                 data-aos-duration="1000" data-aos-delay="200">
                  <p class="font-bold text-text16"> compartir</p>
 
                  <!-- Botones para compartir -->
@@ -71,23 +74,26 @@
          </section>
 
          @if (count($postsrelacionados) > 0)
-             <section class="max-w-7xl mx-auto">
+             <section class="max-w-7xl mx-auto" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+                 data-aos-delay="200">
                  <div class="flex flex-col gap-5">
                      <div class="flex  gap-3 flex-col w-full justify-start mb-4">
                          <h2 class="font-gotham_bold text-colorAzulOscuro text-4xl lg:text-5xl">Otras publicaciones</span>
                          </h2>
-                         <p class="text-colorParrafo text-text18">Nam tempor diam quis urna maximus, ac laoreet arcu
-                             convallis. Aenean
-                             dignissim nec sem quis
-                             consequat.</p>
+                         <!--p class="text-colorParrafo text-text18">Nam tempor diam quis urna maximus, ac laoreet arcu
+                                 convallis. Aenean
+                                 dignissim nec sem quis
+                                 consequat.</p-->
                      </div>
 
-                     <div class="w-full mb-16">
+                     <div class="w-full mb-16" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+                         data-aos-delay="200">
                          <div class="swiper slider_blog h-max">
                              <div class="swiper-wrapper">
 
                                  @foreach ($postsrelacionados as $post)
-                                     <div class="swiper-slide">
+                                     <div class="swiper-slide" data-aos="fade-up" data-aos-offset="150"
+                                         data-aos-duration="1000" data-aos-delay="200">
                                          <a href="{{ route('detalleBlog', $post->slug) }}">
                                              <div data-aos="fade-down" class="flex flex-col w-full">
                                                  <a href="{{ route('detalleBlog', $post->slug) }}">

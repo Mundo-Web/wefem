@@ -61,10 +61,10 @@
                             icon="fas fa-address-card">
                             Testimonios
                         </x-menu.item>
-                        <x-menu.item id="testimonios" href="{{ route('testimonios.index') }}"
+                        <!--   <x-menu.item id="testimonios" href="{{ route('testimonios.index') }}"
                             icon="fas fa-address-card">
                             Citas Trabajores
-                        </x-menu.item>
+                        </x-menu.item>-->
                     </x-menu.group>
                     <x-menu.group title="Correos">
                         <li

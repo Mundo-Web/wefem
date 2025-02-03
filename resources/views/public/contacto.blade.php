@@ -13,7 +13,8 @@
             <div class="absolute left-0 transform  ">
                 <img src="{{ asset('images/img/background/bg-contacto.png') }}" alt="" class="w-20">
             </div>
-            <div class="max-w-7xl mx-auto  flex gap-4 ">
+            <div class="max-w-7xl mx-auto  flex gap-4 " data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+                data-aos-delay="200">
                 <div class="w-1/2  ">
                     <div class="w-10/12 flex flex-col justify-start items-start gap-8">
 
@@ -41,7 +42,7 @@
 
                         <div class="flex flex-col gap-2 items-start  justify-start">
                             <p class="text-colorRojo text-text18 font-semibold">Ponerse en Contacto</p>
-                            <p data-aos="fade-down"
+                            <p
                                 class="text-textAzul group-hover:text-textAzul text-base font-gotham_book w-full leading-tight">
 
                                 @if ($general->cellphone && $general->office_phone)
@@ -135,7 +136,8 @@
 
         </section>
         <!--Seccion FAQs-->
-        <section class="max-w-7xl mx-auto flex mt-12">
+        <section class="max-w-7xl mx-auto flex mt-12" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+            data-aos-delay="200">
             <div class="w-1/2">
                 <h2 class="text-text32 font-bold text-colorAzulOscuro">{{ $contactoview->titleFaqs }}</h2>
                 <p class="text-colorParrafo font-light text-text16">{{ $contactoview->subtitleFaqs }}</p>
@@ -169,7 +171,8 @@
             </div>
         </section>
         <!--Seccion Contactar-->
-        <section class="max-w-7xl mx-auto my-12">
+        <section class="max-w-7xl mx-auto my-12" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+            data-aos-delay="200">
             <section class="bg-colorBackgroundAzulClaro rounded-xl p-8 w-full relative overflow-hidden z-0 ">
                 <div class="absolute -left-16  transform  rotate-[85deg] -z-10">
                     <img src="{{ asset('images/img/background/bg-footer.png') }}" alt="" class="w-full"
@@ -221,16 +224,17 @@
                     }
                 </script>
 
-                <div class="text-center max-w-md mx-auto z-20">
+                <div class="text-center max-w-md mx-auto z-20" data-aos="fade-up" data-aos-offset="150"
+                    data-aos-duration="1000" data-aos-delay="200">
                     <h2 class="text-text24 font-semibold text-colorAzulOscuro">{{ $contactoview->titleSlider }}</h2>
                     <p class="text-colorParrafo mt-2 text-text16">{{ $contactoview->subtitleSlider }}</p>
                 </div>
 
-                <div class="mt-6 text-center z-20">
-                    <button
-                        class=" bg-colorBackgroundRed text-white px-6 py-3 rounded-full hover:bg-colorBackgroundRed transition duration-300">
-                        Ponerse en contacto
-                    </button>
+                <div class="mt-6 text-center z-20" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+                    data-aos-delay="200">
+
+                    <x-custom.button-cotizar :general="$general" text="Ponerse en contacto"
+                        style=" bg-colorBackgroundRed text-white px-6 py-3 rounded-full hover:bg-colorBackgroundRed transition duration-300" />
                 </div>
             </section>
 

@@ -109,9 +109,12 @@
                                                             <div class="slider-thumb" id="thumb-right"></div>
                                                         </div>
                                                         <div class="price-values">
-                                                            <span id="price-min">s/ 0.00</span>
-                                                            <span id="price-max">s/ 0.00</span>
+                                                            <span id="price-min-span">s/ 0.00</span>
+                                                            <span id="price-max-span">s/ 0.00</span>
+
                                                         </div>
+                                                        <input hidden id="price-min"></input>
+                                                        <input hidden id="price-max"></input>
                                                     </div>
                                                 </div>
                                             </div>
@@ -122,9 +125,10 @@
                                                 const range = document.querySelector('.slider-range');
                                                 const thumbLeft = document.getElementById('thumb-left');
                                                 const thumbRight = document.getElementById('thumb-right');
-                                                const priceMin = document.getElementById('price-min');
-                                                const priceMax = document.getElementById('price-max');
-
+                                                const priceMin = document.getElementById('price-min-span');
+                                                const priceMax = document.getElementById('price-max-span');
+                                                const priceMinI = document.getElementById('price-min');
+                                                const priceMaxI = document.getElementById('price-max');
                                                 let maxPrice = 1000;
                                                 let currentRange = [0, 0];
 
@@ -139,6 +143,12 @@
 
                                                     priceMin.textContent = `s/ ${currentRange[0].toFixed(2)}`;
                                                     priceMax.textContent = `s/ ${currentRange[1].toFixed(2)}`;
+                                                    priceMinI.value = `${
+                                                        currentRange[0].toFixed(2)
+                                                    }`;
+                                                    priceMaxI.value = `${
+                                                        currentRange[1].toFixed(2)
+                                                    }`;
                                                 };
 
                                                 const onDrag = (event, thumb, index) => {
@@ -212,7 +222,8 @@
 
 
                                                     @foreach ($brands as $brand)
-                                                        <div class="flex justify-between py-4">
+                                                        <div class="flex justify-between py-4 brand-filter"
+                                                            data-brand-id="{{ $brand->id }}">
                                                             <!-- Label con estilos dinámicos -->
                                                             <label for="brand-{{ $brand->id }}"
                                                                 class="flex items-center cursor-pointer w-full justify-between">
@@ -266,18 +277,16 @@
 
                         <div class="">
                             <h3 class=" text-text12 text-colorRojo">
-                                @if ($filtro == 0)
-                                    Productos /
-                                @else
-                                    Productos - {{ $categoria->name }} /
-                                @endif
+
+                                Productos /
+
                             </h3>
                         </div>
                     </div>
 
 
                     <!--seccion del filtro-->
-                    <div class="relative inline-block text-left">
+                    <div class="relative inline-block text-left short-filter">
                         <div>
                             <button type="button"
                                 class="inline-flex w-56 justify-between text-text14 font-semibold gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-colorAzulOscuro ring-0 ring-inset"
@@ -292,31 +301,135 @@
                             </button>
                         </div>
 
-                        <div class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 ring-black/5 focus:outline-hidden shadow-2xl"
+                        <div class="hidden absolute right-0 z-10 mt-2 w-64 origin-top-right rounded-md bg-white ring-1 ring-black/5 focus:outline-hidden shadow-2xl"
                             role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
                             id="dropdown-menu">
-                            <div class="py-1" role="none">
-                                <div class="flex justify-between items-center px-4 py-2">
-                                    <label for="menu-item-0"
-                                        class="block text-sm text-[#ED1B2F] font-semibold cursor-pointer">Account
-                                        settings</label>
-                                    <input type="checkbox" id="menu-item-0"
-                                        class="w-4 h-4 cursor-pointer appearance-none border border-[#333F51] checked:bg-white checked:border-[#ED1B2F] bg-white focus:bg-white focus:border-none hover:bg-white hover:border-none checked:hover:bg-white checked:hover:border-none"
-                                        checked>
-                                </div>
-                                <div class="flex justify-between items-center px-4 py-2">
+                            <div class="py-1 m-4" role="none">
+                                <div class="flex justify-between py-4 sort-filter" data-sort-by="default">
+                                    <!-- Label con estilos dinámicos -->
+                                    <label for="filter-defecto"
+                                        class="flex items-center cursor-pointer w-full justify-between">
+                                        <!-- Input Checkbox -->
+                                        <input type="checkbox" id="filter-defecto" class="hidden peer" />
 
-                                    <label for="menu-item-0" class=" block text-sm text-gray-700 cursor-pointer">Account
-                                        settings</label>
-                                    <input type="checkbox" id="menu-item-0"
-                                        class="w-4 h-4 accent-[#000000] cursor-pointer">
-                                </div>
-                                <div class="flex justify-between items-center px-4 py-2">
+                                        <!-- Texto del Label -->
+                                        <span
+                                            class=" text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
+                                            Orden por defecto
+                                        </span>
 
-                                    <label for="menu-item-0" class=" block text-sm text-gray-700 cursor-pointer">Account
-                                        settings</label>
-                                    <input type="checkbox" id="menu-item-0"
-                                        class="w-4 h-4 accent-[#000000] cursor-pointer">
+
+                                        <!-- Visual del Checkbox -->
+                                        <div
+                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
+                                            <i class="fa-solid fa-check fa-xs"></i>
+
+                                        </div>
+
+
+                                    </label>
+                                </div>
+                                <div class="flex justify-between py-4 sort-filter" data-sort-by="popular">
+                                    <!-- Label con estilos dinámicos -->
+                                    <label for="filter-popular"
+                                        class="flex items-center cursor-pointer w-full justify-between">
+                                        <!-- Input Checkbox -->
+                                        <input type="checkbox" id="filter-popular" class="hidden peer" />
+
+                                        <!-- Texto del Label -->
+                                        <span
+                                            class=" text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
+                                            Ordenar por popularidad
+                                        </span>
+
+
+                                        <!-- Visual del Checkbox -->
+                                        <div
+                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
+                                            <i class="fa-solid fa-check fa-xs"></i>
+
+                                        </div>
+
+
+                                    </label>
+                                </div>
+
+                                <div class="flex justify-between py-4 sort-filter" data-sort-by="latest">
+                                    <!-- Label con estilos dinámicos -->
+                                    <label for="filter-ultimos"
+                                        class="flex items-center cursor-pointer w-full justify-between">
+                                        <!-- Input Checkbox -->
+                                        <input type="checkbox" id="filter-ultimos" class="hidden peer" />
+
+                                        <!-- Texto del Label -->
+                                        <span
+                                            class=" text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
+                                            Orden por los últimos
+                                        </span>
+
+
+                                        <!-- Visual del Checkbox -->
+                                        <div
+                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
+                                            <i class="fa-solid fa-check fa-xs"></i>
+
+                                        </div>
+
+
+                                    </label>
+                                </div>
+                                <div class="flex justify-between py-4 sort-filter" data-sort-by="low_to_high">
+                                    <!-- Label con estilos dinámicos -->
+                                    <label for="filter-menor"
+                                        class="flex items-center cursor-pointer w-full justify-between">
+                                        <!-- Input Checkbox -->
+                                        <input type="checkbox" id="filter-menor" class="hidden peer" />
+
+                                        <!-- Texto del Label -->
+                                        <span
+                                            class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
+                                            Ordenar por precio: bajo a alto
+                                        </span>
+
+
+                                        <!-- Visual del Checkbox -->
+                                        <div
+                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
+                                            <i class="fa-solid fa-check fa-xs"></i>
+
+                                        </div>
+
+
+                                    </label>
+                                </div>
+                                <div class="flex justify-between py-4 sort-filter" data-sort-by="high_to_low">
+                                    <!-- Label con estilos dinámicos -->
+                                    <label for="filter-mayor"
+                                        class="flex items-center cursor-pointer w-full justify-between">
+                                        <!-- Input Checkbox -->
+                                        <input type="checkbox" id="filter-mayor" class="hidden peer" />
+
+                                        <!-- Texto del Label -->
+                                        <span
+                                            class="text-text14 font-normal text-colorAzulOscuro peer-checked:text-[#ED1B2F]">
+                                            Ordenar por precio: alto a bajo
+                                        </span>
+
+
+                                        <!-- Visual del Checkbox -->
+                                        <div
+                                            class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
+
+                                            <i class="fa-solid fa-check fa-xs"></i>
+
+                                        </div>
+
+
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -339,31 +452,13 @@
                 </div>
                 <!-- Listado de productos- -->
                 <div id="getProductAjax" class="grid grid-cols-3 gap-10">
-                    @include('public._listproduct', $productos)
+                    @include('public._listproduct', ['productos' => $productos])
                 </div>
             </div>
 
         </div>
 
-        <!-- Newsletter Section -->
-        <section class="bg-colorBackgroundRed w-full">
-            <div class="max-w-7xl  mx-auto flex justify-between items-end py-16">
-                <p class="w-1/3 text-text32 text-white">Mantente siempre <strong>Informado</strong> con nuestra newletter
-                </p>
-                <form class="w-1/3 flex items-center justify-center relative border-b-2 border-white py-2">
-                    <input type="text"
-                        class="placeholder:text-white w-full pr-12 pl-3 py-2 text-white bg-transparent outline-none border-none focus:border-none shadow-none text-text14 focus:outline-none focus:ring-0 ring-transparent"
-                        placeholder="Correo Electrónico" />
-
-
-                    <button
-                        class="absolute right-0 py-2 px-4 rounded-full text-text14 text-white bg-colorBackgroundAzul hover:bg-colorBackgroundAzul active:bg-colorBackgroundAzul duration-150 outline-none shadow-none ">
-                        Enviar
-                        <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
-                    </button>
-                </form>
-            </div>
-        </section>
+        @include('components.custom.newsletter-section', $home)
     </main>
 
 
@@ -443,152 +538,89 @@
             window.addEventListener("click", closeModa);
         });
     </script>
-
     <script>
-        var appUrl = '{{ env('APP_URL') }}';
-    </script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variables para almacenar los valores seleccionados
+            let selectedBrands = [];
+            let selectedPriceRange = {
+                min: 0,
+                max: 1000
+            };
+            let selectedSort = 'default';
 
-
-    <script src="{{ asset('js/carrito.js') }}"></script>
-
-    <script>
-        $(document).ready(function() {
-            function updateCategoriesField() {
-                var selectedCategories = [];
-                $('.changeCategory:checked').each(function() {
-                    selectedCategories.push($(this).val());
-                });
-                $('#get_categories').val(selectedCategories.join(','));
-            }
-            updateCategoriesField();
-            $('.changeCategory').on('change', function() {
-                updateCategoriesField();
-                FilterForm();
-            });
-
-            function updatePriceField() {
-                var selectedPrice = [];
-                $('.changePrice:checked').each(function() {
-                    selectedPrice.push($(this).val());
-                });
-                $('#get_precios').val(selectedPrice.join(','));
-            }
-            updatePriceField();
-            $('.changePrice').on('change', function() {
-                updatePriceField();
-                FilterForm();
-            });
-
-            function updateTallaField() {
-                var selectedTallas = [];
-                $('.changeTallas:checked').each(function() {
-                    selectedTallas.push($(this).val());
-                });
-                $('#get_tallas').val(selectedTallas.join(','));
-            }
-            updateTallaField();
-            $('.changeTallas').on('change', function() {
-                updateTallaField();
-                FilterForm();
-            });
-
-            function updateCollectionField() {
-                var selectedCollection = [];
-                $('.changeCollection:checked').each(function() {
-                    selectedCollection.push($(this).val());
-                });
-                $('#get_colecciones').val(selectedCollection.join(','));
-            }
-            updateCollectionField();
-            $('.changeCollection').on('change', function() {
-                updateCollectionField();
-                FilterForm();
-            });
-
-
-            $('.colores').on('change', function() {
-                if ($(this).is(':checked')) {
-                    $('.labelcolor').addClass('border-black');
-                } else {
-                    $('.labelcolor').removeClass('border-black');
-                }
-            });
-
-            $('.colores:checked').each(function() {
-                $(this).next('labelcolor').addClass('border-black');
-            });
-
-
-            $('.changeColor').click(function() {
-                var id = $(this).attr('id');
-                var status = $(this).attr('data-val');
-                if (status == 0) {
-                    $(this).attr('data-val', 1);
-                    $(this).addClass('active-color');
-                } else {
-                    $(this).attr('data-val', 0);
-                    $(this).removeClass('active-color');
-                }
-
-                var ids = '';
-                $('.changeColor').each(function() {
-                    var status = $(this).attr('data-val');
-                    if (status == 1) {
-                        var id = $(this).attr('id');
-                        ids += id + ',';
+            // Función para aplicar filtros
+            function applyFilters() {
+                $.ajax({
+                    url: '{{ route('filter.products') }}',
+                    method: 'GET',
+                    data: {
+                        brands: selectedBrands,
+                        price_min: selectedPriceRange.min,
+                        price_max: selectedPriceRange.max,
+                        sort: selectedSort
+                    },
+                    success: function(response) {
+                        // Limpiar el contenedor antes de agregar nuevos datos
+                        // $('#getProductAjax').empty();
+                        // Agregar los nuevos datos al contenedor
+                        $('#getProductAjax').html(response);
+                    },
+                    error: function(error) {
+                        console.error('Error al aplicar filtros:', error);
+                        alert(
+                            'Ocurrió un error al aplicar los filtros. Por favor, intenta nuevamente.'
+                        );
                     }
                 });
-                $('#get_colores').val(ids);
-                FilterForm();
-            });
-
-            function FilterForm() {
-                $.ajax({
-                    url: '{{ route('catalogo_filtro_ajax') }}',
-                    method: 'POST',
-                    data: $('#FilterForm').serialize(),
-                    dataType: "json",
-                    success: function(response) {
-
-                        $('#getProductAjax').html(response.success);
-                        $('.cargarMas').attr('data-page', response.page);
-
-                        if (response.page == 0) {
-                            $('.cargarMas').hide();
-                        } else {
-                            $('.cargarMas').show();
-                        }
-                        // $('.pagination').html(response.pagination)
-                    },
-                    error: function(error) {}
-                });
             }
 
+            // Manejar clics en los filtros de marca
+            document.querySelectorAll('.brand-item').forEach(brand => {
+                brand.addEventListener('click', function() {
+                    const brandId = this.getAttribute('data-brand-id');
+                    const index = selectedBrands.indexOf(brandId);
 
-            $('body').delegate('.cargarMas', 'click', function() {
-                var page = $(this).attr('data-page');
-                $('.cargarMas').html('Cargando...');
-                $.ajax({
-                    url: "{{ route('catalogo_filtro_ajax') }}?page=" + page,
-                    method: 'POST',
-                    data: $('#FilterForm').serialize(),
-                    dataType: "json",
-                    success: function(response) {
+                    if (index === -1) {
+                        // Marca seleccionada
+                        selectedBrands.push(brandId);
+                        this.classList.add('selected');
+                    } else {
+                        // Marca deseleccionada
+                        selectedBrands.splice(index, 1);
+                        this.classList.remove('selected');
+                    }
 
-                        $('#getProductAjax').append(response.success);
-                        $('.cargarMas').attr('data-page', response.page);
-                        $('.cargarMas').html('Cargar más modelos');
-                        if (response.page == 0) {
-                            $('.cargarMas').hide();
-                        } else {
-                            $('.cargarMas').show();
-                        }
-                    },
-                    error: function(error) {}
+                    // Aplicar filtros después de cada cambio
+                    applyFilters();
                 });
-            })
+            });
+
+            // Manejar cambios en el rango de precios
+            const priceMinElement = document.getElementById('price-min');
+            const priceMaxElement = document.getElementById('price-max');
+
+            priceMinElement.addEventListener('input', function() {
+                selectedPriceRange.min = parseFloat(this.value);
+                applyFilters();
+            });
+
+            priceMaxElement.addEventListener('input', function() {
+                selectedPriceRange.max = parseFloat(this.value);
+                applyFilters();
+            });
+
+            // Manejar clics en los filtros de ordenamiento
+            document.querySelectorAll('.sort-item').forEach(sort => {
+                sort.addEventListener('click', function() {
+                    selectedSort = this.getAttribute('data-sort-by');
+                    applyFilters();
+                });
+            });
         });
     </script>
+
+
+
 @stop
 
 @stop

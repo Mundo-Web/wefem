@@ -186,53 +186,126 @@ class IndexController extends Controller
 
   public function catalogo(Request $request, string $filtro = null)
   {
-    $categorias = null;
-    $productos = null;
-    $categoria = null;
-    $brands = null;
     try {
+      // Depuración: Registrar los parámetros recibidos
+      /*  \Log::info('Parámetros recibidos:', [
+        'brands' => $request->brands,
+        'price_min' => $request->price_min,
+        'price_max' => $request->price_max,
+        'sort' => $request->sort
+      ]);*/
+
+      // Obtener datos generales
       $general = General::all();
       $textoproducto = ProductosView::first();
-      $faqs = Faqs::where('status', '=', 1)->where('visible', '=', 1)->get();
-      $categorias = Category::all();
+      $home = HomeView::first();
+      $brands = Brand::all();
+      $categorias = Category::where('visible', true)->get();
 
-      $subcategorias = Subcategory::all();
-      $microcategorias = Microcategory::all();
-      $testimonie = Testimony::where('status', '=', 1)->where('visible', '=', 1)->get();
-      $atributos = Attributes::where('status', '=', 1)->where('visible', '=', 1)->get();
-      $colecciones = Collection::where('status', '=', 1)->where('visible', '=', 1)->get();
+      // Inicializar la consulta de productos
+      $query = Products::query();
 
-      if (is_null($filtro) || $filtro == 0) {
-        //$productos = Products::where('status', '=', 1)->where('visible', '=', 1)->with('tags')->paginate(12);
-        // $productos = Products::obtenerProductos();
-
-        $categoria = Category::all();
-      } else {
-        //$productos = Products::where('status', '=', 1)->where('visible', '=', 1)->where('categoria_id', '=', $filtro)->with('tags')->paginate(12);
-        // $productos = Products::obtenerProductos($filtro);
-
-        $categoria = Category::findOrFail($filtro);
+      // Filtrar por marcas
+      if ($request->has('brands') && !empty($request->brands)) {
+        $query->whereIn('brand_id', $request->brands);
       }
 
-      $page = 0;
-      //  if (!empty($productos->nextPageUrl())) {
-      //  $parse_url = parse_url($productos->nextPageUrl());
+      // Filtrar por rango de precios
+      if ($request->has('price_min') && $request->has('price_max')) {
+        $priceMin = floatval($request->price_min);
+        $priceMax = floatval($request->price_max);
+        $query->whereBetween('precio', [$priceMin, $priceMax]);
+      }
 
-      // if (!empty($parse_url['query'])) {
-      // parse_str($parse_url['query'], $get_array);
-      //  $page = !empty($get_array['page']) ? $get_array['page'] : 0;
-      //  }
-      //  }
+      // Ordenar los productos
+      $sort = $request->input('sort', 'default');
+      switch ($sort) {
+        case 'popular':
+          $query->orderBy('popularity', 'desc');
+          break;
+        case 'latest':
+          $query->orderBy('created_at', 'desc');
+          break;
+        case 'low_to_high':
+          $query->orderBy('precio', 'asc');
+          break;
+        case 'high_to_low':
+          $query->orderBy('precio', 'desc');
+          break;
+        default:
+          $query->orderBy('created_at', 'desc');
+          break;
+      }
 
+      // Obtener los productos filtrados
+      $productos = $query->get();
 
+      // Si es una solicitud AJAX, devolver la vista parcial
+      if ($request->ajax()) {
+        return view('public._listproduct', compact('productos'))->render();
+      }
 
-      $brands = Brand::all();
-      $productos = Products::all();
-      return view('public.catalogobk2', compact('brands', 'productos', 'textoproducto', 'general', 'faqs', 'categorias', 'testimonie', 'filtro', 'categoria', 'atributos', 'colecciones', 'page', 'subcategorias', 'microcategorias'));
+      // Retornar la vista completa
+      return view('public.catalogobk2', compact('brands', 'productos', 'textoproducto', 'general', 'categorias', 'home'));
     } catch (\Throwable $th) {
-      dump($th);
+      //  \Log::error('Error en el controlador:', ['message' => $th->getMessage()]);
+      return view('public.catalogobk2')->with('error', 'No se encontraron productos');
     }
   }
+
+
+
+  public function filterProducts(Request $request)
+  {
+    // Obtener los parámetros de la solicitud
+    $brands = $request->input('brands', []); // Marcas seleccionadas
+
+    $priceMin = floatval($request->input('price_min', 0)); // Convierte a número
+    $priceMax = floatval($request->input('price_max', 1000)); // Convierte a número
+    $sort = $request->input('sort', 'default'); // Ordenamiento
+
+    // Iniciar la consulta de productos
+    //$query = Products::where('brand_id', $brands)->get();
+    $query = Products::query(); // Inicializa la consulta sin ejecutarla
+    // Filtrar por marcas si se seleccionaron
+    if (!empty($brands)) {
+      $query->whereIn('brand_id', $brands);
+    }
+
+    // Filtrar por rango de precios
+    if ($priceMin || $priceMax) {
+      $query->whereBetween('precio', [
+        $priceMin ?: 0,
+        $priceMax ?: 1000
+      ]);
+    }
+
+    // Ordenar los productos según la opción seleccionada
+    switch ($sort) {
+      case 'popular':
+        $query->orderBy('popularity', 'desc'); // Ordenar por popularidad
+        break;
+      case 'latest':
+        $query->orderBy('created_at', 'desc'); // Ordenar por los más recientes
+        break;
+      case 'low_to_high':
+        $query->orderBy('precio', 'asc'); // Ordenar por precio: menor a mayor
+        break;
+      case 'high_to_low':
+        $query->orderBy('precio', 'desc'); // Ordenar por precio: mayor a menor
+        break;
+      default:
+        $query->orderBy('created_at', 'desc'); // Orden por defecto
+        break;
+    }
+
+    // Obtener los productos filtrados
+    $productos = $query->get();
+
+    // Retornar la vista parcial con los productos filtrados
+    return view('public._listproduct', compact('productos'))->render();
+  }
+
 
   public function comentario()
   {
@@ -610,6 +683,7 @@ class IndexController extends Controller
 
   public function productoShow($slug)
   {
+    $general = General::first();
     $producto = Products::where('slug', '=', $slug)->with('category')->with('brand')->first();
 
     $productoRelacionado = Products::where('categoria_id', '=', $producto->categoria_id)->where('id', '!=', $producto->id)->latest()->take(3)->get();
@@ -621,7 +695,7 @@ class IndexController extends Controller
     $album = Album::where('name', $albumName)->withCount('images', 'children')->first();
     $album->load('children', 'images');
 
-    return view('public.product', compact('producto', 'productoRelacionado', 'album')); //compact('')
+    return view('public.product', compact('producto', 'productoRelacionado', 'album', 'general')); //compact('')
   }
 
   public function producto(string $id)
@@ -629,12 +703,8 @@ class IndexController extends Controller
 
     $producto = Products::where('id', '=', $id)->first();
 
-    $meta_title = $producto->meta_title ?? $producto->producto;
-    $meta_description = $producto->meta_description  ?? Str::limit(strip_tags($producto->description), 160);
-    $meta_keywords = $producto->meta_keywords ?? '';
 
 
-    $colors = DB::table('imagen_productos')->where('product_id', $id)->groupBy('color_id')->join('attributes_values', 'color_id', 'attributes_values.id')->get();
 
     $productos = Products::where('id', '=', $id)->with('attributes')->with('tags')->get();
 

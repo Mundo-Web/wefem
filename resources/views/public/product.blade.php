@@ -143,8 +143,9 @@
                             </svg>
                             Recíbelo entre 18
                             y 23 días hábiles</p>
-                        <button
-                            class="bg-colorBackgroundRed text-white w-full p-3 rounded-full mt-4 text-lg font-semibold">Comprar</button>
+                        <x-custom.button-cotizar :general="$general" text="Comprar"
+                            style="block text-center bg-colorBackgroundRed text-white px-6 py-3 rounded-full hover:bg-colorBackgroundRed transition duration-300" />
+
                     </div>
 
                 </div>
