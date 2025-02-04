@@ -113,6 +113,7 @@
 
                                                         <input type="number" id="price-min" class="absolute opacity-0">
                                                         <input type="number" id="price-max" class="absolute opacity-0">
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -397,9 +398,7 @@
                 priceMinI.value = currentRange[0].toFixed(2);
                 priceMaxI.value = currentRange[1].toFixed(2);
 
-                // Disparar evento jQuery manualmente
-                $('#price-min').trigger('input');
-                $('#price-max').trigger('input');
+
             };
 
             const onDrag = (event, thumb, index) => {
@@ -415,11 +414,18 @@
                 updateSlider();
             };
 
+            const applyFiltersOnMouseUp = () => {
+                // Disparar evento jQuery manualmente
+                $('#price-min').trigger('input');
+                $('#price-max').trigger('input');
+            };
+
             thumbLeft.addEventListener('mousedown', () => {
                 const moveHandler = (event) => onDrag(event, thumbLeft, 0);
                 const upHandler = () => {
                     document.removeEventListener('mousemove', moveHandler);
                     document.removeEventListener('mouseup', upHandler);
+                    applyFiltersOnMouseUp(); // Aplicar filtros al soltar el mouse
                 };
                 document.addEventListener('mousemove', moveHandler);
                 document.addEventListener('mouseup', upHandler);
@@ -430,6 +436,7 @@
                 const upHandler = () => {
                     document.removeEventListener('mousemove', moveHandler);
                     document.removeEventListener('mouseup', upHandler);
+                    applyFiltersOnMouseUp(); // Aplicar filtros al soltar el mouse
                 };
                 document.addEventListener('mousemove', moveHandler);
                 document.addEventListener('mouseup', upHandler);
@@ -534,6 +541,12 @@
                     },
                     success: function(response) {
                         $('#productList').html(response);
+                        // Reinicializar AOS completamente
+                        AOS.init({
+                            once: false, // Para que las animaciones se repitan al hacer scroll
+                        });
+
+                        AOS.refresh();
                     },
                     error: function(error) {
                         console.error('Error al aplicar filtros:', error);
@@ -570,7 +583,7 @@
 
                 // Obtener el valor del checkbox seleccionado
                 let sortItem = $(this).is(':checked') ? $(this).val() :
-                'default'; // Si se desmarca, vuelve a 'default'
+                    'default'; // Si se desmarca, vuelve a 'default'
 
                 // Asignar el nuevo valor a filters.sort
                 filters.sort = sortItem;

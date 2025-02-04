@@ -51,7 +51,7 @@
 
 
 
-    <div class="flex justify-end max-w-7xl mx-auto z-[100] relative">
+    <div class="flex justify-end w-full mx-auto z-[100] relative">
         <div class="fixed bottom-6 sm:bottom-[2rem] lg:bottom-[4rem] z-20 cursor-pointer">
             <a target="_blank" id="whatsapp-toggle"
                 href="https://api.whatsapp.com/send?phone={{ $general->whatsapp }}&text={{ $general->mensaje_whatsapp }}">

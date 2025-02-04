@@ -11,8 +11,7 @@
         <img src="{{ asset('images/img/background/bg-footer.png') }}" alt="" class="w-full">
     </div>
     <div class="grid grid-cols-1 max-w-7xl mx-auto   py-10 lg:py-16 gap-10 md:gap-5 z-50">
-        <div class=" grid  grid-cols-2  gap-10 lg:gap-5 col-span-1" data-aos="fade-up" data-aos-offset="150"
-            data-aos-duration="1000" data-aos-delay="200">
+        <div class=" grid  grid-cols-2  gap-10 lg:gap-5 col-span-1">
             <div>
                 <a href="{{ route('index') }}">
                     <img src="{{ asset('images/img/logo/DarTelecom.png') }}" class="w-48 h-auto object-cover" />

@@ -179,11 +179,16 @@
                         style=" filter: opacity(10%);">
                 </div>
                 <div class="mt-6 flex justify-center items-center z-20">
+
+
+
+
+
                     <div x-data="carousel()" class="w-full flex justify-center items-center relative overflow-hidden">
                         <!-- Contenedor de las imágenes -->
                         <div class="relative flex w-[300px] h-[100px] justify-center items-center">
                             <template x-for="(image, index) in visibleImages" :key="index">
-                                <div class="absolute transition-all duration-500 flex items-center justify-center "
+                                <div class="absolute transition-all duration-1000 flex items-center justify-center "
                                     :class="{
                                         'w-14 h-14 z-10 left-1/2 transform -translate-x-1/2': index === 1,
                                         /* Imagen central */
