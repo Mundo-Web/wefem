@@ -271,6 +271,7 @@ Route::middleware(['auth:sanctum', 'verified', 'can:Admin'])->group(function () 
 
         //Suscripciones
         Route::get('/subscripciones', [NewsletterSubscriberController::class, 'showSubscripciones'])->name('subscripciones');
+        Route::post('mensajes/{id}/responder', [MessageController::class, 'replyMessage'])->name('mensajes.reply');
 
 
         //Crud Album Imagenes

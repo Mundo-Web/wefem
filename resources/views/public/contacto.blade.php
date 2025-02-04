@@ -71,29 +71,29 @@
                     <div class="grid grid-cols-2 gap-4">
                         <label class="text-colorAzulOscuro text-text12 w-full leading-tight">Nombres
                             <input id="name" type="text" name="name" required placeholder="Ingrese tu nombre"
-                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-[#000F25]" />
+                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-none focus:border-none focus:ring-[#D0D5DD]" />
                         </label>
 
                         <label class="text-colorAzulOscuro text-text12 w-full leading-tight">Apellidos
                             <input id="lastname" type="text" name="lastname" required placeholder="Ingrese tu apellido"
-                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-[#000F25]" />
+                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-none focus:border-none focus:ring-[#D0D5DD]" />
                         </label>
 
                         <label class="text-colorAzulOscuro text-text12 w-full leading-tight col-span-2">Email
                             <input id="email" type="email" name="email" required
                                 placeholder="Ingrese tu correo electrónico"
-                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-[#000F25]" />
+                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-none focus:border-none focus:ring-[#D0D5DD]" />
                         </label>
 
                         <label class="text-colorAzulOscuro text-text12 w-full leading-tight col-span-2">Teléfono
                             <input id="phone" type="text" name="phone" required placeholder="Teléfono"
                                 maxlength="9"
-                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-[#000F25]" />
+                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-none focus:border-none focus:ring-[#D0D5DD]" />
                         </label>
 
                         <label class="text-colorAzulOscuro text-text12 w-full leading-tight col-span-2">Escribe un mensaje
                             <textarea id="message" name="message" required placeholder="Escríbenos tu pregunta aquí"
-                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-[#000F25] min-h-[200px]"></textarea>
+                                class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-none focus:border-none focus:ring-[#D0D5DD] min-h-[200px]"></textarea>
                         </label>
                     </div>
 
@@ -236,10 +236,39 @@
                     <x-custom.button-cotizar :general="$general" text="Ponerse en contacto"
                         style=" bg-colorBackgroundRed text-white px-6 py-3 rounded-full hover:bg-colorBackgroundRed transition duration-300" />
                 </div>
+
+
             </section>
 
 
         </section>
+        <!-- Modal -->
+        <div id="modalDarTelecom"
+            class="fixed inset-0 hidden bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div class="bg-white p-6  w-[600px] h-[650px] relative rounded-xl overflow-hidden">
+                <video class="absolute top-0 left-0 w-full h-full object-cover" autoplay loop muted>
+                    <source src="{{ asset('images/img/background/backgroundInicio.mp4') }}" type="video/mp4" />
+                    Tu navegador no soporta la reproducción de videos.
+                </video>
+                <div
+                    class="absolute inset-0 bg-transparent bg-opacity-50 flex flex-col mt-24 justify-start items-center text-white text-center">
+                    <img src="{{ asset('images/img/logo/DarTelecom.png') }}" alt="Dar Telecom"
+                        class="h-14 w-auto object-cover mb-6" />
+                    <h2 class="text-text28 font-bold">¡Gracias por escribirnos!</h2>
+                    <p id="text-nombre" class="mt-2 font-medium">¡Hola [Nombre del Cliente]!</p>
+                    <p class="mt-2 font-medium">En breve nos estaremos comunicando contigo.</p>
+                    <button onclick="document.getElementById('modalDarTelecom').classList.add('hidden');"
+                        class="bg-colorBackgroundRed cursor-pointer mt-4  hover:bg-colorBackgroundRed text-white font-semibold py-3 rounded-full px-5 text-base">
+                        Visita nuestra Web
+                    </button>
+                </div>
+                <div class="absolute left-0  bottom-20 transform translate-y-1/2">
+                    <img src="{{ asset('images/img/background/bg-cable.png') }}" alt="" class="w-96">
+                </div>
+            </div>
+
+        </div>
+        </div>
     </main>
 
 
@@ -298,10 +327,9 @@
                 data: formData,
                 success: function(response) {
                     Swal.close();
-                    Swal.fire({
-                        title: response.message,
-                        icon: 'success',
-                    });
+                    $('#text-nombre').html('¡Hola ' + response.data.full_name + '!');
+
+                    $('#modalDarTelecom').removeClass('hidden');
                     $('#formContactos')[0].reset();
                 },
                 error: function(error) {

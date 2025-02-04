@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\UpdateMessageRequest;
+use App\Mail\ContactResponseMail;
 use App\Models\Message;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Mail;
+use Psy\Readline\Hoa\Console;
 
 class MessageController extends Controller
 {
@@ -74,6 +77,22 @@ class MessageController extends Controller
         $message->save();
 
         return view('pages.message.show', compact('message'));
+    }
+    public function replyMessage(Request $request, $id)
+    {
+
+        $message = Message::findOrFail($id);
+
+        // Obtener la respuesta del formulario
+        $responseMessage = $request->input('response_message');
+
+        // Enviar el correo de respuesta con el mensaje
+        // Mail::to($message->email)->send(new ContactResponseMail($message, $responseMessage));
+        // Usa queue en lugar de send
+        Mail::to($message->email)->queue(new ContactResponseMail($message, $responseMessage));
+
+
+        return redirect()->route('mensajes.index')->with('success', 'Mensaje enviado correctamente');
     }
 
     /**

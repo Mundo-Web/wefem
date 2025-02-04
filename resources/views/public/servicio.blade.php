@@ -172,8 +172,7 @@
             </aside>
 
             <!-- Main Content -->
-            <main class="md:w-3/4 bg-white mb-16" id="main-content" data-aos="fade-up" data-aos-offset="150"
-                data-aos-duration="1000" data-aos-delay="200">
+            <main class="md:w-3/4 bg-white mb-16" id="main-content">
                 <!-- El contenido del primer servicio se mostrará por defecto -->
 
                 @include('components.custom.component-servicio', $servicio)

@@ -898,7 +898,7 @@ class IndexController extends Controller
       Message::create($data);
 
 
-      return response()->json(['message' => 'Mensaje enviado con éxito']);
+      return response()->json(['message' => 'Mensaje enviado con éxito', 'data' => $data]);
     } catch (ValidationException $e) {
       return response()->json(['message' => $e->validator->errors()], 400);
     } catch (\Exception $e) {

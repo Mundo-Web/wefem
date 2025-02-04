@@ -15,7 +15,7 @@
                 <h2 class="font-gotham_bold text-colorAzul text-text48">Descubre lo mejor:<br />
                     Publicaciones sobre el mundo del internet</h2>
                 <!--p class="text-colorParrafo text-text18">Praesent non euismod arcu, eu dignissim erat. Aliquam erat
-                            volutpat..</p-->
+                                    volutpat..</p-->
             </div>
         </section>
 
@@ -51,8 +51,7 @@
                 data-aos-delay="200">
 
                 @foreach ($nextTwoRecentPosts as $post)
-                    <div class=" w-full mb-4" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
-                        data-aos-delay="200">
+                    <div class=" w-full mb-4">
                         <a href="{{ route('detalleBlog', $post->slug) }}" class="flex gap-4">
                             <div class="w-2/5">
                                 <img class="h-full w-full object-cover rounded-xl" src="{{ asset($post->imagen) }}"

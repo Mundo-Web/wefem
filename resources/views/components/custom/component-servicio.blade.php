@@ -90,6 +90,6 @@
    <x-custom.servicio-beneficio :text="$servicio->beneficios" :icono="$servicio->icono" />
 
    <!-- Call to Action -->
-   <div class="text-start mt-8" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
+   <div class="text-start mt-8">
        <x-custom.button-cotizar :general="$general" text="Cotizar Servicio" />
    </div>
