@@ -10,22 +10,22 @@
 
      <main class="bg-white">
 
-         <section class="pt-32 max-w-7xl mx-auto">
+         <section class="pt-32 w-11/12 lg:max-w-7xl mx-auto">
              <div class="flex flex-col text-center items-center max-w-6xl mx-auto">
                  <div class="flex gap-4">
-                     <h3 class="font-bold text-colorRojo text-text16"> {{ $post->category->nombre }} </h3>
-                     <span class="font-bold text-colorRojo text-text16">|</span>
+                     <h3 class="font-bold text-colorRojo text-text12 md:text-text16"> {{ $post->category->nombre }} </h3>
+                     <span class="font-bold text-colorRojo text-text12 md:text-text16">|</span>
                      <h3 class="font-bold text-colorRojo text-text16 ">Publicado
                          {{ \Carbon\Carbon::parse($post->fecha_publicacion)->translatedFormat('d F, Y') }}</h3>
                  </div>
-                 <h2 class=" text-colorAzulOscuro text-text48 font-bold">{{ $post->titulo }}
+                 <h2 class=" text-colorAzulOscuro text-text32 lg:text-text48 font-bold">{{ $post->titulo }}
                  </h2>
              </div>
          </section>
 
 
-         <section class=" max-w-7xl mx-auto pb-12 mt-8" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
-             data-aos-delay="200">
+         <section class="w-11/12 lg:max-w-7xl mx-auto pb-12 mt-8" data-aos="fade-up" data-aos-offset="150"
+             data-aos-duration="1000" data-aos-delay="200">
 
              @if ($post->imagen)
                  <div class="w-full" data-aos="fade-up" data-aos-offset="150">
@@ -74,16 +74,16 @@
          </section>
 
          @if (count($postsrelacionados) > 0)
-             <section class="max-w-7xl mx-auto" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+             <section class="w-11/12 lg:max-w-7xl mx-auto" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
                  data-aos-delay="200">
                  <div class="flex flex-col gap-5">
                      <div class="flex  gap-3 flex-col w-full justify-start mb-4">
                          <h2 class="font-gotham_bold text-colorAzulOscuro text-4xl lg:text-5xl">Otras publicaciones</span>
                          </h2>
                          <!--p class="text-colorParrafo text-text18">Nam tempor diam quis urna maximus, ac laoreet arcu
-                                 convallis. Aenean
-                                 dignissim nec sem quis
-                                 consequat.</p-->
+                                                                 convallis. Aenean
+                                                                 dignissim nec sem quis
+                                                                 consequat.</p-->
                      </div>
 
                      <div class="w-full mb-16" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
@@ -156,8 +156,12 @@
                      slidesPerView: 1,
 
                  },
-                 750: {
+                 640: {
                      slidesPerView: 2,
+
+                 },
+                 750: {
+                     slidesPerView: 3,
 
                  },
                  1250: {

@@ -8,20 +8,20 @@
 @section('content')
     <main class=" pt-36 bg-white">
 
-        <section class="  max-w-7xl mx-auto " data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+        <section class="w-11/12  lg:max-w-7xl mx-auto " data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
             data-aos-delay="200">
             <div class="flex flex-col gap-1  text-left" data-aos="fade-down">
-                <p class="font-gotham_bold text-colorRojo text-text20 ">blog</p>
-                <h2 class="font-gotham_bold text-colorAzul text-text48">Descubre lo mejor:<br />
+                <p class=" text-colorRojo text-text20 font-bold">blog</p>
+                <h2 class=" text-colorAzul text-text32  lg:text-text48 font-bold">Descubre lo mejor:<br />
                     Publicaciones sobre el mundo del internet</h2>
                 <!--p class="text-colorParrafo text-text18">Praesent non euismod arcu, eu dignissim erat. Aliquam erat
-                                    volutpat..</p-->
+                                                                                                        volutpat..</p-->
             </div>
         </section>
 
-        <section class="max-w-7xl mx-auto  pt-10 flex gap-10" data-aos="fade-up" data-aos-offset="150"
-            data-aos-duration="1000" data-aos-delay="200">
-            <div class="w-1/2 flex flex-col justify-center" data-aos="fade-down">
+        <section class="w-11/12 lg:max-w-7xl mx-auto  pt-10 flex flex-col lg:flex-row gap-10" data-aos="fade-up"
+            data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
+            <div class="lg:w-1/2 flex flex-col justify-center" data-aos="fade-down">
                 @if (is_null($mostRecentPost))
                 @else
                     <a href="{{ route('detalleBlog', $mostRecentPost->slug) }}">
@@ -47,17 +47,17 @@
                     </a>
                 @endif
             </div>
-            <div class="w-1/2" data-aos="fade-down" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+            <div class="lg:w-1/2" data-aos="fade-down" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
                 data-aos-delay="200">
 
                 @foreach ($nextTwoRecentPosts as $post)
                     <div class=" w-full mb-4">
-                        <a href="{{ route('detalleBlog', $post->slug) }}" class="flex gap-4">
-                            <div class="w-2/5">
+                        <a href="{{ route('detalleBlog', $post->slug) }}" class="flex flex-col md:flex-row gap-4">
+                            <div class="w-full md:w-2/5">
                                 <img class="h-full w-full object-cover rounded-xl" src="{{ asset($post->imagen) }}"
                                     onerror="this.onerror=null;this.src='{{ asset('images/img/noimagen.jpg') }}';" />
                             </div>
-                            <div class="flex flex-col gap-3 justify-center items-start w-3/5 p-3 cursor-pointer">
+                            <div class="flex flex-col gap-3 justify-center items-start w-full md:w-3/5 p-3 cursor-pointer">
                                 <p class="text-text16 font-bold text-colorRojo">{{ $post->category->nombre }}</p>
                                 <div class="flex flex-col justify-center items-start h-20">
                                     <h2 class=" text-colorAzulOscuro text-text24 line-clamp-3 font-bold">
@@ -79,14 +79,10 @@
             </div>
         </section>
 
-        <section class="max-w-7xl mx-auto my-20 " data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
-            data-aos-delay="200">
+        <section class="w-11/12 lg:max-w-7xl mx-auto py-20 " data-aos="fade-up" data-aos-offset="150"
+            data-aos-duration="1000" data-aos-delay="200">
             <div class="flex flex-col">
-
                 <div class="flex flex-col w-full ">
-
-
-
                     <h2 class=" text-colorAzulOscuro text-text48 font-semibold" data-aos="fade-down">Últimas
                         publicaciones</h2>
 
@@ -95,7 +91,7 @@
                 </div>
 
                 <div class="w-full">
-                    <div class="grid grid-cols-3 gap-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
                         @foreach ($remainingPosts as $post)
                             <div data-aos="fade-down" class="flex flex-col w-full" data-aos="fade-up" data-aos-offset="150"
@@ -128,6 +124,7 @@
                         @endforeach
 
                     </div>
+
                 </div>
 
             </div>
