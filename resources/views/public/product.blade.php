@@ -13,10 +13,10 @@
 
 
 
-    <main>
-        <div class="max-w-7xl mx-auto pt-32">
-            <div class="bg-white rounded-lg flex gap-12">
-                <div class="w-1/2">
+    <main class="bg-white">
+        <div class="w-11/12 lg:max-w-7xl mx-auto pt-32">
+            <div class="bg-white rounded-lg flex flex-col md:flex-row gap-12">
+                <div class="w-full md:w-1/2">
                     <div class="bg-colorBackgroundAzulClaro p-6 rounded-xl">
                         <img id="mainImage" class="w-full rounded-xl " src="{{ asset($producto->imagen) }}"
                             alt="{{ $producto->producto }}">
@@ -34,7 +34,7 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="w-1/2">
+                <div class="w-full md:w-1/2">
                     <p class="text-colorParrafo text-text16 font-medium">{{ $producto->category->name }}</p>
                     <h1 class="text-text40 font-semibold text-colorAzulOscuro ">{{ $producto->producto }}</h1>
                     <p class="text-colorParrafo font-normal text-text16 mt-2">{{ $producto->extract }}</p>
@@ -151,9 +151,9 @@
                 </div>
             </div>
 
-            <div class="my-10">
+            <div class="py-10">
                 <h2 class="text-2xl font-bold">Productos Relacionados</h2>
-                <div class="grid grid-cols-3 gap-6 mt-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
                     @if ($productoRelacionado)
                         @foreach ($productoRelacionado as $producto)
                             <div
