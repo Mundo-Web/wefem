@@ -1,4 +1,4 @@
-@extends('components.public.matrix', ['pagina' => 'nosotros'])
+@extends('components.public.matrix', ['pagina' => 'Nosotros'])
 @section('titulo', 'Nosotros')
 @section('css_importados')
 
@@ -8,21 +8,21 @@
 @section('content')
     <main class="pt-40 bg-white">
         <!--Seccion breve historia -->
-        <section class="max-w-7xl mx-auto " data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
+        <section class="w-11/12 lg:max-w-7xl mx-auto " data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
             data-aos-delay="200">
             <h2 class="text-text48 mb-4 font-bold text-colorAzulOscuro">{{ $nosotros->title }}</h2>
             <div class="prose prose-lg max-w-7xl text-text18 text-colorParrafo">
                 {!! $nosotros->breve_historia !!}
             </div>
 
-            <img class="w-full my-16 rounded-xl object-cover h-[629px]" src="{{ asset($nosotros->imagen) }}"
+            <img class="w-full my-16 rounded-xl object-cover h-[400px] lg:h-[629px]" src="{{ asset($nosotros->imagen) }}"
                 alt="{{ $nosotros->title }}" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
                 data-aos-delay="200" />
         </section>
         <!--Seccion Mision y vision-->
         <section class="bg-colorBackgroundAzulClaro">
-            <div class="max-w-7xl mx-auto grid grid-cols-2 gap-8 py-12 " data-aos="fade-up" data-aos-offset="150"
-                data-aos-duration="1000" data-aos-delay="200">
+            <div class="w-11/12 lg:max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 py-12 " data-aos="fade-up"
+                data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
 
                 <div class="flex justify-center">
                     <div class="flex flex-col gap-12  justify-center w-9/12 items-center">
@@ -50,13 +50,13 @@
                 </div>
                 <div>
                     <img src="{{ asset($nosotros->imagen_vision_mision) }}" alt="Nuestra vision y mision"
-                        class="w-full h-[770px] object-cover rounded-xl">
+                        class="w-full h-[440px] lg:h-[770px] object-cover rounded-xl">
                 </div>
             </div>
         </section>
         <section>
-            <div class="max-w-7xl mx-auto grid grid-cols-2 gap-8 py-12 mt-8" data-aos="fade-up" data-aos-offset="150"
-                data-aos-duration="1000" data-aos-delay="200">
+            <div class="w-11/12 lg:max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 py-12 mt-8" data-aos="fade-up"
+                data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
                 <div>
                     <img src="{{ asset($nosotros->imagen_sello_garantia) }}" alt="{{ $nosotros->sello_garantia_titulo }}"
                         class="w-full h-[518px] object-cover rounded-xl">
