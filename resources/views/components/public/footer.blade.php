@@ -10,8 +10,8 @@
     <div class="absolute left-0   transform  rotate-[60deg] -z-10 ">
         <img src="{{ asset('images/img/background/bg-footer.png') }}" alt="" class="w-full">
     </div>
-    <div class="grid grid-cols-1 max-w-7xl mx-auto   py-10 lg:py-16 gap-10 md:gap-5 z-50">
-        <div class=" grid  grid-cols-2  gap-10 lg:gap-5 col-span-1">
+    <div class="grid grid-cols-1 w-11/12 lg:max-w-7xl mx-auto   py-10 lg:py-16 gap-10 md:gap-5 z-50">
+        <div class=" grid grid-cols-1  lg:grid-cols-2  gap-10 lg:gap-5 col-span-1">
             <div>
                 <a href="{{ route('index') }}">
                     <img src="{{ asset('images/img/logo/DarTelecom.png') }}" class="w-48 h-auto object-cover" />
@@ -20,7 +20,7 @@
                     {{ $general->aboutus }}
                 </p>
             </div>
-            <div class="grid grid-cols-2">
+            <div class="grid grid-cols-1  md:grid-cols-2 gap-4">
                 <div class="flex flex-col gap-5">
 
                     <div class="flex flex-col gap-4 text-white font-gotham_light text-base font-bold">
@@ -36,7 +36,7 @@
 
 
 
-                <div class="flex flex-col gap-5">
+                <div class="flex flex-col gap-5 pt-4 border-t-2 md:border-none md:pt-0">
 
                     <div class="flex flex-col gap-4 text-white font-gotham_light text-base">
                         <a>{{ $general->cellphone }}</a>
@@ -80,16 +80,17 @@
         </div>
     </div>
 
-    <div class="flex justify-between items-center gap-3 max-w-7xl mx-auto py-12 border-t-2 border-white z-50">
-        <a href="#" target="_blank" class="text-white font-gotham_medium  text-sm text-center">Copyright &copy;
+    <div
+        class="flex flex-col lg:flex-row justify-between items-start  gap-3 w-11/12 lg:max-w-7xl mx-auto py-12 border-t-2 border-white z-50">
+        <a href="#" target="_blank" class="text-white  text-sm ">Copyright &copy;
             2025 Dar Telecom.
             Reservados todos los derechos</a>
 
-        <div class="flex justify-end gap-16 text-white">
-            <a class="cursor-pointer " id="linkTerminos">
+        <div class="flex w-full justify-between items-center lg:justify-end lg:gap-16 text-white">
+            <a class="block cursor-pointer text-text12 lg:text-text16 text-colorParrafo" id="linkTerminos">
                 Terminos de servicios
             </a>
-            <a class="cursor-pointer " id="linkPoliticas">
+            <a class="block cursor-pointer text-text12 lg:text-text16 text-colorParrafo" id="linkPoliticas">
                 Políticas de privacidad
             </a>
         </div>
@@ -110,7 +111,9 @@
             <p class="font-gotham_book p-2 prose">{!! $politicDev->content ?? '' !!}</p>
         </div>
     </div>
-
+    <div class="md:hidden absolute left-0 bottom-0   transform  rotate-[0deg] -z-10 ">
+        <img src="{{ asset('images/img/background/bg-footer.png') }}" alt="" class="w-full">
+    </div>
 </footer>
 
 <script>
