@@ -10,13 +10,13 @@
 
 
         <section class="w-full relative pt-32">
-            <div class="absolute left-0 transform  ">
+            <div class="absolute left-0 transform hidden md:block ">
                 <img src="{{ asset('images/img/background/bg-contacto.png') }}" alt="" class="w-20">
             </div>
-            <div class="max-w-7xl mx-auto  flex gap-4 " data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
-                data-aos-delay="200">
-                <div class="w-1/2  ">
-                    <div class="w-10/12 flex flex-col justify-start items-start gap-8">
+            <div class="w-11/12 lg:max-w-7xl mx-auto  flex flex-col md:flex-row gap-4 " data-aos="fade-up"
+                data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
+                <div class="md:w-1/2  ">
+                    <div class="w-full lg:w-10/12 flex flex-col justify-start items-start gap-8">
 
                         <h2 class="text-colorAzulOscuro text-text44 font-bold">{{ $contactoview->titleSection }}</h2>
                         <p class=" text-colorParrafo text-text16 font-light" data-aos="fade-down">
@@ -68,7 +68,7 @@
                     <h2 class="text-colorAzulOscuro text-text32 font-bold">{{ $contactoview->titleForm }}</h2>
                     <p class="text-colorParrafo text-text16 font-light my-8">{{ $contactoview->subtitleForm }}</p>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <label class="text-colorAzulOscuro text-text12 w-full leading-tight">Nombres
                             <input id="name" type="text" name="name" required placeholder="Ingrese tu nombre"
                                 class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-none focus:border-none focus:ring-[#D0D5DD]" />
@@ -79,19 +79,20 @@
                                 class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-none focus:border-none focus:ring-[#D0D5DD]" />
                         </label>
 
-                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight col-span-2">Email
+                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight lg:col-span-2">Email
                             <input id="email" type="email" name="email" required
                                 placeholder="Ingrese tu correo electrónico"
                                 class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-none focus:border-none focus:ring-[#D0D5DD]" />
                         </label>
 
-                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight col-span-2">Teléfono
+                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight lg:col-span-2">Teléfono
                             <input id="phone" type="text" name="phone" required placeholder="Teléfono"
                                 maxlength="9"
                                 class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-none focus:border-none focus:ring-[#D0D5DD]" />
                         </label>
 
-                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight col-span-2">Escribe un mensaje
+                        <label class="text-colorAzulOscuro text-text12 w-full leading-tight lg:col-span-2">Escribe un
+                            mensaje
                             <textarea id="message" name="message" required placeholder="Escríbenos tu pregunta aquí"
                                 class="w-full mt-2 text-text16 px-3 py-3 text-colorParrafo bg-transparent border-[#D0D5DD] shadow-sm rounded-xl focus:outline-none focus:ring-none focus:border-none focus:ring-[#D0D5DD] min-h-[200px]"></textarea>
                         </label>
@@ -103,24 +104,16 @@
                             <label for="privacy_policy" class="flex items-center cursor-pointer w-full justify-between">
                                 <!-- Input Checkbox -->
                                 <input type="checkbox" id="privacy_policy" class="hidden peer" />
-
-
-
-
                                 <!-- Visual del Checkbox -->
                                 <div
                                     class="text-transparent w-5 h-5 flex items-center justify-center border border-[#333F51] rounded-sm bg-white peer-checked:bg-white peer-checked:border-[#ED1B2F] peer-checked:text-colorRojo">
-
                                     <i class="fa-solid fa-check fa-xs"></i>
-
                                 </div>
                                 <!-- Texto del Label -->
                                 <span class="ml-4 text-sm  text-colorParrafo ">
                                     Acepto la política de
                                     privacidad.
                                 </span>
-
-
                             </label>
                         </div>
                     </div>
@@ -136,13 +129,13 @@
 
         </section>
         <!--Seccion FAQs-->
-        <section class="max-w-7xl mx-auto flex mt-12" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
-            data-aos-delay="200">
-            <div class="w-1/2">
+        <section class="w-11/12 lg:max-w-7xl mx-auto flex flex-col lg:flex-row mt-12" data-aos="fade-up"
+            data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
+            <div class="w-full lg:w-1/2">
                 <h2 class="text-text32 font-bold text-colorAzulOscuro">{{ $contactoview->titleFaqs }}</h2>
                 <p class="text-colorParrafo font-light text-text16">{{ $contactoview->subtitleFaqs }}</p>
             </div>
-            <div class="w-1/2">
+            <div class="w-full lg:w-1/2 mt-8 lg:mt-0">
                 @foreach ($faqs as $faq)
                     <div x-data="{ open: false }" class="border-b pb-4">
                         <!-- Pregunta -->
@@ -171,19 +164,14 @@
             </div>
         </section>
         <!--Seccion Contactar-->
-        <section class="max-w-7xl mx-auto my-12" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
-            data-aos-delay="200">
+        <section class="w-11/12 lg:max-w-7xl mx-auto py-12" data-aos="fade-up" data-aos-offset="150"
+            data-aos-duration="1000" data-aos-delay="200">
             <section class="bg-colorBackgroundAzulClaro rounded-xl p-8 w-full relative overflow-hidden z-0 ">
                 <div class="absolute -left-16  transform  rotate-[85deg] -z-10">
                     <img src="{{ asset('images/img/background/bg-footer.png') }}" alt="" class="w-full"
                         style=" filter: opacity(10%);">
                 </div>
                 <div class="mt-6 flex justify-center items-center z-20">
-
-
-
-
-
                     <div x-data="carousel()" class="w-full flex justify-center items-center relative overflow-hidden">
                         <!-- Contenedor de las imágenes -->
                         <div class="relative flex w-[300px] h-[100px] justify-center items-center">
