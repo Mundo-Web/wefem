@@ -129,59 +129,66 @@
 
 
 @section('content')
-    <main>
+    <main class="bg-white">
 
         <!-- Header Section -->
-        <div class="h-[200px] w-full bg-cover bg-colorBackgroundAzulOscuro flex flex-col justify-center"
+        <div class="hidden h-[200px] w-full bg-cover bg-colorBackgroundAzulOscuro lg:flex flex-col justify-center"
             style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url('{{ asset($servicioPage->imagen) }}'); background-position: center center; background-size: cover; background-attachment: fixed;">
         </div>
 
-        <!-- Subheader -->
-        <section class="text-center py-8 px-4 max-w-3xl mx-auto">
-            <div class=" bg-opacity-50 flex items-center justify-center">
-                <h1 class="text-colorAzulOscuro text-text48 font-bold" data-aos="fade-up" data-aos-offset="150"
-                    data-aos-duration="1000" data-aos-delay="200">
-                    <x-custom.texto-titulo :text="$servicioPage->titulo" style="text-colorRojo" />
-                </h1>
+        <section class="relative w-full"> <!-- Subheader -->
+            <div class="absolute left-0  top-0 transform rotate-180 ">
+                <img src="{{ asset('images/img/background/bg-testimonio.png') }}" alt="" class="w-20 md:w-36 lg:w-48">
             </div>
-            <p class="text-colorParrafo text-text16 my-8 ">
-                {{ $servicioPage->subtitulo }}
-            </p>
+            <div class="absolute right-0  bottom-0 transform  ">
+                <img src="{{ asset('images/img/background/bg-testimonio.png') }}" alt=""
+                    class="w-20 md:w-36 lg:w-48">
+            </div>
+            <section class="w-11/12 text-center py-8 px-4 lg:max-w-3xl mx-auto mt-20 lg:mt-0">
+                <div class=" bg-opacity-50 flex items-center justify-center">
+                    <h1 class="text-colorAzulOscuro text-text40 lg:text-text48 font-bold" data-aos="fade-up"
+                        data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
+                        <x-custom.texto-titulo :text="$servicioPage->titulo" style="text-colorRojo" />
+                    </h1>
+                </div>
+                <p class="text-colorParrafo text-text16 my-8">
+                    {{ $servicioPage->subtitulo }}
+                </p>
+            </section>
+
+            <div class="w-11/12 lg:max-w-7xl mx-auto px-4 flex flex-col lg:flex-row gap-8">
+                <!-- Sidebar -->
+                <aside class="lg:w-1/4">
+                    <nav class="">
+                        <ul class="grid grid-cols-2 lg:grid-cols-1 gap-4 " data-aos="fade-up" data-aos-offset="150"
+                            data-aos-duration="1000" data-aos-delay="200">
+                            @foreach ($servicios as $index => $servicio)
+                                <li data-id="{{ $servicio->id }}"
+                                    class="cursor-pointer group rounded-xl flex items-center gap-4 p-4 text-text20 font-semibold bg-colorBackgroundAzulClaro hover:bg-colorBackgroundRed text-colorAzulOscuro hover:text-white transition-all duration-300 {{ $index === 0 ? 'active' : '' }}">
+                                    <div class="group-hover:hidden h-7 w-7 bg-black"
+                                        style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
+                                    </div>
+                                    <div class="hidden group-hover:inline-block h-7 w-7 bg-white"
+                                        style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
+                                    </div>
+                                    <a href="#" class="servicio-link">{{ $servicio->title }}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </nav>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="lg:w-3/4 bg-white mb-16" id="main-content">
+                    <!-- El contenido del primer servicio se mostrará por defecto -->
+
+                    @include('components.custom.component-servicio', $servicio)
+
+
+                </main>
+            </div>
+
         </section>
-
-        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row gap-8">
-            <!-- Sidebar -->
-            <aside class="md:w-1/4">
-                <nav class="">
-                    <ul class="flex gap-4 flex-col" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
-                        data-aos-delay="200">
-                        @foreach ($servicios as $index => $servicio)
-                            <li data-id="{{ $servicio->id }}"
-                                class="cursor-pointer group rounded-xl flex items-center gap-4 p-4 text-text20 font-semibold bg-colorBackgroundAzulClaro hover:bg-colorBackgroundRed text-colorAzulOscuro hover:text-white transition-all duration-300 {{ $index === 0 ? 'active' : '' }}">
-                                <div class="group-hover:hidden h-7 w-7 bg-black"
-                                    style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
-                                </div>
-                                <div class="hidden group-hover:inline-block h-7 w-7 bg-white"
-                                    style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
-                                </div>
-                                <a href="#" class="servicio-link">{{ $servicio->title }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                </nav>
-            </aside>
-
-            <!-- Main Content -->
-            <main class="md:w-3/4 bg-white mb-16" id="main-content">
-                <!-- El contenido del primer servicio se mostrará por defecto -->
-
-                @include('components.custom.component-servicio', $servicio)
-
-
-            </main>
-        </div>
-
-
     </main>
 
 

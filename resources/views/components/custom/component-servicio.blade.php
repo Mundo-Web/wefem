@@ -34,8 +34,8 @@
    </style>
 
 
-   <div class="flex justify-between items-center" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"
-       data-aos-delay="200">
+   <div class="flex flex-col md:flex-row items-start md:justify-between md:items-center mb-4 md:mb-0" data-aos="fade-up"
+       data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
        <div>
            <h2 class="text-colorRojo text-text32 font-extrabold">{{ $servicio->title }}</h2>
            <h3 class="text-text32 font-semibold mb-4">{{ $servicio->subtitle }}</h3>

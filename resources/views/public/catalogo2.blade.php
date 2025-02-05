@@ -4,9 +4,11 @@
     <style>
         .slider-container {
             width: 100%;
-            max-width: 400px;
+
             margin: 0 auto;
-            padding: 24px;
+            padding-top: 24px;
+            padding-bottom: 24px;
+            padding-right: 24px;
         }
 
         .slider-header {
@@ -56,27 +58,27 @@
 @stop
 
 @section('content')
-    <main class="pt-36 w-full gap-12">
+    <main class="pt-36 w-full gap-12 bg-white">
 
-        <section class="flex flex-col gap-4 items-center justify-center max-w-2xl mx-auto px-5">
+        <section class="w-11/12 flex flex-col gap-4 items-center justify-center lg:max-w-2xl mx-auto px-5">
             <h2 class="text-text40 font-semibold text-colorAzulOscuro text-center">Optimiza tu red con los <span
                     class="text-colorRojo">mejores equipos</span>
                 del mercado</h2>
-            <p class="text-colorParrafo text-text16">Encuentra la tecnología que tu empresa necesita</p>
+            <p class="text-colorParrafo text-text16 text-center">Encuentra la tecnología que tu empresa necesita</p>
         </section>
 
 
-        <div class="max-w-7xl flex flex-col md:flex-row md:gap-10 mx-auto py-12  ">
-            <aside class="flex flex-col gap-10 w-3/12">
+        <div class="w-11/12 lg:max-w-7xl flex flex-col md:flex-row md:gap-10 mx-auto py-12  ">
+            <aside class="flex flex-col gap-10 md:w-3/12 gap-4">
 
-                <div class="hidden-categoria-precio">
-                    <div class="hidden md:flex flex-col gap-10 show-categoria-precio">
+                <div class="">
+                    <div class=" md:flex flex-col gap-10 ">
 
 
                         <div>
                             <div class="relative">
                                 <div class="mx-auto">
-                                    <div class="mx-auto grid max-w-[900px] divide-y divide-neutral-200">
+                                    <div class="mx-auto w-full grid lg:max-w-[900px] divide-y divide-neutral-200">
                                         <details class="group">
                                             <summary
                                                 class="flex cursor-pointer list-none items-center justify-between font-medium pr-1">
@@ -106,8 +108,10 @@
                                                             <div class="slider-thumb" id="thumb-right"></div>
                                                         </div>
                                                         <div class="price-values">
-                                                            <span id="price-min-span">s/ 0.00</span>
-                                                            <span id="price-max-span">s/ 0.00</span>
+                                                            <span id="price-min-span"
+                                                                class="md:text-text10 lg:text-text16">s/ 0.00</span>
+                                                            <span id="price-max-span"
+                                                                class="md:text-text10 lg:text-text16">s/ 0.00</span>
 
                                                         </div>
 
@@ -125,10 +129,10 @@
                         </div>
 
 
-                        <div>
+                        <div class="my-10 md:my-0">
                             <div class="relative">
                                 <div class="mx-auto">
-                                    <div class="mx-auto grid max-w-[900px] divide-y divide-neutral-200">
+                                    <div class="mx-auto grid w-full lg:max-w-[900px] divide-y divide-neutral-200">
                                         <details class="group">
                                             <summary
                                                 class="flex cursor-pointer list-none items-center justify-between font-medium pr-1">
@@ -198,9 +202,9 @@
             <!-- modal filtros -->
             <!-- <a class="mostrar-modal">Filtrossss</a> -->
 
-            <div class="w-9/12">
+            <div class="w-full lg:w-9/12">
                 <div class="flex justify-between items-start pb-8">
-                    <div class=" flex gap-2">
+                    <div class="hidden lg:flex gap-2">
                         <div class="">
                             <p class=" text-text12 ">
                                 Inicio /
@@ -216,14 +220,10 @@
                             </h3>
                         </div>
                     </div>
-
-
-
-
-                    <div class="relative inline-block text-left short-filter">
+                    <div class="relative inline-block  w-full  text-left short-filter">
                         <div>
                             <button type="button"
-                                class="inline-flex w-56 justify-between text-text14 font-semibold gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-colorAzulOscuro ring-0 ring-inset"
+                                class="inline-flex w-full lg:w-56 justify-between text-text14 font-semibold gap-x-1.5 rounded-md bg-white lg:px-3 py-2 text-sm text-colorAzulOscuro ring-0 ring-inset"
                                 id="menu-button" aria-expanded="true" aria-haspopup="true" onclick="toggleDropdown()">
                                 Ordenar por
                                 <svg class="-mr-1 size-5 text-gray-400 transition-transform duration-200" id="arrow-icon"
@@ -344,7 +344,7 @@
                     </div>
                 </div>
                 <!-- Listado de productos- -->
-                <div id="productList" class="grid grid-cols-3 gap-10">
+                <div id="productList" class="grid grid-cols-2 lg:grid-cols-3 gap-10">
                     @include('public._listproduct', $productos)
                 </div>
             </div>

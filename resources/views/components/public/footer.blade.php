@@ -83,10 +83,9 @@
     <div
         class="flex flex-col lg:flex-row justify-between items-start  gap-3 w-11/12 lg:max-w-7xl mx-auto py-12 border-t-2 border-white z-50">
         <a href="#" target="_blank" class="text-white  text-sm ">Copyright &copy;
-            2025 Dar Telecom.
-            Reservados todos los derechos</a>
+            2025 Dar Telecom. Reservados todos los derechos</a>
 
-        <div class="flex w-full justify-between items-center lg:justify-end lg:gap-16 text-white">
+        <div class="flex w-full lg:w-1/2 justify-between items-center lg:justify-end lg:gap-16 text-white">
             <a class="block cursor-pointer text-text12 lg:text-text16 text-colorParrafo" id="linkTerminos">
                 Terminos de servicios
             </a>
