@@ -6,7 +6,7 @@
         class="absolute top-0 left-0 w-full {{ request()->routeIs('index') ? 'bg-transparent ' : 'bg-colorBackgroundAzulOscuro' }}  text-white z-10 duration-300 ">
 
 
-        <div class=" w-11/12 md:max-w-7xl mx-auto  flex justify-between items-center py-4">
+        <div class="w-11/12 md:max-w-7xl mx-auto  flex justify-between items-center py-4">
             <a href="#" class="text-2xl font-bold">
                 <img src="{{ asset('images/img/logo/DarTelecom.png') }}" alt="Dar Telecom"
                     class="h-14 w-full object-cover" />

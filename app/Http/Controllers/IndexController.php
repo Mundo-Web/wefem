@@ -98,9 +98,15 @@ class IndexController extends Controller
       ->with('category')
       ->get();
 
+    $mobilePosts = Blog::where('visible', true)
+      ->latest()
+      ->take(3)
+      ->with('category')
+      ->get();
+
     $testimonios = Testimony::where('status', '=', 1)->where('visible', '=', 1)->get();
 
-    return view('public.index', compact('home', 'productos', 'general', 'servicios', 'mostRecentPost', 'nextTwoRecentPosts', 'testimonios'));
+    return view('public.index', compact('home', 'productos', 'general', 'servicios', 'mostRecentPost', 'nextTwoRecentPosts', 'testimonios', 'mobilePosts'));
   }
   public function servicios(Request $request)
   {
