@@ -81,13 +81,22 @@
 
                     <div class="bg-colorBackgroundAzulClaro  rounded-xl mt-4 p-4 flex flex-col gap-4">
                         <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-text12 text-colorParrafo">Precio: <span
-                                        class="line-through">{{ $producto->precio }}</span></p>
-                                <p class="text-colorAzulOscuro font-bold">Ahorras: S/
-                                    {{ $producto->precio - $producto->precio_oferta }}
-                                    ({{ number_format($producto->porcentaje_oferta, 0) }}%) </p>
-                            </div>
+                            @if ($producto->en_oferta)
+                                <div>
+                                    <p class="text-text12 text-colorParrafo">Precio: <span
+                                            class="line-through">{{ $producto->precio }}</span></p>
+                                    <p class="text-colorAzulOscuro font-bold">Ahorras: S/
+                                        {{ $producto->precio - $producto->precio_oferta }}
+                                        ({{ number_format($producto->porcentaje_oferta, 0) }}%) </p>
+                                </div>
+                            @else
+                                <div>
+                                    <p class="text-colorAzulOscuro font-bold">Precio: <span>{{ $producto->precio }}</span>
+                                    </p>
+
+                                </div>
+                            @endif
+
                             @if ($producto->envio_gratis)
                                 <span class="ml-2 px-4 py-1 bg-colorBackgroundAzulOscuro rounded-full text-white">Envío
                                     Gratis</span>
