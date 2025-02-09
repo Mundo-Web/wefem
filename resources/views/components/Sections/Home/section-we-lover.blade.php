@@ -18,12 +18,15 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-<div class="bg-[#7132E0] py-16 px-4">
+<div class=" py-16 px-4"
+    style="background: rgb(82,46,170);
+background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%);">
     <div class="max-w-6xl mx-auto">
         <!-- Heading -->
-        <h2 class="text-white text-center text-4xl md:text-5xl font-bold mb-12">
-            Nuestras weLovers <span class="whitespace-nowrap">lo afirman</span>
+        <h2 class="text-white text-center text-[55px]  font-bold mb-12">
+            Nuestras weLovers
             <span class="inline-block transform rotate-12 ml-2">✨</span>
+            <span class="whitespace-nowrap">lo afirman</span>
             <span class="inline-block transform -rotate-12 ml-1">✨</span>
         </h2>
 
@@ -33,26 +36,33 @@
                 <!-- Slides -->
                 @foreach ($testimonials as $index => $testimonial)
                     <div class="swiper-slide">
-                        <div class="relative rounded-[32px] overflow-hidden transition-all duration-300 h-[600px]">
-                            <img src="{{ $testimonial['image'] }}" alt="Testimonial {{ $index + 1 }}"
-                                class="w-full h-full object-cover">
-                            <!-- Video overlay with play button and counter -->
-                            <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white">
-                                <div
-                                    class="flex items-center justify-center w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full">
-                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg>
-                                </div>
+                        <div class="pb-10 px-4">
+                            <div
+                                class="relative rounded-xl overflow-hidden transition-all duration-300 h-[600px] w-[355px]">
+                                <img src="{{ $testimonial['image'] }}" alt="Testimonial {{ $index + 1 }}"
+                                    class="w-full h-full object-cover">
+                                <!-- Video overlay with play button and counter -->
+                                <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white">
+                                    <div
+                                        class="flex items-center justify-center w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full">
+                                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M8 5v14l11-7z" />
+                                        </svg>
+                                    </div>
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
             <!-- Pagination -->
-            <div class="swiper-pagination !bottom-0 !-mb-2"></div>
+            <div class="swiper-pagination"></div>
+            <!-- Navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
+
     </div>
 </div>
 
@@ -63,7 +73,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const swiper = new Swiper('.testimonialSwiper', {
             slidesPerView: 1.5,
-            spaceBetween: 20,
+            spaceBetween: 10,
             centeredSlides: true,
             loop: false,
             autoplay: false,
@@ -71,14 +81,18 @@
                 el: '.swiper-pagination',
                 clickable: true,
             },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
             breakpoints: {
                 640: {
                     slidesPerView: 2.5,
-                    spaceBetween: 20,
+                    spaceBetween: 10,
                 },
                 1024: {
-                    slidesPerView: 2.5,
-                    spaceBetween: 30,
+                    slidesPerView: 3,
+                    spaceBetween: 0,
                 },
             },
             on: {
@@ -109,19 +123,44 @@
 
 <style>
     /* Custom styles for Swiper */
+    /* Custom styles for Swiper */
     .swiper-slide {
         transition: all 0.3s ease;
+    }
+
+    .swiper-pagination {
+
+        bottom: 0.3rem !important;
+        /* Poner la paginación más abajo */
     }
 
     .swiper-pagination-bullet {
         width: 8px;
         height: 8px;
-        background: rgba(255, 255, 255, 0.5);
-        opacity: 1;
+        opacity: 0.2;
     }
 
     .swiper-pagination-bullet-active {
         background: #ffffff;
         transform: scale(1.2);
+    }
+
+    /* Navigation buttons */
+    /* Navigation buttons */
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: white;
+        font-size: 24px !important;
+        /* Ajusta el tamaño del ícono */
+        width: 31px !important;
+        /* Aumenta el área de clic */
+        height: 31px !important;
+    }
+
+    /* Ajustar el icono dentro de los botones */
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
+        font-size: 24px !important;
+        /* Cambia el tamaño de la flecha */
     }
 </style>
