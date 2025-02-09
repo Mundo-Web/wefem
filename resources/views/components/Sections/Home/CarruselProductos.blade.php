@@ -36,7 +36,7 @@
 @endphp
 
 <section class="py-16 bg-white">
-    <div class="mx-auto max-w-6xl">
+    <div class="mx-auto max-w-6xl" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
         <!-- Header -->
         <div class="flex flex-col  items-center mb-8 pb-4 ">
             <h2 class="text-4xl font-bold">💗 Preferidos por nosotrxs 💗</h2>
@@ -48,8 +48,9 @@
             <!-- Previous button -->
             <button id="prevSlide"
                 class="absolute -left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center">
-                <svg class="w-8 h-8 text-[#5F48B7] " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="w-8 h-8 text-[#5F48B7] " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"
+                    stroke-linejoin="round">
                     <path d="M15 18l-6-6 6-6" />
                 </svg>
             </button>

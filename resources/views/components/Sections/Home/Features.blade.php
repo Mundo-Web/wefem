@@ -27,7 +27,8 @@
 
 
  <section class="bg-[#EFE5FF] py-8">
-     <div class="max-w-6xl mx-auto grid grid-cols-4 gap-4">
+     <div class="max-w-6xl mx-auto grid grid-cols-4 gap-4" data-aos="fade-up" data-aos-duration="1000"
+         data-aos-easing="ease-in-out-quart">
 
          @foreach ($features as $feature)
              <div class="flex items-center gap-2">

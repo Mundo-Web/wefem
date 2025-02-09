@@ -11,7 +11,7 @@
  </style>
 
 
- <section class="py-10">
+ <section class="py-10" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
      <h2 class="text-4xl font-bold my-6 text-center">🔥 El más vendido 🔥</h2>
      <div class="max-w-5xl mx-auto flex flex-col md:flex-row  mt-4 gap-2">
 

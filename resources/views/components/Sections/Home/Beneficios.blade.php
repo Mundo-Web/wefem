@@ -1,13 +1,15 @@
 <div class="relative overflow-hidden pt-8 bg-[#EFE5FF]">
     <div class="bg-[#6745BA]">
-        <div class="relative mx-auto  text-white py-10 px-6 flex flex-col items-center text-center ">
+        <div class="relative mx-auto  text-white py-10 px-6 flex flex-col items-center text-center " data-aos="fade-up"
+            data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
             <!-- Contenido de la sección -->
             <div class="max-w-2xl mx-auto relative z-10 ">
                 <h2 class="text-3xl font-bold">Una copa o disco menstrual en 5 años</h2>
                 <div class="flex justify-center gap-10 mt-4">
                     <div class="w-1/2 flex flex-col items-center justify-center">
                         <span class="text-4xl font-bold text-[#E7FF57]">Reemplaza</span>
-                        <h3 class="text-[146px] tracking-[13px] leading-[146px]  font-bebas count" data-count="600">0</h3>
+                        <h3 class="text-[146px] tracking-[13px] leading-[146px]  font-bebas count" data-count="600">0
+                        </h3>
                         <p class="text-2xl">Toallas higiénicas</p>
                     </div>
                     <div class="w-1/2 flex flex-col items-center justify-center">

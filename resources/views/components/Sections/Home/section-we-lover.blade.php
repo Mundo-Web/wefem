@@ -21,7 +21,7 @@
 <div class=" py-16 px-4"
     style="background: rgb(82,46,170);
 background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%);">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-6xl mx-auto" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
         <!-- Heading -->
         <h2 class="text-white text-center text-[55px]  font-bold mb-12">
             Nuestras weLovers

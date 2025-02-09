@@ -1,5 +1,6 @@
  <section class="bg-[#FF9900] text-white py-6">
-     <div class="max-w-6xl mx-auto flex justify-between items-center gap-4">
+     <div class="max-w-6xl mx-auto flex justify-between items-center gap-4" data-aos="fade-right" data-aos-duration="1000"
+         data-aos-easing="ease-in-out-quart">
          <div class="flex items-center w-5/12">
              <div class="bg-[#6745BA] rounded-full p-2 mr-2">
                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="52"
@@ -28,7 +29,8 @@
              Si encuentras una copa o disco certificado a un mejor precio, <strong>nosotros
                  te mejoramos la oferta.</strong>
          </p>
-         <button class=" w-2/12 bg-transparent  text-white font-semibold py-2 px-4 border border-white rounded-xl shadow">
+         <button
+             class=" w-2/12 bg-transparent  text-white font-semibold py-2 px-4 border border-white rounded-xl shadow">
              ¡Escríbenos aquí!
          </button>
      </div>

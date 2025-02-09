@@ -9,7 +9,7 @@
 
 
 
-<section class="bg-white text-black py-16 ">
+<section class="bg-white text-black py-16 " data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
     <!-- Header -->
     <div class="max-w-6xl mx-auto text-center mb-12">
         <h2 class="text-[32px] font-bold mb-4">¡Juntxs, sin límites!</h2>

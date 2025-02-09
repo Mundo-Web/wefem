@@ -1,5 +1,6 @@
   <section class="bg-[#F3E5FF] py-10">
-      <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center space-y-8 md:space-y-0 md:space-x-8">
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center space-y-8 md:space-y-0 md:space-x-8"
+          data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
           <!-- Text Content -->
           <div class="w-full md:w-1/2 text-center md:text-left">
               <h2 class="text-[51px] font-bold mb-4">¿Aún no estás segura?</h2>

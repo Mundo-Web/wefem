@@ -20,6 +20,10 @@
 
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         .font-bebas {
@@ -49,10 +53,14 @@
         @include('components.Sections.Home.Section-instagram')
     </main>
 
-    <footer class="py-16 text-center text-sm text-black dark:text-white/70">
-        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-    </footer>
+    @include('components.Sections.Home.Footer-home')
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 
 </body>
+
 
 </html>
