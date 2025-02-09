@@ -45,6 +45,8 @@
         @include('components.Sections.Home.TopSale')
         @include('components.Sections.Home.CintilloGarantia')
         @include('components.Sections.Home.section-we-lover')
+        @include('components.Sections.Home.Section-not-sure')
+        @include('components.Sections.Home.Section-instagram')
     </main>
 
     <footer class="py-16 text-center text-sm text-black dark:text-white/70">
