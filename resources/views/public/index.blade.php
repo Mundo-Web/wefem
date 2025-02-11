@@ -235,10 +235,10 @@
                 class="absolute inset-0 bg-transparent bg-opacity-50 flex flex-col justify-center items-center text-white text-center">
                 <h1
                     class="w-11/12 mx-auto text-text36 break-words md:text-[52px]  lg:w-3/6 font-semibold leading-[58px] text-shadow-custom">
-                    <x-custom.texto-titulo :text="$home->titleHero" style="text-colorRojo" />
+                    <x-custom.texto-titulo :text="$home?->titleHero" style="text-colorRojo" />
                 </h1>
                 <p class="mt-4 w-11/12 mx-auto text-text18 lg:w-3/6 md:text-text20 text-gray-300 leading-[30px]">
-                    {{ $home->subtitleHero }}
+                    {{ $home?->subtitleHero }}
                 </p>
                 <div class="mt-8">
                     <a href="{{ route('servicios') }}" target="_blank"
@@ -264,31 +264,34 @@
                 data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
                 <div class="w-11/12 lg:w-2/6 text-start mb-12  ">
                     <h2 class="text-text36 md:text-text40 font-extrabold text-start text-colorAzulOscuro">
-                        <x-custom.texto-titulo :text="$home->titleServicios" style="text-colorRojo" />
+                        <x-custom.texto-titulo :text="$home?->titleServicios" style="text-colorRojo" />
                     </h2>
                     <p class="mt-4 text-colorParrafo  mx-auto text-text16">
-                        {{ $home->subtitleServicios }}.
+                        {{ $home?->subtitleServicios }}.
                     </p>
                 </div>
 
                 <div class="w-full lg:w-1/2 overflow-x-auto md:overflow-visible scrollbar-none">
                     <div class="flex md:grid md:grid-cols-2 gap-6 min-w-max md:min-w-full">
-                        @foreach ($servicios->take(4) as $servicio)
-                            <div class="bg-colorBackgroundAzulClaro p-6 rounded-lg shadow-md text-start w-72 flex-shrink-0 md:w-full"
-                                data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
-                                <div class="group-hover:hidden w-12 h-12 bg-black mb-4"
-                                    style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
+                        @if ($servicios)
+                            @foreach ($servicios->take(4) as $servicio)
+                                <div class="bg-colorBackgroundAzulClaro p-6 rounded-lg shadow-md text-start w-72 flex-shrink-0 md:w-full"
+                                    data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
+                                    <div class="group-hover:hidden w-12 h-12 bg-black mb-4"
+                                        style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
+                                    </div>
+                                    <h3 class="text-text28 font-semibold mb-2 text-colorAzulOscuro">{{ $servicio->title }}
+                                    </h3>
+                                    <p class="text-colorParrafo line-clamp-2 mb-4 text-text16">
+                                        {{ $servicio->descripcion_breve }}
+                                    </p>
+                                    <a href="{{ route('servicios') }}"
+                                        class="bg-colorBackgroundRed hover:bg-colorBackgroundRed rounded-full text-white font-semibold px-4 py-2 inline-block">
+                                        Ver más
+                                    </a>
                                 </div>
-                                <h3 class="text-text28 font-semibold mb-2 text-colorAzulOscuro">{{ $servicio->title }}</h3>
-                                <p class="text-colorParrafo line-clamp-2 mb-4 text-text16">
-                                    {{ $servicio->descripcion_breve }}
-                                </p>
-                                <a href="{{ route('servicios') }}"
-                                    class="bg-colorBackgroundRed hover:bg-colorBackgroundRed rounded-full text-white font-semibold px-4 py-2 inline-block">
-                                    Ver más
-                                </a>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        @endif
                     </div>
                 </div>
 
@@ -301,10 +304,10 @@
                 <div class="  flex flex-col  items-center">
                     <div class="w-full lg:w-1/2 text-center mb-12">
                         <h2 class="text-text40 font-bold mb-4 text-colorAzulOscuro">
-                            <x-custom.texto-titulo :text="$home->titleProductos" style="text-colorRojo" />
+                            <x-custom.texto-titulo :text="$home?->titleProductos" style="text-colorRojo" />
                         </h2>
                         <p class="text-colorParrafo mb-12 text-text16">
-                            {{ $home->subtitleProductos }}.
+                            {{ $home?->subtitleProductos }}.
                         </p>
                         <a href="{{ route('catalogo.all') }}"
                             class=" bg-colorBackgroundAzul hover:bg-colorBackgroundAzulOscuro text-white font-semibold px-6 py-3 rounded-full text-text16 ">Ver
@@ -315,25 +318,27 @@
                 </div>
                 <div class="grid grid-cols-2 lg:grid-cols-3  gap-6">
 
-                    @foreach ($productos as $producto)
-                        <div class="bg-colorBackgroundAzulClaro h-max p-4 shadow-md text-start group cursor-pointer rounded-xl"
-                            data-aos="zoom-in" data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
-                            <a href="{{ route('producto', $producto->slug) }}">
-                                <div class="mb-4 w-full h-[92px] md:h-[212px] bg-white rounded-xl">
-                                    <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->producto }}"
-                                        class=" w-full h-full object-contain">
-                                </div>
-                                <h3 class="text-text14 md:text-text28 font-semibold mb-2 text-colorAzulOscuro">
-                                    {{ $producto->producto }}
-                                </h3>
-                                <p class="text-colorParrafo mb-4 text-text10 md:text-text16 line-clamp-2">
-                                    {{ $producto->extract }}</p>
-                                <a href="{{ route('producto', $producto->slug) }}"
-                                    class="text-text10  md:text-text16 group-hover:w-full duration-300 ease-in-out group-hover:text-center group-hover:bg-colorBackgroundAzul bg-colorBackgroundRed  rounded-full text-white font-semibold px-4 py-2 inline-block">Ver
-                                    más</a>
-                            </a>
-                        </div>
-                    @endforeach
+                    @if ($productos)
+                        @foreach ($productos as $producto)
+                            <div class="bg-colorBackgroundAzulClaro h-max p-4 shadow-md text-start group cursor-pointer rounded-xl"
+                                data-aos="zoom-in" data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
+                                <a href="{{ route('producto', $producto->slug) }}">
+                                    <div class="mb-4 w-full h-[92px] md:h-[212px] bg-white rounded-xl">
+                                        <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->producto }}"
+                                            class=" w-full h-full object-contain">
+                                    </div>
+                                    <h3 class="text-text14 md:text-text28 font-semibold mb-2 text-colorAzulOscuro">
+                                        {{ $producto->producto }}
+                                    </h3>
+                                    <p class="text-colorParrafo mb-4 text-text10 md:text-text16 line-clamp-2">
+                                        {{ $producto->extract }}</p>
+                                    <a href="{{ route('producto', $producto->slug) }}"
+                                        class="text-text10  md:text-text16 group-hover:w-full duration-300 ease-in-out group-hover:text-center group-hover:bg-colorBackgroundAzul bg-colorBackgroundRed  rounded-full text-white font-semibold px-4 py-2 inline-block">Ver
+                                        más</a>
+                                </a>
+                            </div>
+                        @endforeach
+                    @endif
 
 
 
@@ -381,12 +386,12 @@
                                     <div class="swiper-slide cursor-pointer swiper-slide-css">
 
                                         <h2 class="text-text32 lg:text-text36 font-bold text-textWhite mb-4 text-center">
-                                            <x-custom.texto-titulo :text="$testimonio->testimonie" style="text-colorRojo" />
+                                            <x-custom.texto-titulo :text="$testimonio?->testimonie" style="text-colorRojo" />
                                         </h2>
                                         <p class="text-white text-text24"><span
-                                                class="text-colorRojo">{{ $testimonio->name }},
+                                                class="text-colorRojo">{{ $testimonio?->name }},
                                             </span>
-                                            {{ $testimonio->departamento }} - {{ $testimonio->pais }}</p>
+                                            {{ $testimonio?->departamento }} - {{ $testimonio?->pais }}</p>
                                     </div>
                                 @endforeach
 
@@ -399,7 +404,7 @@
                                 style="display: flex; justify-content: center;  align-items:center;">
                                 @foreach ($testimonios as $testimonio)
                                     <div class="swiper-slide swiper-slide-css">
-                                        <img src="{{ asset($testimonio->ocupation) }}"
+                                        <img src="{{ asset($testimonio?->ocupation) }}"
                                             class="w-16 h-16 lg:w-20  lg:h-20   rounded-full border-2 border-white object-contain" />
                                     </div>
                                 @endforeach
@@ -451,10 +456,10 @@
             data-aos-delay="200">
             <div class="w-11/12 lg:max-w-7xl mx-auto">
                 <h2 class="text-text32 md:text-text40 font-bold text-center text-colorAzulOscuro">
-                    <x-custom.texto-titulo :text="$home->titleBlogs" style="text-colorRojo" />
+                    <x-custom.texto-titulo :text="$home?->titleBlogs" style="text-colorRojo" />
                 </h2>
                 <p class="mt-4 text-center text-colorParrafo text-text16">
-                    {{ $home->subtitltBlogs }}
+                    {{ $home?->subtitltBlogs }}
                 </p>
                 <div class="hidden  lg:grid grid-cols-2 gap-8 mt-8" data-aos="fade-up" data-aos-offset="150"
                     data-aos-duration="1000" data-aos-delay="200">
@@ -462,51 +467,53 @@
 
                     <div class="bg-colorBackgroundAzulClaro shadow-lg rounded-xl overflow-hidden p-4" data-aos="zoom-in"
                         data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
-                        <a href="{{ route('detalleBlog', $mostRecentPost->slug) }}">
-                            <img src="{{ asset($mostRecentPost->imagen) }}" alt="Blog 1"
-                                class="w-full h-[247px] object-cover rounded-xl mb-2">
+                        @if ($mostRecentPost)
+                            <a href="{{ route('detalleBlog', $mostRecentPost->slug) }}">
+                                <img src="{{ asset($mostRecentPost->imagen) }}" alt="Blog 1"
+                                    class="w-full h-[247px] object-cover rounded-xl mb-2">
 
-                            <span
-                                class="text-text14 text-colorRojo font-bold pt-2">{{ $mostRecentPost->category->nombre }}</span>
-                            <h3 class="mt-2 text-text24 font-semibold text-gray-800">
-                                {{ $mostRecentPost->titulo }}
-                            </h3>
-                            <p class="mt-4 text-gray-600 text-text16 line-clamp-2">
-                                {{ $mostRecentPost->extracto }}
-                            </p>
-                            <a href="{{ route('detalleBlog', $mostRecentPost->slug) }}"
-                                class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full text-text18">Ver
-                                más</a>
-                        </a>
+                                <span
+                                    class="text-text14 text-colorRojo font-bold pt-2">{{ $mostRecentPost->category->nombre }}</span>
+                                <h3 class="mt-2 text-text24 font-semibold text-gray-800">
+                                    {{ $mostRecentPost->titulo }}
+                                </h3>
+                                <p class="mt-4 text-gray-600 text-text16 line-clamp-2">
+                                    {{ $mostRecentPost->extracto }}
+                                </p>
+                                <a href="{{ route('detalleBlog', $mostRecentPost->slug) }}"
+                                    class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full text-text18">Ver
+                                    más</a>
+                            </a>
+                        @endif
                     </div>
 
 
                     <div class="grid  gap-4">
                         <!-- Blog Card 2 -->
-                        @foreach ($nextTwoRecentPosts as $post)
-                            <a href="{{ route('detalleBlog', $post->slug) }}" class=" w-full">
-                                <div
-                                    class="bg-colorBackgroundAzulClaro shadow-lg rounded-lg  overflow-hidden flex gap-4 p-4 ">
-                                    <img src="{{ asset($post->imagen) }}" alt="Blog 2"
-                                        class="w-[212px] h-[212px] object-cover rounded-xl">
-                                    <div class="">
-                                        <span
-                                            class="text-text14 text-colorRojo font-bold">{{ $post->category->nombre }}</span>
-                                        <h3 class=" text-text24 font-semibold text-colorAzulOscuro line-clamp-2">
-                                            {{ $post->titulo }}
-                                        </h3>
-                                        <p class="mt-2 text-colorParrafo text-text16 line-clamp-2">
-                                            {{ $post->extracto }}
-                                        </p>
-                                        <a href="{{ route('detalleBlog', $post->slug) }}"
-                                            class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full">Leer
-                                            más</a>
+                        @if ($nextTwoRecentPosts)
+                            @foreach ($nextTwoRecentPosts as $post)
+                                <a href="{{ route('detalleBlog', $post->slug) }}" class=" w-full">
+                                    <div
+                                        class="bg-colorBackgroundAzulClaro shadow-lg rounded-lg  overflow-hidden flex gap-4 p-4 ">
+                                        <img src="{{ asset($post->imagen) }}" alt="Blog 2"
+                                            class="w-[212px] h-[212px] object-cover rounded-xl">
+                                        <div class="">
+                                            <span
+                                                class="text-text14 text-colorRojo font-bold">{{ $post->category->nombre }}</span>
+                                            <h3 class=" text-text24 font-semibold text-colorAzulOscuro line-clamp-2">
+                                                {{ $post->titulo }}
+                                            </h3>
+                                            <p class="mt-2 text-colorParrafo text-text16 line-clamp-2">
+                                                {{ $post->extracto }}
+                                            </p>
+                                            <a href="{{ route('detalleBlog', $post->slug) }}"
+                                                class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full">Leer
+                                                más</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        @endforeach
-
-
+                                </a>
+                            @endforeach
+                        @endif
 
                     </div>
                 </div>
@@ -516,28 +523,30 @@
                 <div class=" lg:hidden w-full relative">
                     <div class="swiper centered-slide-carousel swiper-container relative ">
                         <div class="swiper-wrapper">
-                            @foreach ($mobilePosts as $post)
-                                <div class="swiper-slide rounded-xl">
-                                    <div class="bg-colorBackgroundAzulClaro shadow-lg rounded-xl p-4">
-                                        <a href="{{ route('detalleBlog', $post->slug) }}">
-                                            <img src="{{ asset($post->imagen) }}" alt="{{ $post->titulo }}"
-                                                class="w-full h-56 object-cover rounded-xl mb-2">
+                            @if ($mobilePosts)
+                                @foreach ($mobilePosts as $post)
+                                    <div class="swiper-slide rounded-xl">
+                                        <div class="bg-colorBackgroundAzulClaro shadow-lg rounded-xl p-4">
+                                            <a href="{{ route('detalleBlog', $post->slug) }}">
+                                                <img src="{{ asset($post->imagen) }}" alt="{{ $post->titulo }}"
+                                                    class="w-full h-56 object-cover rounded-xl mb-2">
 
-                                            <span
-                                                class="text-text14 text-colorRojo font-bold pt-2">{{ $post->category->nombre }}</span>
-                                            <h3 class="mt-2 text-text24 font-semibold text-gray-800">
-                                                {{ $post->titulo }}
-                                            </h3>
-                                            <p class="mt-4 text-gray-600 text-text16 line-clamp-2">
-                                                {{ $post->extracto }}
-                                            </p>
-                                            <a href="{{ route('detalleBlog', $post->slug) }}"
-                                                class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full text-text18">Ver
-                                                más</a>
-                                        </a>
+                                                <span
+                                                    class="text-text14 text-colorRojo font-bold pt-2">{{ $post->category->nombre }}</span>
+                                                <h3 class="mt-2 text-text24 font-semibold text-gray-800">
+                                                    {{ $post->titulo }}
+                                                </h3>
+                                                <p class="mt-4 text-gray-600 text-text16 line-clamp-2">
+                                                    {{ $post->extracto }}
+                                                </p>
+                                                <a href="{{ route('detalleBlog', $post->slug) }}"
+                                                    class="inline-block mt-4 bg-colorBackgroundRed hover:bg-colorBackgroundRed text-white font-semibold px-4 py-2 rounded-full text-text18">Ver
+                                                    más</a>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            @endif
                         </div>
                         <div class="swiper-pagination "></div>
                     </div>

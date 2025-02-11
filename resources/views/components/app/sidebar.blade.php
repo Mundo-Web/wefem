@@ -1,7 +1,7 @@
 <div>
     <!-- Sidebar backdrop (mobile only) -->
-    <div class="fixed inset-0 bg-slate-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200"
-        :class="sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'" aria-hidden="true" x-cloak></div>
+    <div class="fixed inset-0 bg-slate-400 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200"
+        :class="sidebarOpen ? 'opacity-100' : 'bg-opacity-100 pointer-events-none'" aria-hidden="true" x-cloak></div>
 
     <!-- Sidebar -->
     <div id="sidebar"
@@ -21,7 +21,9 @@
             </button>
             <!-- Logo -->
             <a class="w-full mt-8 flex items-center justify-center" href="{{ route('dashboard') }}">
-                <img src="{{ asset('images/img/logo/DarTelecom.png') }}" alt="Dar Telecom" class="h-11" />
+                <img :src="sidebarExpanded ? '{{ asset('images/img/logo/DarTelecom.png') }}' :
+                    '{{ asset('images/img/background/bg-contacto.png') }}'"
+                    alt="Dar Telecom" :class="sidebarExpanded ? 'h-11' : 'h-11 grayscale brightness-0 invert'" />
             </a>
         </div>
 

@@ -17,7 +17,7 @@
                     <img src="{{ asset('images/img/logo/DarTelecom.png') }}" class="w-48 h-auto object-cover" />
                 </a>
                 <p class="text-white mt-8">
-                    {{ $general->aboutus }}
+                    {{ $general?->aboutus }}
                 </p>
             </div>
             <div class="grid grid-cols-1  md:grid-cols-2 gap-4">
@@ -39,36 +39,36 @@
                 <div class="flex flex-col gap-5 pt-4 border-t-2 md:border-none md:pt-0">
 
                     <div class="flex flex-col gap-4 text-white font-gotham_light text-base">
-                        <a>{{ $general->cellphone }}</a>
-                        <a>{{ $general->email }}</a>
-                        <a>{{ $general->schedule }}</a>
+                        <a>{{ $general?->cellphone }}</a>
+                        <a>{{ $general?->email }}</a>
+                        <a>{{ $general?->schedule }}</a>
 
 
-                        <a> {{ $general->address }} -
+                        <a> {{ $general?->address }} -
 
-                            {{ $general->district }} - {{ $general->city }}</a>
+                            {{ $general?->district }} - {{ $general?->city }}</a>
 
 
                     </div>
                     <div class="flex gap-4 mt-4">
-                        <a target="_blank" href="{{ $general->instagram }}"
+                        <a target="_blank" href="{{ $general?->instagram }}"
                             class="flex justify-start items-center gap-2 text-white font-roboto font-normal text-text14">
                             <i class="fa-brands fa-instagram fa-xl"></i>
 
                         </a>
-                        <a target="_blank" href="{{ $general->facebook }}"
+                        <a target="_blank" href="{{ $general?->facebook }}"
                             class="flex justify-start items-center gap-2 text-white font-roboto font-normal text-text14">
                             <i class="fa-brands fa-facebook-f fa-xl"></i>
                         </a>
-                        <a target="_blank" href="{{ $general->linkedin }}"
+                        <a target="_blank" href="{{ $general?->linkedin }}"
                             class="flex justify-start items-center gap-2 text-white font-roboto font-normal text-text14">
                             <i class="fa-brands fa-linkedin-in fa-xl"></i>
                         </a>
-                        <a target="_blank" href="{{ $general->tiktok }}"
+                        <a target="_blank" href="{{ $general?->tiktok }}"
                             class="flex justify-start items-center gap-2 text-white font-roboto font-normal text-text14">
                             <i class="fa-brands fa-tiktok fa-xl"></i>
                         </a>
-                        <a target="_blank" href="{{ $general->whatsaap }}"
+                        <a target="_blank" href="{{ $general?->whatsaap }}"
                             class="flex justify-start items-center gap-2 text-white font-roboto font-normal text-text14">
                             <i class="fa-brands fa-whatsapp fa-xl"></i>
                         </a>
@@ -99,7 +99,7 @@
         <!-- Modal body -->
         <div class="p-4 ">
             <h1 class="font-gotham_bold text-2xl text-center">Terminos y condiciones</h1>
-            <p class="font-gotham_book p-2 prose">{!! $termsAndCondicitions->content ?? '' !!}</p>
+            <p class="font-gotham_book p-2 prose">{!! $termsAndCondicitions?->content ?? '' !!}</p>
         </div>
     </div>
 
@@ -107,7 +107,7 @@
         <!-- Modal body -->
         <div class="p-4 ">
             <h1 class="font-gotham_bold text-2xl text-center">Politicas de privacidad</h1>
-            <p class="font-gotham_book p-2 prose">{!! $politicDev->content ?? '' !!}</p>
+            <p class="font-gotham_book p-2 prose">{!! $politicDev?->content ?? '' !!}</p>
         </div>
     </div>
     <div class="md:hidden absolute left-0 bottom-0   transform  rotate-[0deg] -z-10 ">

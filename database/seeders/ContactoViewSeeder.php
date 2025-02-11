@@ -15,19 +15,9 @@ class ContactoViewSeeder extends Seeder
     {
         ContactoView::updateOrCreate([
             'id' => 1
-        ],[
+        ], [
 
-            'subtitle1section' => 'Contacto',
-            'title1section' => 'Tienes dudas? Pongase en',
-            'title1section2' => 'contacto',
-
-            'title2section' => '¿Quieres contactar con nosotros directamente?',
-            'description2section' => 'Nullam vehicula lobortis mauris vel finibus. Nulla et auctor augue. Cras ex tortor, suscipit vel egestas non, malesuada dictum nisl.',
-            
-            'title3section' => 'Revisa nuestras', 
-            'title3section2' => 'preguntas frecuentes',
-          
-
+            'titleSection' => 'Contacto',
         ]);
     }
 }

@@ -1,7 +1,7 @@
 <x-app-layout title="Editar About">
 
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-        <form action="{{ route('aboutus.update', $aboutUs->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('aboutus.update', $aboutUs?->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div
@@ -33,7 +33,7 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    <input type="text" id="titulo" name="titulo" value="{{ $aboutUs->titulo }}"
+                                    <input type="text" id="titulo" name="titulo" value="{{ $aboutUs?->titulo }}"
                                         class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="Titulo">
                                 </div>
@@ -57,14 +57,14 @@
                                         </svg>
                                     </div>
 
-                                    <x-textarea name="descripcion" value="{!! $aboutUs->descripcion !!}" />
+                                    <x-textarea name="descripcion" value="{!! $aboutUs?->descripcion !!}" />
                                 </div>
                             </div>
 
                             {{-- <div class="md:col-span-5">
                 <label for="imagen">Imagen principal</label>
                 <div class="relative mb-2  mt-2">
-                  <input id="imagen" name="imagen" value="{{ $aboutUs->imagen }}"
+                  <input id="imagen" name="imagen" value="{{ $aboutUs?->imagen }}"
                     class="p-2.5 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                     aria-describedby="user_avatar_help" id="user_avatar" type="file">
                 </div>

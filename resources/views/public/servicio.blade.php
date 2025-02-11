@@ -133,7 +133,7 @@
 
         <!-- Header Section -->
         <div class="hidden h-[200px] w-full bg-cover bg-colorBackgroundAzulOscuro lg:flex flex-col justify-center"
-            style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url('{{ asset($servicioPage->imagen) }}'); background-position: center center; background-size: cover; background-attachment: fixed;">
+            style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url('{{ asset($servicioPage?->imagen) }}'); background-position: center center; background-size: cover; background-attachment: fixed;">
         </div>
 
         <section class="relative w-full"> <!-- Subheader -->
@@ -148,11 +148,11 @@
                 <div class=" bg-opacity-50 flex items-center justify-center">
                     <h1 class="text-colorAzulOscuro text-text40 lg:text-text48 font-bold" data-aos="fade-up"
                         data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
-                        <x-custom.texto-titulo :text="$servicioPage->titulo" style="text-colorRojo" />
+                        <x-custom.texto-titulo :text="$servicioPage?->titulo" style="text-colorRojo" />
                     </h1>
                 </div>
                 <p class="text-colorParrafo text-text16 my-8">
-                    {{ $servicioPage->subtitulo }}
+                    {{ $servicioPage?->subtitulo }}
                 </p>
             </section>
 
@@ -162,18 +162,21 @@
                     <nav class="">
                         <ul class="grid grid-cols-2 lg:grid-cols-1 gap-4 " data-aos="fade-up" data-aos-offset="150"
                             data-aos-duration="1000" data-aos-delay="200">
-                            @foreach ($servicios as $index => $servicio)
-                                <li data-id="{{ $servicio->id }}"
-                                    class="cursor-pointer group rounded-xl flex items-center gap-4 p-4 text-text20 font-semibold bg-colorBackgroundAzulClaro hover:bg-colorBackgroundRed text-colorAzulOscuro hover:text-white transition-all duration-300 {{ $index === 0 ? 'active' : '' }}">
-                                    <div class="group-hover:hidden h-7 w-7 bg-black"
-                                        style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
-                                    </div>
-                                    <div class="hidden group-hover:inline-block h-7 w-7 bg-white"
-                                        style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
-                                    </div>
-                                    <a href="#" class="servicio-link">{{ $servicio->title }}</a>
-                                </li>
-                            @endforeach
+                            @if ($servicios)
+                                @foreach ($servicios as $index => $servicio)
+                                    <li data-id="{{ $servicio->id }}"
+                                        class="cursor-pointer group rounded-xl flex items-center gap-4 p-4 text-text20 font-semibold bg-colorBackgroundAzulClaro hover:bg-colorBackgroundRed text-colorAzulOscuro hover:text-white transition-all duration-300 {{ $index === 0 ? 'active' : '' }}">
+                                        <div class="group-hover:hidden h-7 w-7 bg-black"
+                                            style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
+                                        </div>
+                                        <div class="hidden group-hover:inline-block h-7 w-7 bg-white"
+                                            style="mask-image: url('{{ asset($servicio->icono) }}'); mask-size: contain; mask-repeat: no-repeat;">
+                                        </div>
+                                        <a href="#" class="servicio-link">{{ $servicio->title }}</a>
+                                    </li>
+                                @endforeach
+
+                            @endif
                         </ul>
                     </nav>
                 </aside>

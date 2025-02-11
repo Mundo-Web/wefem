@@ -1,4 +1,4 @@
-@extends('components.public.matrix', ['pagina' => $producto->producto])
+@extends('components.public.matrix', ['pagina' => $producto?->producto])
 
 @section('titulo', 'Producto')
 
@@ -18,13 +18,13 @@
             <div class="bg-white rounded-lg flex flex-col md:flex-row gap-12">
                 <div class="w-full md:w-1/2">
                     <div class="bg-colorBackgroundAzulClaro p-6 rounded-xl">
-                        <img id="mainImage" class="w-full rounded-xl " src="{{ asset($producto->imagen) }}"
-                            alt="{{ $producto->producto }}">
+                        <img id="mainImage" class="w-full rounded-xl " src="{{ asset($producto?->imagen) }}"
+                            alt="{{ $producto?->producto }}">
                     </div>
                     <div class="grid grid-cols-5 mt-4 gap-4">
                         <div class="bg-colorBackgroundAzulClaro p-2 rounded-xl">
-                            <img class="w-full h-auto rounded-lg cursor-pointer" src="{{ asset($producto->imagen) }}"
-                                alt="{{ $producto->producto }}" onclick="changeImage(this)">
+                            <img class="w-full h-auto rounded-lg cursor-pointer" src="{{ asset($producto?->imagen) }}"
+                                alt="{{ $producto?->producto }}" onclick="changeImage(this)">
                         </div>
                         @foreach ($album->images as $image)
                             <div class="bg-colorBackgroundAzulClaro p-2 rounded-xl">
@@ -35,16 +35,16 @@
                     </div>
                 </div>
                 <div class="w-full md:w-1/2">
-                    <p class="text-colorParrafo text-text16 font-medium">{{ $producto->category->name }}</p>
-                    <h1 class="text-text40 font-semibold text-colorAzulOscuro ">{{ $producto->producto }}</h1>
-                    <p class="text-colorParrafo font-normal text-text16 mt-2">{{ $producto->extract }}</p>
+                    <p class="text-colorParrafo text-text16 font-medium">{{ $producto?->category->name }}</p>
+                    <h1 class="text-text40 font-semibold text-colorAzulOscuro ">{{ $producto?->producto }}</h1>
+                    <p class="text-colorParrafo font-normal text-text16 mt-2">{{ $producto?->extract }}</p>
 
-                    @if ($producto->en_oferta)
-                        <p class="text-colorAzulOscuro text-text28 font-bold mt-4">S/ {{ $producto->precio_oferta }}
+                    @if ($producto?->en_oferta)
+                        <p class="text-colorAzulOscuro text-text28 font-bold mt-4">S/ {{ $producto?->precio_oferta }}
                             <span class="text-colorParrafo text-text20  font-medium line-through">S/
-                                {{ $producto->precio }}</span>
+                                {{ $producto?->precio }}</span>
                         @else
-                        <p class="text-colorAzulOscuro text-text28 font-bold mt-4">S/ {{ $producto->precio }}</p>
+                        <p class="text-colorAzulOscuro text-text28 font-bold mt-4">S/ {{ $producto?->precio }}</p>
                     @endif
                     </p>
                     <div class="mt-4">
@@ -54,50 +54,50 @@
                    focus:border-blue-500  p-2.5">
                     </div>
                     <div class="flex flex-col gap-4 mt-4">
-                        <p class="text-colorParrafo text-text14">Disponibilidad: @if ($producto->stock > 0)
+                        <p class="text-colorParrafo text-text14">Disponibilidad: @if ($producto?->stock > 0)
                                 <span class="text-colorAzulOscuro">En stock</span>
                             @else
                                 <span class="text-colorRojo">Agotado</span>
                             @endif
                         </p>
                         <p class="text-colorParrafo text-text14">Marca: <span
-                                class="text-colorAzulOscuro">{{ $producto->brand->nombre }}</span></p>
+                                class="text-colorAzulOscuro">{{ $producto?->brand->nombre }}</span></p>
                         <p class="text-colorParrafo text-text14">Peso con empaque:
-                            <span class="text-colorAzulOscuro">{{ $producto->peso_empaque }}</span>
+                            <span class="text-colorAzulOscuro">{{ $producto?->peso_empaque }}</span>
                         </p>
-                        @if ($producto->devolucion)
+                        @if ($producto?->devolucion)
                             <p class="text-colorParrafo text-text14">Producto con devolución</p>
                         @else
                             <p class="text-colorParrafo text-text14">Producto sin devolución</p>
                         @endif
                         <p class="text-colorParrafo text-text14">Producto de: <span
-                                class="text-colorAzulOscuro">{{ $producto->tipo_vendedor }}</span>
+                                class="text-colorAzulOscuro">{{ $producto?->tipo_vendedor }}</span>
                         </p>
                         <p class="text-colorParrafo text-text14">SKU: <span
-                                class="text-colorAzulOscuro">{{ $producto->sku }}</span>
+                                class="text-colorAzulOscuro">{{ $producto?->sku }}</span>
                         </p>
 
                     </div>
 
                     <div class="bg-colorBackgroundAzulClaro  rounded-xl mt-4 p-4 flex flex-col gap-4">
                         <div class="flex justify-between items-center">
-                            @if ($producto->en_oferta)
+                            @if ($producto?->en_oferta)
                                 <div>
                                     <p class="text-text12 text-colorParrafo">Precio: <span
-                                            class="line-through">{{ $producto->precio }}</span></p>
+                                            class="line-through">{{ $producto?->precio }}</span></p>
                                     <p class="text-colorAzulOscuro font-bold">Ahorras: S/
-                                        {{ $producto->precio - $producto->precio_oferta }}
-                                        ({{ number_format($producto->porcentaje_oferta, 0) }}%) </p>
+                                        {{ $producto?->precio - $producto?->precio_oferta }}
+                                        ({{ number_format($producto?->porcentaje_oferta, 0) }}%) </p>
                                 </div>
                             @else
                                 <div>
-                                    <p class="text-colorAzulOscuro font-bold">Precio: <span>{{ $producto->precio }}</span>
+                                    <p class="text-colorAzulOscuro font-bold">Precio: <span>{{ $producto?->precio }}</span>
                                     </p>
 
                                 </div>
                             @endif
 
-                            @if ($producto->envio_gratis)
+                            @if ($producto?->envio_gratis)
                                 <span class="ml-2 px-4 py-1 bg-colorBackgroundAzulOscuro rounded-full text-white">Envío
                                     Gratis</span>
                             @endif
@@ -115,7 +115,7 @@
                                     d="M13.0715 12.5703C13.6334 12.1612 13.9987 11.4983 13.9987 10.75C13.9987 9.50733 12.9914 8.5 11.7487 8.5H11.582C10.3394 8.5 9.33203 9.50733 9.33203 10.75C9.33203 11.4983 9.6973 12.1612 10.2592 12.5703M13.0715 12.5703C12.7002 12.8405 12.2431 13 11.7487 13H11.582C11.0876 13 10.6305 12.8405 10.2592 12.5703M13.0715 12.5703L13.46 13.7936C13.6082 14.2602 13.6824 14.4935 13.6621 14.6388C13.6199 14.9411 13.3733 15.1656 13.0822 15.1667C12.9423 15.1672 12.7327 15.0572 12.3136 14.8373C12.1338 14.7429 12.044 14.6957 11.952 14.668C11.7647 14.6115 11.566 14.6115 11.3787 14.668C11.2868 14.6957 11.1969 14.7429 11.0172 14.8373C10.598 15.0572 10.3884 15.1672 10.2486 15.1667C9.95743 15.1656 9.71083 14.9411 9.66863 14.6388C9.64836 14.4935 9.7225 14.2602 9.8707 13.7936L10.2592 12.5703"
                                     stroke="#141B34" />
                             </svg>
-                            Este producto tiene @if ($producto->garantia_entrega)
+                            Este producto tiene @if ($producto?->garantia_entrega)
                                 <span class=" px-4 py-1 bg-white rounded-full">Garantía de
                                     Entrega</span>
                             @else{
@@ -167,17 +167,17 @@
                         @foreach ($productoRelacionado as $producto)
                             <div
                                 class="bg-colorBackgroundAzulClaro h-max p-4 shadow-md text-start group cursor-pointer rounded-xl">
-                                <a href="{{ route('producto', $producto->slug) }}">
+                                <a href="{{ route('producto', $producto?->slug) }}">
                                     <div class="mb-4 w-full h-[212px] bg-white rounded-xl">
-                                        <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->producto }}"
+                                        <img src="{{ asset($producto?->imagen) }}" alt="{{ $producto?->producto }}"
                                             class=" w-full h-full object-contain">
                                     </div>
                                     <h3 class="text-text28 font-semibold mb-2 text-colorAzulOscuro">
-                                        {{ $producto->producto }}
+                                        {{ $producto?->producto }}
                                     </h3>
-                                    <p class="text-colorParrafo mb-4 text-text16 line-clamp-2">{{ $producto->extract }}
+                                    <p class="text-colorParrafo mb-4 text-text16 line-clamp-2">{{ $producto?->extract }}
                                     </p>
-                                    <a href="{{ route('producto', $producto->slug) }}"
+                                    <a href="{{ route('producto', $producto?->slug) }}"
                                         class="group-hover:w-full duration-300 ease-in-out group-hover:text-center group-hover:bg-colorBackgroundAzul bg-colorBackgroundRed  rounded-full text-white font-semibold px-4 py-2 inline-block">Ver
                                         más</a>
                                 </a>

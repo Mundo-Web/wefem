@@ -4,7 +4,7 @@
     </div>
     <div class="w-11/12 lg:max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start lg:items-end py-16"
         data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">
-        <p class="w-11/12 lg:w-1/3 text-text32 text-white"><x-custom.texto-titulo :text="$home->titleNewsletter" style="font-bold" />
+        <p class="w-11/12 lg:w-1/3 text-text32 text-white"><x-custom.texto-titulo :text="$home?->titleNewsletter" style="font-bold" />
         </p>
         <form action="{{ route('subscripciones.guardar') }}" method="POST"
             class="w-11/12 lg:w-1/3 flex items-center justify-center relative border-b-2 border-white py-2">

@@ -72,17 +72,11 @@ class IndexController extends Controller
    */
   public function index()
   {
-
-    $home = HomeView::first();
-    $productos = Products::latest()
-      ->take(6)
-
-      ->get();
-
-
-    $general = General::all();
-
-    $servicios = Service::take(4)->latest()->get();
+    // Obtener datos con manejo de casos donde no haya resultados
+    $home = HomeView::first() ?? null; // Si no hay datos, devuelve null
+    $productos = Products::latest()->take(6)->get(); // Colección vacía si no hay productos
+    $general = General::all(); // Colección vacía si no hay datos generales
+    $servicios = Service::latest()->take(4)->get(); // Colección vacía si no hay servicios
 
     // Obtener el blog más reciente
     $mostRecentPost = Blog::where('visible', true)
@@ -91,32 +85,66 @@ class IndexController extends Controller
       ->first();
 
     // Obtener los siguientes 2 blogs más recientes (excluyendo el más reciente)
-    $nextTwoRecentPosts = Blog::where('visible', true)
-      ->whereNotIn('id', [$mostRecentPost->id])
-      ->latest()
-      ->take(2)
-      ->with('category')
-      ->get();
+    $nextTwoRecentPosts = collect(); // Inicializamos una colección vacía
+    if ($mostRecentPost) {
+      $nextTwoRecentPosts = Blog::where('visible', true)
+        ->whereNotIn('id', [$mostRecentPost->id])
+        ->latest()
+        ->take(2)
+        ->with('category')
+        ->get();
+    }
 
+    // Obtener los últimos 3 blogs visibles para móviles
     $mobilePosts = Blog::where('visible', true)
       ->latest()
       ->take(3)
       ->with('category')
       ->get();
 
-    $testimonios = Testimony::where('status', '=', 1)->where('visible', '=', 1)->get();
+    // Obtener testimonios activos y visibles
+    $testimonios = Testimony::where('status', 1)
+      ->where('visible', 1)
+      ->get();
 
-    return view('public.index', compact('home', 'productos', 'general', 'servicios', 'mostRecentPost', 'nextTwoRecentPosts', 'testimonios', 'mobilePosts'));
+    // Verificar si todos los datos están vacíos
+    $allEmpty = empty($home) &&
+      $productos->isEmpty() &&
+      $general->isEmpty() &&
+      $servicios->isEmpty() &&
+      empty($mostRecentPost) &&
+      $nextTwoRecentPosts->isEmpty() &&
+      $mobilePosts->isEmpty() &&
+      $testimonios->isEmpty();
+
+    // Pasar los datos a la vista con valores seguros
+    return view('public.index', [
+      'home' => $home,
+      'productos' => $productos,
+      'general' => $general,
+      'servicios' => $servicios,
+      'mostRecentPost' => $mostRecentPost,
+      'nextTwoRecentPosts' => $nextTwoRecentPosts,
+      'testimonios' => $testimonios,
+      'mobilePosts' => $mobilePosts,
+      'allEmpty' => $allEmpty, // Indicador para saber si todo está vacío
+    ]);
   }
   public function servicios(Request $request)
   {
-    $servicios = Service::where('visible', '=', 1)->get();
+    // Obtener todos los servicios visibles
+    $servicios = Service::where('visible', 1)->get();
+
+    // Inicializar variables
     $servicio = null;
+    $servicioPage = ServiceView::first();
+    $general = General::first();
+
     // Obtener el servicio específico si se proporciona un ID
-    if ($request->id) {
-      $servicio = Service::where('visible', 1)->findOrFail($request->id);
+    if ($request->has('id')) {
+      $servicio = Service::where('visible', 1)->find($request->id); // Usar find en lugar de findOrFail
       if (!$servicio) {
-        // Si no se encuentra el servicio, redirigir o mostrar un error
+        // Si no se encuentra el servicio, redirigir con un mensaje de error
         return redirect()->route('servicios')->with('error', 'Servicio no encontrado.');
       }
     } else {
@@ -124,13 +152,25 @@ class IndexController extends Controller
       $servicio = Service::where('visible', 1)->first();
     }
 
-    $servicioPage = ServiceView::first();
+    // Verificar si se encontró un servicio
+    if (!$servicio) {
+      // Si no hay servicios disponibles, redirigir o mostrar un mensaje de error
+      return redirect()->route('servicios')->with('error', 'No hay servicios disponibles.');
+    }
 
-
+    // Obtener el álbum relacionado al servicio
     $albumName = $servicio->slug;
-    $album = Album::where('name', $albumName)->withCount('images', 'children')->first();
-    $album->load('children', 'images');
-    $general = General::first();
+    $album = Album::where('name', $albumName)->withCount(['images', 'children'])->first();
+
+    // Verificar si se encontró un álbum
+    if ($album) {
+      $album->load('children', 'images'); // Cargar relaciones solo si el álbum existe
+    } else {
+      // Si no se encuentra el álbum, inicializar como null
+      $album = null;
+    }
+
+    // Pasar los datos a la vista
     return view('public.servicio', compact('servicios', 'servicio', 'servicioPage', 'general', 'album'));
   }
 
