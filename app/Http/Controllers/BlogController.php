@@ -6,8 +6,10 @@ use App\Models\Category;
 use App\Models\Blog;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
+use App\Jobs\SendBlogEmailJob;
 use App\Models\Album;
 use App\Models\CategoryPost;
+use App\Models\NewsletterSubscriber;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
@@ -26,7 +28,7 @@ class BlogController extends Controller
   public function index()
   {
     $posts = Blog::where('visible', '=', true)->with('category')->get();
-    //dump($posts);
+
     return view('pages.blog.index', compact('posts'));
   }
 
@@ -123,11 +125,28 @@ class BlogController extends Controller
       }
       $blog->save();
 
-      return redirect()->route('blog.index')->with('success', 'Publicación creada exitosamente.');
+      // 📌 Enviar correos en lotes de 50
+      NewsletterSubscriber::where('active', true)->chunk(50, function ($subscribers) use ($blog) {
+        foreach ($subscribers as $subscriber) {
+          SendBlogEmailJob::dispatch($blog, $subscriber->email);
+        }
+      });
+
+      // 📌 DEVOLVER JSON PARA AJAX
+      return response()->json([
+        'success' => true,
+        'message' => 'Publicación creada exitosamente.',
+        'redirect' => route('blog.index')
+      ]);
+
+      //return redirect()->route('blog.index')->with('success', 'Publicación creada exitosamente.');
     } catch (ValidationException $e) {
       return redirect()->back()->withErrors($e->validator)->withInput();
     } catch (\Throwable $th) {
-      return redirect()->route('blog.create')->with('error', 'Llenar campos obligatorios');
+      return response()->json([
+        'success' => false,
+        'message' => 'Error: ' . $th->getMessage()
+      ], 500);
     }
   }
 
@@ -257,18 +276,31 @@ class BlogController extends Controller
 
   public function deleteBlog(Request $request)
   {
-    //Recupero el id mandado mediante ajax
-    $id = $request->id;
-    //Busco el servicio con id como parametro
-    $blog = Blog::findOrfail($id);
+    try {
+      $blog = Blog::find($request->id);
 
+      if (!$blog) {
+        return response()->json([
+          'success' => false,
+          'message' => 'Publicación no encontrada.'
+        ], 404);
+      }
 
-    //Guardo 
-    $blog->delete();
+      $blog->delete();
 
-    // Devuelvo una respuesta JSON u otra respuesta según necesites
-    return response()->json(['message' => 'Post eliminado.']);
+      return response()->json([
+        'success' => true,
+        'message' => 'Publicación eliminada correctamente.',
+        'redirect' => route('blog.index')
+      ]);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Error: ' . $e->getMessage()
+      ], 500);
+    }
   }
+
 
 
 
@@ -288,6 +320,7 @@ class BlogController extends Controller
 
     $service->save();
 
-    return response()->json(['message' => 'Post modificado.']);
+
+    return response()->json(['success' => true, 'message' => 'Post Actualizado.', 'redirect' => route('blog.index')]);
   }
 }

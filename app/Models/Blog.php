@@ -19,12 +19,12 @@ class Blog extends Model
     }
 
 
-    public static function boot()
+    /*public static function boot()
     {
         parent::boot();
 
         static::deleted(function ($article) {
             $article->tags()->detach();
         });
-    }
+    }*/
 }

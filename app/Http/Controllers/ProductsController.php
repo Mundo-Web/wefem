@@ -328,7 +328,7 @@ class ProductsController extends Controller
         $data['precio_oferta'] = $request->precio_oferta;
         $data['porcentaje_oferta'] = round((100 - ($request->precio_oferta * 100) / $request->precio), 0);
       }
-      //dump('PROD-' . strtoupper(substr($request->categoria_id, 0, 3)) . '-' . strtoupper(substr($request->producto, 0, 3)) . '-' . uniqid());
+
       // **Paso 5: Actualizar el producto en la base de datos**
       $producto->update([
         'producto' => $request->producto,

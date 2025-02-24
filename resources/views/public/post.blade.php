@@ -36,7 +36,7 @@
                  </div>
              @endif
 
-             <div class="prose prose-lg max-w-7xl mt-8 text-start" data-aos="fade-up" data-aos-offset="150"
+             <div class="prose prose-lg  max-w-7xl mt-8 text-start" data-aos="fade-up" data-aos-offset="150"
                  data-aos-duration="1000" data-aos-delay="200">
                  {!! $post->descripcion !!}
              </div>
@@ -81,9 +81,9 @@
                          <h2 class="font-gotham_bold text-colorAzulOscuro text-4xl lg:text-5xl">Otras publicaciones</span>
                          </h2>
                          <!--p class="text-colorParrafo text-text18">Nam tempor diam quis urna maximus, ac laoreet arcu
-                                                                 convallis. Aenean
-                                                                 dignissim nec sem quis
-                                                                 consequat.</p-->
+                                                                                             convallis. Aenean
+                                                                                             dignissim nec sem quis
+                                                                                             consequat.</p-->
                      </div>
 
                      <div class="w-full mb-16" data-aos="fade-up" data-aos-offset="150" data-aos-duration="1000"

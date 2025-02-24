@@ -11,7 +11,7 @@
 
         <section class="w-full relative pt-32">
             <div class="absolute left-0 transform hidden md:block ">
-                <img src="{{ asset('images/img/background/bg-contacto.png') }}" alt="" class="w-20">
+                <!-- <img src="{{ asset('images/img/background/bg-contacto.png') }}" alt="" class="w-20"-->
             </div>
             <div class="w-11/12 lg:max-w-7xl mx-auto  flex flex-col md:flex-row gap-4 " data-aos="fade-up"
                 data-aos-offset="150" data-aos-duration="1000" data-aos-delay="200">

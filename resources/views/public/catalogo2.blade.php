@@ -203,8 +203,8 @@
             <!-- <a class="mostrar-modal">Filtrossss</a> -->
 
             <div class="w-full lg:w-9/12">
-                <div class="flex justify-between items-start pb-8">
-                    <div class="hidden lg:flex gap-2">
+                <div class="flex w-full justify-between items-center pb-8">
+                    <div class="hidden lg:flex w-full gap-2">
                         <div class="">
                             <p class=" text-text12 ">
                                 Inicio /
@@ -220,7 +220,7 @@
                             </h3>
                         </div>
                     </div>
-                    <div class="relative inline-block  w-full  text-left short-filter">
+                    <div class="relative inline-block  w-full  text-right short-filter">
                         <div>
                             <button type="button"
                                 class="inline-flex w-full lg:w-56 justify-between text-text14 font-semibold gap-x-1.5 rounded-md bg-white lg:px-3 py-2 text-sm text-colorAzulOscuro ring-0 ring-inset"

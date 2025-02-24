@@ -301,7 +301,7 @@ class ServiceController extends Controller
     public function updatePageServicio(Request $request, $id)
     {
         $servicioPage = ServiceView::findOrfail($id);
-        dump($request->imagen);  // Verifica que la imagen se esté enviando correctamente
+
 
         // Verificar si se ha subido una nueva imagen
         if ($request->hasFile('imagen')) {
@@ -312,7 +312,6 @@ class ServiceController extends Controller
             // Si existe una imagen anterior, eliminarla
             if ($servicioPage->image && File::exists(public_path($routeImg . $servicioPage->image))) {
                 File::delete(public_path($routeImg . $servicioPage->image));
-                dump('Imagen anterior eliminada.');
             }
 
             // Procesar la imagen (redimensionar y hacer crop)
@@ -324,7 +323,7 @@ class ServiceController extends Controller
 
             // Mover la nueva imagen a la carpeta de destino
             $file->move(public_path($routeImg), $nombreImagen);
-            dump('Imagen guardada: ' . public_path($routeImg) . $nombreImagen);
+
 
             // Actualizar el campo de imagen en la base de datos
             $servicioPage->imagen = $routeImg . $nombreImagen;  // Solo el nombre de la imagen

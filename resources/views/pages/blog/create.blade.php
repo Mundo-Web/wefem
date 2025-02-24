@@ -1,7 +1,7 @@
 <x-app-layout title="Crear Blog">
 
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-        <form action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data">
+        <form id="blog-form" action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div
                 class="col-span-full xl:col-span-8 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
@@ -108,7 +108,6 @@
                 ['bold', 'italic', 'underline', 'strike'],
                 ['blockquote'],
                 ['link', 'image', 'video'],
-
                 [{
                     'list': 'ordered'
                 }, {
@@ -134,32 +133,69 @@
                 }, {
                     'background': []
                 }],
-
                 [{
                     'align': []
                 }]
             ];
 
-            // Inicializar Quill para Descripción Extensa
+            // Inicializar Quill
             const quillDescription = new Quill('#description-editor', {
                 modules: {
                     toolbar: toolbarOptions
                 },
                 placeholder: 'Escriba la descripción aquí...',
-                theme: 'snow',
-                height: 300
+                theme: 'snow'
             });
 
-            // Actualizar los campos ocultos antes de enviar el formulario
-            const form = document.getElementById('blog-form');
-            form.addEventListener('submit', function(event) {
-                // Actualizar el campo oculto "description" con el contenido de Quill
+            // Sincronizar el campo oculto con el contenido de Quill
+            function updateDescriptionField() {
                 document.getElementById('descripcion').value = quillDescription.root.innerHTML;
-                // Continuar con el envío del formulario
-                return true;
-            });
+            }
 
+            // Escuchar cambios en el contenido de Quill
+            quillDescription.on('text-change', updateDescriptionField);
+
+            // Manejo del formulario con AJAX
+            $("#blog-form").submit(function(e) {
+                e.preventDefault();
+
+                // Asegurarse de que el campo oculto tiene la descripción antes de enviar
+                updateDescriptionField();
+                // Deshabilitar el botón y mostrar loader
+                Swal.fire({
+                    title: "Guardando...",
+                    text: "Por favor, espera",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                $.ajax({
+                    url: "{{ route('blog.store') }}",
+                    type: "POST",
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        Swal.fire({
+                            title: "¡Éxito!",
+                            text: response.message,
+                            icon: "success"
+                        }).then(() => {
+                            window.location.href = response.redirect;
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Hubo un problema al crear la publicación.",
+                            icon: "error"
+                        });
+                    }
+                });
+            });
         });
     </script>
+
 
 </x-app-layout>

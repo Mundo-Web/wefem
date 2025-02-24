@@ -94,97 +94,113 @@
     </div>
 
     <script>
-        $('document').ready(function() {
+        $(document).ready(function() {
 
+            // Inicializar DataTable
             new DataTable('#tabladatos', {
                 responsive: true
             });
 
+            // Evento de eliminación
             $(document).on("click", ".btn_delete", function(e) {
+                e.preventDefault();
 
-                var id = $(this).attr('data-idService');
+                let id = $(this).attr('data-idService');
+                let row = $(this).closest('tr'); // Captura la fila
 
                 Swal.fire({
-                    title: "Seguro que deseas eliminar?",
-                    text: "Vas a eliminar una publicación",
+                    title: "¿Seguro que deseas eliminar?",
+                    text: "Vas a eliminar una publicación.",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Si, borrar!",
+                    confirmButtonText: "Sí, borrar!",
                     cancelButtonText: "Cancelar"
                 }).then((result) => {
                     if (result.isConfirmed) {
-
                         $.ajax({
-
-                            url: '{{ route('blog.deleteBlog') }}',
-                            method: 'POST',
+                            url: "{{ route('blog.deleteBlog') }}",
+                            method: "POST",
                             data: {
-                                _token: $('input[name="_token"]').val(),
-                                id: id,
+                                _token: $('meta[name="csrf-token"]').attr('content'),
+                                id: id
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        title: "Eliminado!",
+                                        text: response.message,
+                                        icon: "success"
+                                    });
 
+                                    // Remover la fila sin recargar
+                                    row.fadeOut(500, function() {
+                                        $(this).remove();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: "Error!",
+                                        text: response.message,
+                                        icon: "error"
+                                    });
+                                }
+                            },
+                            error: function(xhr) {
+                                let errorMessage = "Error desconocido al eliminar.";
+                                if (xhr.responseJSON && xhr.responseJSON.message) {
+                                    errorMessage = xhr.responseJSON.message;
+                                }
+
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: errorMessage,
+                                    icon: "error"
+                                });
                             }
-
-                        }).done(function(res) {
-
-                            Swal.fire({
-                                title: res.message,
-                                icon: "success"
-                            });
-
-                            location.reload();
-
-                        })
-
-
+                        });
                     }
                 });
-
             });
 
 
+            // Evento para actualizar visibilidad
             $(document).on("change", ".btn_swithc", function() {
-
-                var status = 0;
-                var id = $(this).attr('data-idService');
-                var titleService = $(this).attr('data-titleService');
-                var field = $(this).attr('data-field');
-
-                if ($(this).is(':checked')) {
-                    status = 1;
-                } else {
-                    status = 0;
-                }
-
-
+                let status = $(this).is(':checked') ? 1 : 0;
+                let id = $(this).attr('data-idService');
+                let titleService = $(this).attr('data-titleService');
+                let field = $(this).attr('data-field');
 
                 $.ajax({
                     url: "{{ route('blog.updateVisible') }}",
-                    method: 'POST',
+                    method: "POST",
                     data: {
-                        _token: $('input[name="_token"]').val(),
+                        _token: $('meta[name="csrf-token"]').attr('content'),
                         status: status,
                         id: id,
-                        field: field,
+                        field: field
+                    },
+                    success: function(res) {
+                        Swal.fire({
+
+                            icon: "success",
+                            title: titleService + " ha sido modificado",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "No se pudo actualizar la visibilidad.",
+                            icon: "error"
+                        });
                     }
-                }).done(function(res) {
-
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: titleService + " a sido modificado",
-                        showConfirmButton: false,
-                        timer: 1500
-
-                    });
-
-                })
+                });
             });
 
-
-
-        })
+        });
     </script>
+
 
 </x-app-layout>

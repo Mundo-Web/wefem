@@ -123,7 +123,7 @@ class HomeViewController extends Controller
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (\Throwable $th) {
-            dump($th->getMessage());
+
             return redirect()->route('homeview.edit', $id)->with('error', 'Error al actualizar el Post.');
         }
     }

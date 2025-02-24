@@ -7,9 +7,9 @@
 
 
         <div class="w-11/12 md:max-w-7xl mx-auto  flex justify-between items-center py-4">
-            <a href="#" class="text-2xl font-bold">
+            <a href="/" class="text-2xl font-bold">
                 <img src="{{ asset('images/img/logo/DarTelecom.png') }}" alt="Dar Telecom"
-                    class="h-14 w-full object-cover" />
+                    class="h-14 w-full object-contain" />
             </a>
 
             <div class="hidden lg:flex justify-center items-center gap-10 font-semibold text-text18 xl:text-text22">
@@ -51,13 +51,12 @@
                 <x-custom.button-cotizar :general="$general" />
             </div>
             <div class="lg:hidden flex items-center justify-end">
-                <button id="menu-toggle" class="text-white focus:outline-none">
+                <button id="menu-toggle" class="text-white fill-white focus:outline-none">
                     <i id="menu-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="33" height="34" viewBox="0 0 33 34"
-                            fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="current" width="33" height="34"
+                            viewBox="0 0 448 512">
                             <path
-                                d="M22.75 19.7498L13.3333 10.3332L22.75 0.916504L32.1667 10.3332L22.75 19.7498ZM0 16.4165V3.08317H13.3333V16.4165H0ZM16.6667 33.0832V19.7498H30V33.0832H16.6667ZM0 33.0832V19.7498H13.3333V33.0832H0ZM3.33333 13.0832H10V6.4165H3.33333V13.0832ZM22.7917 15.0832L27.5 10.3748L22.7917 5.6665L18.0833 10.3748L22.7917 15.0832ZM20 29.7498H26.6667V23.0832H20V29.7498ZM3.33333 29.7498H10V23.0832H3.33333V29.7498Z"
-                                fill="white" />
+                                d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
                         </svg>
 
                     </i>
@@ -84,13 +83,12 @@
     <div id="menu"
         class="hidden lg:hidden bg-colorBackgroundAzulOscuro text-textWhite shadow-lg w-full h-screen absolute z-10">
         <div class="lg:hidden flex items-center w-full justify-end py-8 px-4 sm:p-8">
-            <button id="menu-toggle-close" class="text-white focus:outline-none">
+            <button id="menu-toggle-close" class="text-white fill-white focus:outline-none">
                 <i id="menu-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="33" height="34" viewBox="0 0 33 34"
-                        fill="none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="current" width="33" height="34"
+                        viewBox="0 0 448 512">
                         <path
-                            d="M22.75 19.7498L13.3333 10.3332L22.75 0.916504L32.1667 10.3332L22.75 19.7498ZM0 16.4165V3.08317H13.3333V16.4165H0ZM16.6667 33.0832V19.7498H30V33.0832H16.6667ZM0 33.0832V19.7498H13.3333V33.0832H0ZM3.33333 13.0832H10V6.4165H3.33333V13.0832ZM22.7917 15.0832L27.5 10.3748L22.7917 5.6665L18.0833 10.3748L22.7917 15.0832ZM20 29.7498H26.6667V23.0832H20V29.7498ZM3.33333 29.7498H10V23.0832H3.33333V29.7498Z"
-                            fill="white" />
+                            d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
                     </svg>
 
                 </i>

@@ -150,6 +150,14 @@
                 confirmButtonText: 'Aceptar'
             });
         @endif
+        @if (session('info'))
+            Swal.fire({
+                icon: 'info',
+                title: 'Información',
+                text: "{{ session('error') }}",
+                confirmButtonText: 'Aceptar'
+            });
+        @endif
     });
 </script>
 

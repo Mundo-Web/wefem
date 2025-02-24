@@ -11,15 +11,15 @@ class EmailConfig
         $mail = new PHPMailer(true);
         // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
         $mail->isSMTP();
-        $mail->Host = 'mail.redconex.pe';
+        $mail->Host = env('MAIL_HOST');
         $mail->SMTPAuth = true;
-        $mail->Username = 'info@redconex.pe';
-        $mail->Password = 'redconex2025#';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port = 465;
+        $mail->Username = env('MAIL_USERNAME');
+        $mail->Password = env('MAIL_PASSWORD');
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = env('MAIL_PORT');
         $mail->Subject = '' . $name . ', ' . $mensaje;
         $mail->CharSet = 'UTF-8';
-        $mail->setFrom('info@redconex.pe', 'Redconex');
+        $mail->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
         return $mail;
     }
 }

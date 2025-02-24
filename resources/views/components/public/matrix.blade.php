@@ -36,7 +36,10 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     {{-- Sweet Alert --}}
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
@@ -399,7 +402,45 @@
             });
         })
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->any())
+                let errorMessages = @json($errors->all());
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Errores encontrados',
+                    html: errorMessages.join('<br>'), // Muestra los errores en una lista
+                    confirmButtonText: 'Aceptar'
+                });
+            @endif
 
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: "{{ session('success') }}",
+                    confirmButtonText: 'Aceptar'
+                });
+            @endif
+
+            @if (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: "{{ session('error') }}",
+                    confirmButtonText: 'Aceptar'
+                });
+            @endif
+            @if (session('info'))
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Información',
+                    text: "{{ session('info') }}",
+                    confirmButtonText: 'Aceptar'
+                });
+            @endif
+        });
+    </script>
 </body>
 
 </html>
