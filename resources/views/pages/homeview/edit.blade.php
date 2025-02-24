@@ -155,6 +155,22 @@
                                         placeholder="Ingrese el titulo">
                                 </div>
                             </div>
+                            <div class="md:col-span-5">
+                                <label for="description">Imagen</label>
+                                <div class="relative mb-2 mt-2">
+                                    <img src="{{ asset($homeview->imageNewsletter) }}"
+                                        class="max-w-xs max-h-48 object-cover  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-5">
+                                <label for="imageNewsletter">Actualizar Imagen</label>
+                                <div class="relative mb-2  mt-2">
+                                    <input id="imageNewsletter" name="imageNewsletter"
+                                        class="p-2.5 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                        aria-describedby="user_avatar_help" id="user_avatar" type="file">
+                                </div>
+                            </div>
 
 
 

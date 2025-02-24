@@ -368,7 +368,7 @@
                 <div class="hidden lg:block
                   lg:w-1/2 md:relative z-10 lg:absolute lg:left-0 lg:bottom-0 ">
 
-                    <img src="https://i.ibb.co/98Nm5Gs/ed2c30eb3b8e0f2d46d9b49e67419104.png" alt=""
+                    <img src="{{ asset($home->imageNewsletter) }}" alt=""
                         class="  w-[600] h-[677px] object-cover justify-self-start " loading="lazy" />
 
 

@@ -23,6 +23,7 @@ class HomeView extends Model
         'titleBlogs',
         'subtitleBlogs',
         //newsletter section
-        'titleNewsletter'
+        'titleNewsletter',
+        'imageNewsletter'
     ];
 }
