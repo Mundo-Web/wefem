@@ -29,6 +29,10 @@
         .font-bebas {
             font-family: "Bebas Neue", serif;
         }
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
     </style>
 </head>
 
@@ -36,7 +40,7 @@
 
 
 
-    <!--Header We Fem-->
+
 
     @include('components.Sections.Home.Header')
 

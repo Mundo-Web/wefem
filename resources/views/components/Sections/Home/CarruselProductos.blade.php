@@ -35,12 +35,20 @@
     $slidesPerView = 3; // Default en desktop
 @endphp
 
-<section class="py-16 bg-white">
-    <div class="mx-auto max-w-6xl" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
+<section class="py-16 bg-white  text-[#212529]">
+    <div class="mx-auto px-[5%] text-center" data-aos="fade-up" data-aos-duration="1000"
+        data-aos-easing="ease-in-out-quart">
         <!-- Header -->
         <div class="flex flex-col  items-center mb-8 pb-4 ">
-            <h2 class="text-4xl font-bold">💗 Preferidos por nosotrxs 💗</h2>
-            <p class="text-lg ">¿Estás listx para el cambio?</p>
+            <h2 class="text-4xl font-bold flex gap-4 items-start justify-center">
+                @include('components.Emoji.EmojiApple', [
+                    'class' => 'h-[39.53px] w-auto object-contain',
+                    'emojiCode' => '1f497',
+                ]) Preferidos por nosotrxs @include('components.Emoji.EmojiApple', [
+                    'class' => 'h-[39.53px] w-auto object-contain',
+                    'emojiCode' => '1f497',
+                ])</h2>
+            <p class="text-[19.3px] leading-[19.77px] mt-4 ">¿Estás listx para el cambio?</p>
         </div>
 
         <!-- Carousel -->
@@ -57,7 +65,8 @@
 
             <!-- Products container -->
             <div class="overflow-hidden py-4">
-                <div id="productSlider" class="flex items-center transition-all duration-300 ease-in-out px-4">
+                <div id="productSlider"
+                    class="flex items-center justify-center transition-all duration-300 ease-in-out px-4">
                     @foreach ($products as $product)
                         @include('components.Sections.Home.CardProducto', ['product' => $product])
                     @endforeach
@@ -75,11 +84,12 @@
             </button>
         </div>
 
-        <div class="flex justify-center">
+        <div class="flex justify-center mt-6">
             <a href="#"
-                class="bg-white text-[#FF9900] border-2 border-[#FF9900] flex items-center justify-center gap-3 px-12 py-3 text-lg rounded-xl font-semibold">
+                class="group bg-white h-[60.59px] w-[331px] text-[#FF9900] border-[0.9px] border-[#FF9900] text-[19.37px] rounded-[13.57px] font-semibold flex items-center justify-center gap-3 leading-[29.05px] hover:bg-[#FF9900] hover:text-white transition-colors duration-300">
                 Ver más productos
-                <svg class="w-5 fill-[#FF9900]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <svg class="w-5 fill-[#FF9900] group-hover:fill-white" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512">
                     <path
                         d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
                 </svg>

@@ -23,11 +23,12 @@
 background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%);">
     <div class="max-w-6xl mx-auto" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
         <!-- Heading -->
-        <h2 class="text-white text-center text-[55px]  font-bold mb-12">
+        <h2
+            class="text-white text-center text-[55.41px]  leading-[83.11px] tracking-[0.01em] font-bold mb-12 flex items-center justify-center gap-2">
             Nuestras weLovers
-            <span class="inline-block transform rotate-12 ml-2">✨</span>
+            @include('components.Emoji.EmojiApple', ['emojiCode' => '2728', 'class' => 'h-[55px]'])
             <span class="whitespace-nowrap">lo afirman</span>
-            <span class="inline-block transform -rotate-12 ml-1">✨</span>
+            @include('components.Emoji.EmojiApple', ['emojiCode' => '2728', 'class' => 'h-[55px]'])
         </h2>
 
         <!-- Slider -->
@@ -72,10 +73,11 @@ background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%)
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const swiper = new Swiper('.testimonialSwiper', {
+
             slidesPerView: 1.5,
             spaceBetween: 10,
             centeredSlides: true,
-            loop: false,
+            loop: true,
             autoplay: false,
             pagination: {
                 el: '.swiper-pagination',

@@ -3,8 +3,7 @@
         <div class=" flex gap-8">
             <!-- Logo Section -->
             <div class="w-2/6 flex justify-center">
-                <img src="https://s3-alpha-sig.figma.com/img/1a1b/ccfb/1f9e34455907c614eb5f07e6e77499ae?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ffgA6Xm~oJleurLWGte6G85hfyFG1DqNEQ3VU4vsE7aRzrpm~6gBZYnr-bn-y~-XaT0H8MvWeeWH1o4WmwIa-zSE14utIFF9HHquNAB4ESlF3AKby-aOHta~nnxXDXphM6yf7QrPAUXsGMxdcIjJOCbwfH3R5xpUKhVcn8hQ443LDFjh~65eibgqg9PMAHuNwXPe1AyxBzz5HMd0h2MEk7IGq5hdp2ALvyY2WekvkEXQbbSvn8ZicYz3OWgi8vnvxl3KzSzvy2esXWg4g6A6mJLV-50Ov8UIBgskFpOiMgnVFdxNvGecflrjicZWcMqfNVjZb4hL3y39oKwoGkE2BA__"
-                    alt="weFem Logo" class="h-[136px]">
+                <img src="https://i.ibb.co/pvgT612S/image.png" alt="weFem Logo" class="h-[136px]">
             </div>
 
             <!-- Navigation Links -->

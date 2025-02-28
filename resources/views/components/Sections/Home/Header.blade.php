@@ -1,73 +1,74 @@
-<section class="relative">
-    <video autoplay loop muted class="pt-10 lg:pt-0">
-        <source src="{{ asset('background-hero.mp4') }}" type="video/mp4" class=" w-full min-h-screen object-cover">
-        Tu navegador no soporta la reproducción de video.
-    </video>
+<div>
 
-    <header class="bg-transparent text-white absolute top-0 w-full z-10">
-        <!--Cintillo We Fem-->
-        <div class="bg-[#6048B7] w-full flex items-center justify-center  h-12 text-white z-50">
-            <span class="text-[#DDEC4C] mr-1">¡Envío gratis </span> a todo lima metropolitana!
-        </div>
-
-        <div class="hidden max-w-6xl mx-auto md:grid grid-cols-3 text-sm z-50 h-20">
-            <nav class="flex space-x-4 items-center justify-start">
-                <a href="#" class="cursor-pointer">Tienda</a>
-                <a href="#" class="">¿Cómo usar?</a>
-                <a href="#" class="">Nosotros</a>
-                <a href="#" class="">Quiz</a>
-            </nav>
-            <div class="flex items-center justify-center">
-                <img src="https://s3-alpha-sig.figma.com/img/66c1/0ff9/aec639c7ba3f17609427f1700884a86e?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=L3VwOrefJxn~55zCAlmOsp6URYNsgqHctzpAXeZc1dneHyAszgLfAYVaKvzTwZMQpL5PBxsGnOSqs-0~psvuCJ7335rRm3F4H7qz7T8EEhIenkdsZ~sIPgjKQI2-pSb045rTnEuvEcFeby7~dSEp2U875gtmWMBsz8JNMUmgJBRZ5LfEk3vteKTxnFVOzG-0AhHhlvQPAMKQyCy5BRVsY4mA1uzg6G~NbneeQoiyawkilZT9X5B1v9pU6gHKxPbCJpI4lmrF3K~i84mhcrnHLHS8ziPMjEybgRbMeLh0r-tXo5-U6ommzbb5YA1ZuPpSf1DMllkFyevIy4ePzUN-kQ__"
-                    alt="Logo" class="h-10 " />
-            </div>
-            <div class="flex space-x-2 items-center justify-end">
-                <a href="#" class="">Escríbenos</a>
-                <a href="#" class=""><i class="fab fa-instagram"></i></a>
-                <a href="#" class=""><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class=""><i class="fab fa-twitter"></i></a>
-                <a href="#" class=""><i class="fas fa-shopping-cart"></i></a>
-            </div>
-        </div>
-        <div class="w-full flex items-center justify-between   md:hidden text-sm z-50 h-20 px-[5%]">
-            <nav class="flex gap-8">
-                <bottom class="w-6 h-6 fill-white ">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                        <path
-                            d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
-                    </svg>
-                </bottom>
-                <div class="flex items-center justify-center">
-                    <img src="https://s3-alpha-sig.figma.com/img/66c1/0ff9/aec639c7ba3f17609427f1700884a86e?Expires=1739750400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=L3VwOrefJxn~55zCAlmOsp6URYNsgqHctzpAXeZc1dneHyAszgLfAYVaKvzTwZMQpL5PBxsGnOSqs-0~psvuCJ7335rRm3F4H7qz7T8EEhIenkdsZ~sIPgjKQI2-pSb045rTnEuvEcFeby7~dSEp2U875gtmWMBsz8JNMUmgJBRZ5LfEk3vteKTxnFVOzG-0AhHhlvQPAMKQyCy5BRVsY4mA1uzg6G~NbneeQoiyawkilZT9X5B1v9pU6gHKxPbCJpI4lmrF3K~i84mhcrnHLHS8ziPMjEybgRbMeLh0r-tXo5-U6ommzbb5YA1ZuPpSf1DMllkFyevIy4ePzUN-kQ__"
-                        alt="Logo" class="h-10 " />
-                </div>
-            </nav>
-
-            <div class="flex space-x-2 items-center justify-end">
-
-                <a href="#" class="">Quiz</a>
-                <a href="#" class=""><i class="fab fa-instagram"></i></a>
-                <a href="#" class=""><i class="fas fa-shopping-cart"></i></a>
-            </div>
-        </div>
-    </header>
-
-
-
-
-
-    <div class="absolute inset-0 bg-[#6048B7] opacity-50 -z-10"></div>
-    <div class="absolute inset-0 flex items-end md:items-center justify-center text-center -z-0 pt-10 lg:pt-0">
-        <div class="text-white pb-8 lg:pb-0">
-            <h1 class="text-[25px]  md:text-[78px] font-bold lg:mb-4 lg:max-w-3xl">
-                ¡Tener sexo con tu disco es posible!
-            </h1>
-            <p class="text-lg md:text-2xl md:mb-6 ">Copas y Discos menstruales weFem</p>
-            <button
-                class="bg-[#DDEC4C] hover:brightness-90 transition-colors duration-300 text-sm  md:text-2xl  font-semibold  py-2 px-4 md:py-5 md:px-12 rounded-xl text-[#5F48B7]">
-                ¡Realiza el cambio!
-            </button>
-        </div>
+    <div
+        class="text-center font-font-general tracking-[0.15em]  px-[5%] py-3 bg-[#6048B7] text-white text-[16.21px] leading-6 uppercase">
+        <span class="text-[#DDEC4C] font-bold ">¡ENVÍO GRATIS</span> A TODO LIMA METROPOLITANA!
     </div>
-</section>
+
+
+
+    <section class="relative w-full h-screen">
+
+
+        <video autoplay loop muted class="absolute inset-0 w-full h-full object-cover object-top">
+            <source src="{{ asset('background-hero.mp4') }}" type="video/mp4" />
+            Tu navegador no soporta la reproducción de video.
+        </video>
+
+
+
+
+        <div class="absolute inset-0 bg-[#5F48B766] "></div>
+
+
+        <header
+            class=" transition-all duration-300 sticky top-0 w-full z-40 font-font-general  text-white bg-transparent p-4">
+            <div
+                class="md:px-[5%] mx-auto flex justify-between items-center font-medium text-[14.84px] leading-[18.55px]">
+                <nav class="flex gap-8 w-4/12">
+                    <a href="/catalogo">Tienda</a>
+                    <a href="/comousar">¿Cómo usar?</a>
+                    <a href="/nosotros">Nosotros</a>
+                    <a href="/quiz">Quiz</a>
+                </nav>
+                <a href="/" class="w-4/12 flex justify-start">
+                    <img src="https://i.ibb.co/Z1H5rGzn/image.png" alt="Wefem"
+                        class="h-[36.8px] w-[210.55px] object-cover object-top" />
+                </a>
+                <div class="flex space-x-4 w-4+/12">
+                    <a href="#">Escríbenos</a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="absolute inset-0 flex items-center justify-center text-center">
+            <div class="text-white p-6">
+                <h1 class=" md:text-[78px] leading-[100px] font-bold max-w-4xl tracking-[0.01em]">¡Tener sexo
+                    con<br /> tu disco es posible!</h1>
+                <p class="text-[24.61px] leading-[36.92px]  my-2 tracking-[0.01em]">Copas y Discos menstruales weFem
+                </p>
+                <button
+                    class="mt-4 w-[371px] h-[80px] bg-[#DDEC4C] text-[24.64px] hover:brightness-90 transition duration-300 text-lg font-semibold  rounded-[13.91px] text-[#5F48B7]">
+                    ¡Realiza el cambio!
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    window.addEventListener("scroll", function() {
+        var header = document.getElementById("main-header");
+        if (window.scrollY > 50) {
+            header.classList.add("bg-[#5339B1]"); // Cambia el color de fondo cuando se hace scroll
+
+        } else {
+            header.classList.remove("bg-transparent");
+
+        }
+    });
+</script>
