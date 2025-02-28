@@ -41,14 +41,8 @@
         <!-- Header -->
         <div class="flex flex-col  items-center mb-8 pb-4 ">
             <h2 class="text-4xl font-bold flex gap-4 items-start justify-center">
-                @include('components.Emoji.EmojiApple', [
-                    'class' => 'h-[39.53px] w-auto object-contain',
-                    'emojiCode' => '1f497',
-                ]) Preferidos por nosotrxs @include('components.Emoji.EmojiApple', [
-                    'class' => 'h-[39.53px] w-auto object-contain',
-                    'emojiCode' => '1f497',
-                ])</h2>
-            <p class="text-[19.3px] leading-[19.77px] mt-4 ">¿Estás listx para el cambio?</p>
+                ¿Te sientes lista? Compra aquí </h2>
+
         </div>
 
         <!-- Carousel -->

@@ -52,11 +52,11 @@
         <div class="mt-20">
             @include('components.Sections.ComoUsar.WeDisk')
         </div>
-        @include('components.Sections.Home.CarruselProductos')
+        @include('components.Sections.ComoUsar.CarruselProductos')
         <div class="py-12 text-white h-[349.68px] flex items-center justify-center font-poppins"
             style="background: rgb(128,113,182);
 background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 100%);">
-            <p class="px-[5%] mx-auto text-[26.45px] leading-[39.67px]">
+            <p class="px-[5%] lg:max-w-7xl lg:px-0 mx-auto text-[26.45px] leading-[39.67px]">
                 weFem es una de las marcas más confiables en la categoría de cuidado menstrual reutilizable en el perú,
                 innovamos con la misma integridad con la que comenzamos hace más de 4 años.
                 <strong> ¿Listo para transformar tu período para siempre? Elevamos tu confianza con productos

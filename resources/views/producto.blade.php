@@ -90,23 +90,29 @@
     <main class="">
         @include('components.Sections.Producto.Detalle')
         @include('components.Sections.ComoUsar.WeDisk')
-        <div class="mx-w-6xl mx-auto px-4 py-8">
-            <h2 class="text-center text-[36px] font-bold">🔥 Más productos 🔥</h2>
-            <div class="flex  gap-6 max-w-5xl mx-auto mt-8">
+        <div class="mx-w-7xl mx-auto px-4 py-8">
+            <h2
+                class="text-[36.25px] leading-[29.36px] font-bold text-[#212529] my-6 text-center flex gap-2 items-center justify-center">
+                @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])
+                Más productos
+                @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])</h2>
+            <div class="flex  gap-6 max-w-7xl mx-auto mt-8 mb-8">
                 <!-- Grid de productos -->
-                <div class=" grid grid-cols-3 gap-4 gap-y-8">
+                <div class=" grid grid-cols-3 gap-8 gap-y-8">
                     <!-- Producto 1 (Con fondo destacado) -->
                     @foreach ($catalogo as $product)
-                        <div class=" rounded-lg">
-                            <img src="{{ $product['image'] }}" alt="wePack" class="w-full h-auto object-cover mb-4">
+                        <div class=" rounded-xl w-full group cursor-pointer overflow-hidden ">
+                            <img src="{{ $product['image'] }}" alt="wePack"
+                                class="bg-[#FAFAFA] w-full h-auto object-cover rounded-xl mb-4 group-hover:bg-[#FF9900] transition-colors duration-300">
 
-                            <div class="p-6">
+                            <div class="px-6 text-[#212529]">
 
                                 <div class="flex justify-between">
-                                    <h3 class=" text-3xl font-semibold mb-2 line-clamp-2">
+                                    <h3 class=" text-[29.44px] leading-[41.64px] font-semibold  line-clamp-2">
                                         {{ $product['name'] }}
                                     </h3>
-                                    <span class=" text-[32px] font-bold text-[#FC58BE]">
+                                    <span
+                                        class=" md:text-[25.56px] xl:leading-[39.79px] 2xl:text-[32.56px] tracking-[-0.01em] font-bold text-[#FC58BE]">
                                         S/ {{ number_format($product['price'], 2) }}
                                     </span>
 
@@ -114,22 +120,30 @@
 
                                 <!-- Precio -->
                                 <div class="flex justify-between items-baseline gap-2  ">
-                                    <h4 class=" text-base font-semibold mb-2 line-clamp-2">
+                                    <h4 class=" text-[16.28px] leading-[29.18px] font-normal mb-2 line-clamp-2">
                                         {{ $product['description'] }}
                                     </h4>
 
-                                    <span class="text-base text-[#9F9F9F] font-semibold1 line-through">
+                                    <span
+                                        class="text-[16.8px] text-[#9F9F9F] font-semibold1 line-through leading-[21.84px]">
                                         S/{{ number_format($product['oferta'], 2) }}
                                     </span>
 
 
                                 </div>
+                                <a href="/producto"
+                                    class="bolck w-full flex gap-2 items-center justify-center fill-[#FF9900]  border-2 border-[#FF9900]  text-[#FF9900] font-medium py-4 px-4 rounded-xl group-hover:bg-[#FF9900] group-hover:fill-[#FFFFFF] group-hover:text-white transition-colors duration-300">
+                                    ¡Lo quiero!
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="14"
+                                        viewBox="0 0 17 14" fill="currrent">
+                                        <path
+                                            d="M16.4986 7.82554C16.8518 7.47235 16.8518 6.89972 16.4986 6.54653L10.743 0.791003C10.3899 0.437815 9.81723 0.437815 9.46404 0.791003C9.11086 1.14419 9.11086 1.71682 9.46404 2.07001L14.5801 7.18604L9.46404 12.3021C9.11086 12.6552 9.11086 13.2279 9.46404 13.5811C9.81723 13.9343 10.3899 13.9343 10.743 13.5811L16.4986 7.82554ZM0.484375 8.09043H15.8591V6.28164H0.484375V8.09043Z"
+                                            fill="current" />
+                                    </svg>
+                                </a>
                             </div>
 
-                            <button
-                                class="w-full border-2 border-[#FF9900]  text-[#FF9900] font-medium py-4 px-4 rounded-xl transition-colors">
-                                ¡Lo quiero!
-                            </button>
+
                         </div>
                     @endforeach
 

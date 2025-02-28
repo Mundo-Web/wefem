@@ -18,7 +18,10 @@
 
 
 
-        <div class="absolute inset-0 bg-[#5F48B766] "></div>
+        <div class="absolute inset-0 "
+            style="background: linear-gradient(180deg, rgba(95, 72, 183, 0.75) 6.08%, rgba(96, 72, 183, 0.525) 100%);
+">
+        </div>
 
 
         <header
@@ -28,7 +31,7 @@
                 <nav class="flex gap-8 ">
                     <a href="/catalogo">Tienda</a>
                     <a href="/como-usar">¿Cómo usar?</a>
-                    <a href="/nosotros">Nosotros</a>
+                    <a href="/nosotros">Nosotrxs</a>
                     <a href="/quiz">Quiz</a>
                 </nav>
                 <a href="/" class="flex justify-start">

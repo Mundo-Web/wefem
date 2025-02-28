@@ -1,4 +1,4 @@
-   <div class="px-[5%] mx-auto py-8 font-poppins ">
+   <div class="px-[5%] lg:max-w-7xl lg:px-0 mx-auto py-10 font-poppins ">
 
        <div class=" flex gap-8 ">
            <div class="w-1/2 overflow-hidden relative flex items-center justify-center ">

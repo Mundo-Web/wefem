@@ -1,6 +1,6 @@
-<div class="flex gap-8 bg-[#EFE5FF]  justify-center">
-    <div class="flex flex-col w-full md:w-1/2 justify-center text-[#212529]">
-        <div class="max-w-xl mx-auto text-center">
+<div class="flex w-full justify-between gap-8 bg-[#EFE5FF]  items-center">
+    <div class="flex  flex-col w-full md:w-1/2 justify-center text-[#212529]">
+        <div class="px-[5%] max-w-3xl lg:px-0 mx-auto text-center">
             <h1 class="text-[68.92px] leading-[103.38px] font-bold mb-4 text-[#212529] tracking-[0.01em]">weFem Quiz!
             </h1>
             <p class="text-[30.75px] leading-[46.12px] tracking-[0.01em] font-semibold mb-4 gap-2">¿Esta es
@@ -36,9 +36,10 @@
     </div>
 
 
-    <div class="flex justify-center w-full md:w-1/2">
+
+    <div class="flex justify-end  w-full md:w-1/2">
         <img src="https://i.ibb.co/Nd0JBkBk/image.png" alt="weFem productos"
-            class="max-w-[873px] max-h-[789px] w-full h-auto object-cover object-center flex-shrink-0">
+            class="min-w-[873px] h-[789px] w-full  object-cover object-center flex-shrink-0">
     </div>
 </div>
 </div>

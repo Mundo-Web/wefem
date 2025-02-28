@@ -1,5 +1,5 @@
 <footer class="bg-[#5F48B7] text-white" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
-    <div class="px-[5%] mx-auto py-16">
+    <div class="px-[5%] lg:max-w-7xl lg:px-0 mx-auto py-16">
         <div class=" flex gap-8">
             <!-- Logo Section -->
             <div class="w-3/12 flex justify-center">
@@ -57,7 +57,7 @@
 
     <!-- Copyright Section -->
     <div class="border-t border-[#FFFFFF]">
-        <div class="px-[5%] mx-auto h-[77.91px] flex items-center justify-start">
+        <div class="px-[5%] lg:max-w-7xl lg:px-0 mx-auto h-[77.91px] flex items-center justify-start">
             <p class="text-[14.72px] leading-[22.26px] text-[#EFEDF8]">
                 Copyright © 2024 weFem® | Todos los derechos reservados | Juntxs sin límites
             </p>

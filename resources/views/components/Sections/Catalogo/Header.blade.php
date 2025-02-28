@@ -29,7 +29,7 @@
                 <nav class="flex gap-8 ">
                     <a href="/catalogo">Tienda</a>
                     <a href="/como-usar">¿Cómo usar?</a>
-                    <a href="/nosotros">Nosotros</a>
+                    <a href="/nosotros">Nosotrxs</a>
                     <a href="/quiz">Quiz</a>
                 </nav>
                 <a href="/" class="flex justify-start">

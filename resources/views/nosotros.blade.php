@@ -62,7 +62,7 @@
 
     <main class="">
         @include('components.Sections.Home.Features')
-        <div class="flex gap-6 px-[5%] mx-auto py-12">
+        <div class="flex gap-6 px-[5%] lg:max-w-7xl lg:px-0 mx-auto py-12">
 
             <p class="font-poppins text-[26.45px] leading-[30.67px] text-justify">
                 weFem se enorgullece de contar con los más altos estándares de calidad y seguridad en la fabricación

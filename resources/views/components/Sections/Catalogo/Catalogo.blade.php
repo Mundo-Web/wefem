@@ -67,7 +67,7 @@
 @endphp
 
 
-<div class=" px-[5%] mx-auto py-8">
+<div class=" px-[5%]  mx-auto py-8">
     <!-- Header con ordenamiento -->
     <div class="flex  justify-end mb-6">
         <div class="relative ">
@@ -119,7 +119,7 @@
                                 {{ $product['name'] }}
                             </h3>
                             <span
-                                class=" md:text-[25.56px] 2xl:leading-[39.79px] tracking-[-0.01em] font-bold text-[#FC58BE]">
+                                class=" md:text-[25.56px] xl:leading-[39.79px] 2xl:text-[32.56px] tracking-[-0.01em] font-bold text-[#FC58BE]">
                                 S/ {{ number_format($product['price'], 2) }}
                             </span>
 
@@ -137,8 +137,8 @@
 
 
                         </div>
-                        <button
-                            class="w-full flex gap-2 items-center justify-center fill-[#FF9900]  border-2 border-[#FF9900]  text-[#FF9900] font-medium py-4 px-4 rounded-xl group-hover:bg-[#FF9900] group-hover:fill-[#FFFFFF] group-hover:text-white transition-colors duration-300">
+                        <a href="/producto"
+                            class="bolck w-full flex gap-2 items-center justify-center fill-[#FF9900]  border-2 border-[#FF9900]  text-[#FF9900] font-medium py-4 px-4 rounded-xl group-hover:bg-[#FF9900] group-hover:fill-[#FFFFFF] group-hover:text-white transition-colors duration-300">
                             ¡Lo quiero!
                             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="14" viewBox="0 0 17 14"
                                 fill="currrent">
@@ -146,7 +146,7 @@
                                     d="M16.4986 7.82554C16.8518 7.47235 16.8518 6.89972 16.4986 6.54653L10.743 0.791003C10.3899 0.437815 9.81723 0.437815 9.46404 0.791003C9.11086 1.14419 9.11086 1.71682 9.46404 2.07001L14.5801 7.18604L9.46404 12.3021C9.11086 12.6552 9.11086 13.2279 9.46404 13.5811C9.81723 13.9343 10.3899 13.9343 10.743 13.5811L16.4986 7.82554ZM0.484375 8.09043H15.8591V6.28164H0.484375V8.09043Z"
                                     fill="current" />
                             </svg>
-                        </button>
+                        </a>
                     </div>
 
 
