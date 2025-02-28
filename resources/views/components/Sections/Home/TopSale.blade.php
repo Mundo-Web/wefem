@@ -14,23 +14,25 @@
  <section class="py-16 px-[5%] mx-auto font-font-general bg-white" data-aos="fade-up" data-aos-duration="1000"
      data-aos-easing="ease-in-out-quart">
      <h2
-         class="text-[36.25px] leading-[29.36px] font-bold text-[#212529] my-6 text-center flex gap-2 items-center justify-center">
+         class="md:text-[30.25px] 2xl:text-[36.25px] leading-[29.36px] font-bold text-[#212529] my-6 text-center flex gap-2 items-center justify-center">
          @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])
          El más vendido
          @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])</h2>
      <div class="mx-auto flex justify-center items-center  my-4 gap-8">
 
          <!-- Image -->
-         <div class="w-[620.81px] h-[620.81px] overflow-hidden">
+         <div class="md:w-[580.81px] md:h-[580.81px]  2xl:w-[620.81px] 2xl:h-[620.81px] overflow-hidden">
              <img src="https://i.ibb.co/1tsnJxPj/image.png" alt="wePack Product"
-                 class="w-[620.81px] h-[620.81px] object-cover rounded-lg" loading="lazy" />
+                 class="md:w-[580.81px] md:h-[580.81px]  2xl:w-[620.81px] 2xl:h-[620.81px] object-cover rounded-lg"
+                 loading="lazy" />
          </div>
          <!-- Product Details -->
-         <div class="w-[475px] text-[#333333]">
+         <div class="md:w-[405px] 2xl:w-[475px] text-[#333333]">
 
-             <h3 class="text-[54.38px] leading-[40.78px] font-bold">wePack</h3>
-             <p class="text-[30.81px] leading-[40.78px] mt-2 font-normal">(Disco + Esterilizador)</p>
-             <p class="text-[14.05px] leading-[21.75px] mt-2">
+             <h3 class="lg:text-[45.38px] 2xl:text-[54.38px] leading-[40.78px] font-bold">wePack</h3>
+             <p class="md:text-[20.81px] 2xl:text-[30.81px] leading-[40.78px] mt-2 font-normal">(Disco + Esterilizador)
+             </p>
+             <p class="md:text-xs 2xl:text-[14.05px] leading-[21.75px] mt-2">
                  @include('components.Emoji.EmojiApple', [
                      'emojiCode' => '1f338',
                      'class' => 'h-[14.05px] inline-flex',
@@ -61,8 +63,11 @@
                      ])
                  </p>
              </div>
-             <p class="text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">$/. 169.90</p>
-             <p class="text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes $/. 255</del></p>
+             <p
+                 class="md:text-[35.33px]  2xl:text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">
+                 $/. 169.90</p>
+             <p class="md:text-[20.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes $/. 255</del>
+             </p>
              <div class="flex items-center mt-2">
                  <span class="text-[#FF9900] flex gap-1 text-base">
                      @for ($i = 0; $i < 5; $i++)

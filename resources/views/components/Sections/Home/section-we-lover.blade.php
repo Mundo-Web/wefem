@@ -22,10 +22,11 @@
 <div class=" py-16 px-4"
     style="background: rgb(82,46,170);
 background: linear-gradient(180deg, #6745BA 0%, #522EAA 100%);">
-    <div class="max-w-6xl mx-auto" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
+    <div class=" md:max-w-5xl 2xl:max-w-6xl mx-auto" data-aos="fade-left" data-aos-duration="1000"
+        data-aos-easing="ease-in-out-quart">
         <!-- Heading -->
         <h2
-            class="text-white text-center text-[55.41px]  leading-[83.11px] tracking-[0.01em] font-bold mb-12 flex items-center justify-center gap-2">
+            class="text-white text-center md:text-[45.41px] 2xl:text-[55.41px]  leading-[83.11px] tracking-[0.01em] font-bold mb-12 flex items-center justify-center gap-2">
             Nuestras weLovers
             @include('components.Emoji.EmojiApple', ['emojiCode' => '2728', 'class' => 'h-[55px]'])
             <span class="whitespace-nowrap">lo afirman</span>
@@ -40,9 +41,9 @@ background: linear-gradient(180deg, #6745BA 0%, #522EAA 100%);">
                     <div class="swiper-slide">
                         <div class="pb-10 px-4">
                             <div
-                                class="relative rounded-[33.42px] overflow-hidden transition-all duration-300 h-[600px] w-[355px]">
+                                class="relative md:rounded-[28.42px] 2xl:rounded-[33.42px] overflow-hidden transition-all duration-300 md:w-[340.91px] md:h-[570px]  2xl:h-[600px] 2xl:w-[355px]">
                                 <img src="{{ $testimonial['image'] }}" alt="Testimonial {{ $index + 1 }}"
-                                    class="w-[355.91px] h-[627px] object-cover">
+                                    class="md:w-[340.91px] md:h-[570px] 2xl:w-[355.91px] 2xl:h-[627px] object-cover">
                                 <!-- Video overlay with play button and counter -->
                                 <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white">
                                     <div

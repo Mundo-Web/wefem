@@ -1,20 +1,22 @@
- <section class="py-10 px-[5%] mx-auto font-font-general bg-white my-4" data-aos="fade-up" data-aos-duration="1000"
-     data-aos-easing="ease-in-out-quart">
+ <section class="py-10 px-[5%] md:max-w-5xl 2xl:max-w-7xl mx-auto font-font-general bg-white my-4" data-aos="fade-up"
+     data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
 
      <div class="mx-auto flex justify-center items-center  mt-4 gap-8">
 
          <!-- Image -->
-         <div class="w-[620.81px] h-[620.81px] overflow-hidden order-1">
+         <div class="md:w-[500.81px] md:h-[500.81px]  2xl:w-[620.81px] 2xl:h-[620.81px] overflow-hidden order-1">
              <img src="https://i.ibb.co/fYP8Ttk7/image.png" alt="wePack Product"
-                 class="w-[620.81px] h-[620.81px] object-cover rounded-lg" loading="lazy" />
+                 class="md:w-[500.81px] md:h-[500.81px]  2xl:w-[620.81px] 2xl:h-[620.81px] object-cover rounded-lg"
+                 loading="lazy" />
          </div>
          <!-- Product Details -->
-         <div class="w-[475px] text-[#333333]">
+         <div class="md:w-[405px] 2xl:w-[475px] text-[#333333]">
 
-             <h3 class="text-[54.38px] leading-[60.78px] font-bold">¿Aún no estás segura?</h3>
-             <p class="text-[29px] leading-[36px] mt-2 ">Prueba con el Disco<br />
+             <h3 class="md:text-[44.38px] 2xl:text-[54.38px] leading-[60.78px] font-bold">¿Aún no estás segura?</h3>
+             <p class="md:text-[20px] 2xl:text-[29px] md:leading-[30px] 2xl:leading-[36px] mt-2 ">Prueba con el
+                 Disco<br />
                  Menstrual Descartable</p>
-             <p class="text-[14.05px] leading-[21.75px] mt-2">
+             <p class="md:text-[12.05px] 2xl:text-[14.05px] leading-[21.75px] mt-2">
                  @include('components.Emoji.EmojiApple', [
                      'emojiCode' => '1f338',
                      'class' => 'h-[14.05px] inline-flex',
@@ -45,8 +47,8 @@
                      ])
                  </p>
              </div>
-             <p class="text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">$/. 39.90</p>
-             <p class="text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes $/. 59.90</del></p>
+             <p class="text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">S/. 39.90</p>
+             <p class="text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes S/. 59.90</del></p>
 
              <div class="">
 
