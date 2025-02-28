@@ -40,13 +40,13 @@
         data-aos-easing="ease-in-out-quart">
         <!-- Header -->
         <div class="flex flex-col  items-center mb-8 pb-4 ">
-            <h2 class="text-4xl font-bold flex gap-4 items-start justify-center">
+            <h2 class="md:text-3xl 2xl:text-4xl font-bold flex gap-4 items-start justify-center">
                 ¿Te sientes lista? Compra aquí </h2>
 
         </div>
 
         <!-- Carousel -->
-        <div class="relative overflow-hidden max-w-7xl mx-auto">
+        <div class="relative overflow-hidden md:max-w-5xl 2xl:max-w-7xl mx-auto">
             <!-- Previous button -->
             <button id="prevSlide"
                 class="absolute -left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center">
@@ -80,7 +80,7 @@
 
         <div class="flex justify-center mt-6">
             <a href="/catalogo"
-                class="group bg-white h-[60.59px] w-[331px] text-[#FF9900] border-[0.9px] border-[#FF9900] text-[19.37px] rounded-[13.57px] font-semibold flex items-center justify-center gap-3 leading-[29.05px] hover:bg-[#FF9900] hover:text-white transition-colors duration-300">
+                class="group bg-white md:h-[55.59px] 2xl:h-[60.59px] md:w-[300px] 2xl:w-[331px] text-[#FF9900] border-[0.9px] border-[#FF9900] md:text-[16.37px] 2xl:text-[19.37px] rounded-[13.57px] font-semibold flex items-center justify-center gap-3 leading-[29.05px] hover:bg-[#FF9900] hover:text-white transition-colors duration-300">
                 Ver más productos
                 <svg class="w-5 fill-[#FF9900] group-hover:fill-white" xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 448 512">

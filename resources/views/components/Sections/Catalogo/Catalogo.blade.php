@@ -86,8 +86,11 @@
         <!-- Sidebar -->
         <div class="w-[325px] ">
             <!-- Categorías -->
-            <nav class="mb-8 w-full text-[23.67px] leading-[26.52px] text-[#000000] border-b pb-8 border-b-[#000000]">
-                <h2 class="font-bold text-[#000000] text-[23.67px] leading-[26.52px] mb-4 underline">Todos los productos
+            <nav
+                class="mb-8 w-full md:text-[18.67px] 2xl:text-[23.67px] leading-[26.52px] text-[#000000] border-b pb-8 border-b-[#000000]">
+                <h2
+                    class="font-bold text-[#000000] md:text-[18.67px] 2xl:text-[23.67px] leading-[26.52px] mb-4 underline">
+                    Todos los productos
                 </h2>
                 <ul class="space-y-3">
                     <li><a href="#" class=" ">Copas menstruales</a></li>

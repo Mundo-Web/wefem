@@ -47,8 +47,11 @@
                      ])
                  </p>
              </div>
-             <p class="text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">S/. 39.90</p>
-             <p class="text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes S/. 59.90</del></p>
+             <p
+                 class="md:text-[39.33px] 2xl:text-[49.33px] md:leading-[52.31px] 2xl:leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">
+                 S/. 39.90</p>
+             <p class="md:text-[20.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes S/. 59.90</del>
+             </p>
 
              <div class="">
 

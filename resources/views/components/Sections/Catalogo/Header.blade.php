@@ -51,8 +51,11 @@
 
         <div class="absolute inset-0 flex items-end justify-center text-center">
             <div class="text-white p-6">
-                <h1 class=" md:text-[78.54px] leading-[117.81px] font-bold max-w-4xl tracking-[0.01em]"> Tienda</h1>
-                <p class="text-[24.61px] leading-[36.92px]  my-2 tracking-[0.01em]">Únete a weFem, libera tu ciclo y tu
+                <h1
+                    class="md:text-[58.54px] 2xl:text-[78.54px] md:leading-[90.81px] 2xl:leading-[117.81px] font-bold max-w-4xl tracking-[0.01em]">
+                    Tienda</h1>
+                <p class="md:text-[20.61px] 2xl:text-[24.61px] leading-[36.92px]  my-2 tracking-[0.01em]">Únete a weFem,
+                    libera tu ciclo y tu
                     cuerpo.
                 </p>
 

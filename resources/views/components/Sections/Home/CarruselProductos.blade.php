@@ -36,16 +36,16 @@
 @endphp
 
 <section class="py-16 bg-white  text-[#212529]">
-    <div class="mx-auto px-[5%] text-center" data-aos="fade-up" data-aos-duration="1000"
+    <div class="mx-auto px-[5%]  text-center" data-aos="fade-up" data-aos-duration="1000"
         data-aos-easing="ease-in-out-quart">
         <!-- Header -->
         <div class="flex flex-col  items-center mb-8 pb-4 ">
-            <h2 class="lg:text-3xl 2xl:text-4xl font-bold flex gap-4 items-start justify-center">
+            <h2 class="md:text-3xl 2xl:text-4xl font-bold flex gap-4 items-start justify-center">
                 @include('components.Emoji.EmojiApple', [
-                    'class' => 'lg:h-[33.53px] 2xl:h-[39.53px] w-auto object-contain',
+                    'class' => 'md:h-[33.53px] 2xl:h-[39.53px] w-auto object-contain',
                     'emojiCode' => '1f497',
                 ]) Preferidos por nosotrxs @include('components.Emoji.EmojiApple', [
-                    'class' => 'lg:h-[33.53px] 2xl:h-[39.53px] w-auto object-contain',
+                    'class' => 'md:h-[33.53px] 2xl:h-[39.53px] w-auto object-contain',
                     'emojiCode' => '1f497',
                 ])</h2>
             <p class="text-[19.3px] leading-[19.77px] mt-4 ">¿Estás listx para el cambio?</p>
@@ -66,7 +66,7 @@
             <!-- Products container -->
             <div class="overflow-hidden py-4">
                 <div id="productSlider"
-                    class="flex items-center justify-center transition-all duration-300 lg:gap-4 ease-in-out px-4">
+                    class="flex items-center justify-center transition-all duration-300 md:gap-4 ease-in-out px-4">
                     @foreach ($products as $product)
                         @include('components.Sections.Home.CardProducto', ['product' => $product])
                     @endforeach
