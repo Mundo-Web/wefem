@@ -1,10 +1,6 @@
- <section class="py-10 px-[5%] mx-auto font-font-general bg-white" data-aos="fade-up" data-aos-duration="1000"
+ <section class="py-10 px-[5%] mx-auto font-font-general bg-white my-4" data-aos="fade-up" data-aos-duration="1000"
      data-aos-easing="ease-in-out-quart">
-     <h2
-         class="text-[36.25px] leading-[29.36px] font-bold text-[#212529] my-6 text-center flex gap-2 items-center justify-center">
-         @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])
-         El más vendido
-         @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])</h2>
+
      <div class="mx-auto flex justify-center items-center  mt-4 gap-8">
 
          <!-- Image -->

@@ -42,7 +42,7 @@
 
 
     <main class="">
-        <div id="card1">
+        <div id="card1" class="hidden">
             @include('components.Sections.Cuestionario.InitQuiz')
         </div>
         <div id="card2" class="hidden">
@@ -60,7 +60,7 @@
         <div id="card6" class="hidden">
             @include('components.Sections.Cuestionario.Result1Quiz')
         </div>
-        <div id="card7" class="hidden">
+        <div id="card7" class="">
             @include('components.Sections.Cuestionario.Result2Quiz')
         </div>
 

@@ -1,54 +1,50 @@
-<section class="relative">
+<div>
 
-    <header class=" text-white w-full z-10 bg-[#5339B1]  ">
-        <!--Cintillo We Fem-->
-        <div class="bg-[#6048B7] w-full flex items-center justify-center  h-12 text-white z-50">
-            <span class="text-[#DDEC4C] mr-1">¡Envío gratis </span> a todo lima metropolitana!
-        </div>
+    <div
+        class="text-center font-font-general tracking-[0.15em]  px-[5%] py-3 bg-[#6048B7] text-white text-[16.21px] leading-6 uppercase">
+        <span class="text-[#DDEC4C] font-bold ">¡ENVÍO GRATIS</span> A TODO LIMA METROPOLITANA!
+    </div>
 
-        <div class="hidden max-w-6xl mx-auto md:grid grid-cols-3 text-sm z-50 h-20">
-            <nav class="flex space-x-4 items-center justify-start">
-                <a href="/catalogo" class="cursor-pointer">Tienda</a>
-                <a href="/comousar" class="">¿Cómo usar?</a>
-                <a href="/nosotros" class="">Nosotros</a>
-                <a href="/quiz" class="">Quiz</a>
-            </nav>
-            <div class="flex items-center justify-center">
-                <a href="/">
-                    <img src="https://i.ibb.co/Z1H5rGzn/image.png" alt="Logo" class="h-10 " />
+
+
+    <section class="relative w-full ">
+
+        <header
+            class=" transition-all duration-300 sticky top-0 w-full z-40 font-font-general  text-white bg-[#5339B1] p-4">
+            <div
+                class="md:px-[5%] mx-auto flex justify-between items-center font-medium text-[14.84px] leading-[18.55px]">
+                <nav class="flex gap-8 w-4/12">
+                    <a href="/catalogo">Tienda</a>
+                    <a href="/como-usar">¿Cómo usar?</a>
+                    <a href="/nosotros">Nosotros</a>
+                    <a href="/quiz">Quiz</a>
+                </nav>
+                <a href="/" class="w-4/12 flex justify-start">
+                    <img src="https://i.ibb.co/Z1H5rGzn/image.png" alt="Wefem"
+                        class="h-[36.8px] w-[210.55px] object-cover object-top" />
                 </a>
-            </div>
-            <div class="flex space-x-2 items-center justify-end">
-                <a href="#" class="">Escríbenos</a>
-                <a href="#" class=""><i class="fab fa-instagram"></i></a>
-                <a href="#" class=""><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class=""><i class="fab fa-twitter"></i></a>
-                <a href="#" class=""><i class="fas fa-shopping-cart"></i></a>
-            </div>
-        </div>
-        <div class="w-full flex items-center justify-between   md:hidden text-sm z-50 h-20 px-[5%]">
-            <nav class="flex gap-8">
-                <bottom class="w-6 h-6 fill-white ">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                        <path
-                            d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
-                    </svg>
-                </bottom>
-                <div class="flex items-center justify-center">
-                    <a href="/">
-                        <img src="https://i.ibb.co/Z1H5rGzn/image.png" alt="Logo" class="h-10 " />
-                    </a>
+                <div class="flex space-x-4 w-4+/12">
+                    <a href="#">Escríbenos</a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 </div>
-            </nav>
-
-            <div class="flex space-x-2 items-center justify-end">
-
-                <a href="/quiz" class="">Quiz</a>
-                <a href="#" class=""><i class="fab fa-instagram"></i></a>
-                <a href="#" class=""><i class="fas fa-shopping-cart"></i></a>
             </div>
-        </div>
-    </header>
+        </header>
 
-</section>
+
+    </section>
+</div>
+<script>
+    window.addEventListener("scroll", function() {
+        var header = document.getElementById("main-header");
+        if (window.scrollY > 50) {
+            header.classList.add("bg-[#5339B1]"); // Cambia el color de fondo cuando se hace scroll
+
+        } else {
+            header.classList.remove("bg-transparent");
+
+        }
+    });
+</script>

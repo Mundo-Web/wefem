@@ -35,8 +35,8 @@
         }
 
         .icon-circle {
-            width: 250px;
-            height: 250px;
+            width: 200px;
+            height: 200px;
             border: 1px solid white;
             border-radius: 50%;
             display: flex;
@@ -62,32 +62,31 @@
 
     <main class="">
         @include('components.Sections.Home.Features')
-        <div class="flex gap-6 max-w-6xl mx-auto py-12">
-            <div class="w1/2">
-                <p class="font-poppins text-[26px]">
-                    weFem se enorgullece de contar con los más altos estándares de calidad y seguridad en la fabricación
-                    de todos nuestros productos menstruales. Poseemos el prestigioso registro sanitario de la FDA,
-                    asegurando que nuestros productos cumplen con las estrictas normas de salud y seguridad de los
-                    Estados Unidos. Además, hemos obtenido la certificación ISO 9001, un reconocimiento internacional
-                    que respalda nuestra dedicación a la excelencia en la gestión de calidad.
-                    <br />
-                    <br />
-                    En el ámbito nacional,
-                    contamos con el registro sanitario de DIGEMID en Perú, demostrando nuestro compromiso con la salud y
-                    bienestar de nuestras usuarias peruanas. Estos logros reflejan nuestra constante búsqueda de la
-                    excelencia, garantizando a nuestras clientas la confianza de que nuestros productos son seguros,
-                    efectivos y fabricados con los más altos estándares de calidad a nivel mundial.
-                </p>
-            </div>
-            <div class="w1/2">
-                <img src="https://i.ibb.co/VWpc1dvr/image.png" class="w-full h-full object-cover" />
-            </div>
+        <div class="flex gap-6 px-[5%] mx-auto py-12">
+
+            <p class="font-poppins text-[26.45px] leading-[30.67px] text-justify">
+                weFem se enorgullece de contar con los más altos estándares de calidad y seguridad en la fabricación
+                de todos nuestros productos menstruales. Poseemos el prestigioso registro sanitario de la FDA,
+                asegurando que nuestros productos cumplen con las estrictas normas de salud y seguridad de los
+                Estados Unidos. Además, hemos obtenido la certificación ISO 9001, un reconocimiento internacional
+                que respalda nuestra dedicación a la excelencia en la gestión de calidad.
+                <br /> <br />
+                En el ámbito nacional,
+                contamos con el registro sanitario de DIGEMID en Perú, demostrando nuestro compromiso con la salud y
+                bienestar de nuestras usuarias peruanas. Estos logros reflejan nuestra constante búsqueda de la
+                excelencia, garantizando a nuestras clientas la confianza de que nuestros productos son seguros,
+                efectivos y fabricados con los más altos estándares de calidad a nivel mundial.
+            </p>
+
+
+            <img src="https://i.ibb.co/VWpc1dvr/image.png" class="w-[758px] h-[652px] object-cover" />
+
         </div>
 
         <div class="py-12 text-white  "
             style="background: rgb(128,113,182);
 background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 100%);">
-            <div class="max-w-5xl justify-between flex mx-auto gap-6">
+            <div class="px-[5%] justify-around flex mx-auto gap-6">
                 <img id="imagen1" class=" brightness-0 grayscale-0 invert"
                     src="https://i.ibb.co/931mypkH/image.png" />
                 <img class=" brightness-0 grayscale-0 invert" src="https://i.ibb.co/NgMJf8d8/image.png" />
@@ -102,8 +101,8 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
                     <!-- Icono 1 -->
                     <div class="icon-item flex flex-col items-center text-center">
                         <div class="icon-circle mb-4 flex flex-col gap-4">
-                            <i class="fas fa-graduation-cap text-white text-[93px]"></i>
-                            <p class="text-white text-[21.81px] leading-tight max-w-[150px]">
+                            <i class="fas fa-graduation-cap text-white text-[53px]"></i>
+                            <p class="text-white text-[21.81px] leading-[24.41px] max-w-[150px]">
                                 Accesabilidad<br>y educación
                             </p>
                         </div>
@@ -113,7 +112,7 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
                     <!-- Icono 2 -->
                     <div class="icon-item flex flex-col items-center text-center">
                         <div class="icon-circle mb-4 flex flex-col gap-4">
-                            <i class="fas fa-lightbulb  text-white text-[93px]"></i>
+                            <i class="fas fa-lightbulb  text-white text-[53px]"></i>
                             <p class="text-white text-[21.81px] leading-tight max-w-[150px]">
                                 Innovación<br>continua
                             </p>
@@ -124,7 +123,7 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
                     <!-- Icono 3 -->
                     <div class="icon-item flex flex-col items-center text-center">
                         <div class="icon-circle mb-4 flex flex-col gap-4">
-                            <i class="fas fa-seedling  text-white text-[93px]"></i>
+                            <i class="fas fa-seedling  text-white text-[53px]"></i>
                             <p class="text-white text-[21.81px] leading-tight max-w-[150px]">
                                 Accesabilidad<br>y educación
                             </p>
@@ -135,7 +134,7 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
                     <!-- Icono 4 -->
                     <div class="icon-item flex flex-col items-center text-center">
                         <div class="icon-circle mb-4 flex flex-col gap-4">
-                            <i class="fas fa-venus  text-white text-[93px]"></i>
+                            <i class="fas fa-venus  text-white text-[53px]"></i>
                             <p class="text-white text-[21.81px] leading-tight max-w-[150px]">
                                 Sostenibilidad<br>ambiental
                             </p>
@@ -146,7 +145,7 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
                     <!-- Icono 5 -->
                     <div class="icon-item flex flex-col items-center text-center">
                         <div class="icon-circle mb-4 flex flex-col gap-4">
-                            <i class="fas fa-shield-alt  text-white text-[93px]"></i>
+                            <i class="fas fa-shield-alt  text-white text-[53px]"></i>
                             <p class="text-white text-[21.81px] leading-tight max-w-[150px]">
                                 Calidad y<br>seguridad
                             </p>
@@ -161,22 +160,21 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
 
     </main>
 
-    <div id="modal1"
-        class=" absolute bottom-0 inset-0 flex hidden items-center justify-center z-50 bg-[#00000080]  min-h-screen"
+    <div id="modal1" class="fixed inset-0 flex hidden items-center justify-center z-50 bg-[#00000080] min-h-screen"
         style="backdrop-filter: blur(10px)">
-        <div class="relative">
-            <img src="https://i.ibb.co/XfWn6hNG/image.png" class=" rounded-3xl   object-cover" />
+        <div class="relative flex items-center justify-center">
+            <img src="https://i.ibb.co/XfWn6hNG/image.png" class="rounded-3xl max-h-[90vh] object-cover" />
             <button id="btn-1"
-                class="rounded-full z-10 px-4 py-2 bg-red-600 absolute top-0 right-0 text-xl text-white">x</button>
+                class="rounded-full z-10 px-4 py-2 bg-[#5F48B7] absolute -top-2 -right-2 text-xl text-white">x</button>
         </div>
     </div>
-    <div id="modal2"
-        class=" absolute bottom-0 inset-0 flex hidden items-center justify-center z-50 bg-[#00000080]  min-h-screen"
+
+    <div id="modal2" class="fixed inset-0 flex hidden items-center justify-center z-50 bg-[#00000080] min-h-screen"
         style="backdrop-filter: blur(10px)">
-        <div class="relative">
-            <img src="https://i.ibb.co/cSfwb7vH/image.png" class=" rounded-3xl   object-cover" />
+        <div class="relative flex items-center justify-center">
+            <img src="https://i.ibb.co/cSfwb7vH/image.png" class="rounded-3xl max-h-[90vh] object-cover" />
             <button id="btn-2"
-                class="rounded-full z-10 px-4 py-2 bg-red-600 absolute top-0 right-0 text-xl text-white">x</button>
+                class="rounded-full z-10 px-4 py-2 bg-[#5F48B7] absolute -top-2 -right-2 text-xl text-white">x</button>
         </div>
     </div>
 

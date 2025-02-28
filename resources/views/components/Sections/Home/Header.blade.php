@@ -27,7 +27,7 @@
                 class="md:px-[5%] mx-auto flex justify-between items-center font-medium text-[14.84px] leading-[18.55px]">
                 <nav class="flex gap-8 w-4/12">
                     <a href="/catalogo">Tienda</a>
-                    <a href="/comousar">¿Cómo usar?</a>
+                    <a href="/como-usar">¿Cómo usar?</a>
                     <a href="/nosotros">Nosotros</a>
                     <a href="/quiz">Quiz</a>
                 </nav>

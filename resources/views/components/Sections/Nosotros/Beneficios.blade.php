@@ -4,20 +4,20 @@
             data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
             <!-- Imágenes de las manos sobresaliendo -->
             <img src="https://i.ibb.co/bj6rNvs7/1bc2a501a327fe55cf37f78fd57747ca.png" alt="Copa menstrual"
-                class="absolute left-0 bottom-0 top-[100px] h-[900px] z-0 transform  scale-x-[-1] w-[450px] object-cover " />
+                class="hidden 2xl:block absolute left-0 bottom-0 top-[100px] h-[900px] z-0 transform  scale-x-[-1] w-[450px] object-cover " />
 
             <!-- Contenido de la sección -->
-            <div class="max-w-6xl mx-auto relative z-10 grid grid-cols-2 gap-y-16 py-20 ">
+            <div class="px-[5%] mx-auto relative z-10 grid grid-cols-2 gap-y-16 py-20 ">
                 <!-- Primera fila -->
                 <div class="flex flex-col items-center text-center">
-                    <div class="text-[199px] leading-none  font-bold text-white mb-2"
+                    <div class="text-[199.31px] leading-none  font-bold text-white mb-2"
                         style="text-shadow: 1.98px 3.96px 18.73px 0px #00000033;">+3K</div>
                     <div class="-rotate-2 text-white px-5 py-2 font-bold  text-[31.61px] bg-[#F750BD] ">
                         Clientes satisfechos
                     </div>
                 </div>
                 <div class="flex flex-col items-center text-center">
-                    <div class="text-[199px] leading-none  font-bold text-white mb-2"
+                    <div class="text-[199.31px] leading-none  font-bold text-white mb-2"
                         style="text-shadow: 1.98px 3.96px 18.73px 0px #00000033;">+4</div>
                     <div class="-rotate-2 text-white px-5 py-2 font-bold  text-[31.61px] bg-[#F750BD] ">
                         años en el mercado
@@ -25,14 +25,14 @@
                 </div>
                 <!-- Segunda fila -->
                 <div class="flex flex-col items-center text-center">
-                    <div class="text-[199px] leading-none  font-bold text-white mb-2"
+                    <div class="text-[199.31px] leading-none  font-bold text-white mb-2"
                         style="text-shadow: 1.98px 3.96px 18.73px 0px #00000033;">+6K</div>
                     <div class="-rotate-2 text-white px-5 py-2 font-bold  text-[31.61px] bg-[#F750BD] ">
                         copas vendidas
                     </div>
                 </div>
                 <div class="flex flex-col items-center text-center">
-                    <div class="text-[199px] leading-none  font-bold text-white mb-2"
+                    <div class="text-[199.31px] leading-none  font-bold text-white mb-2"
                         style="text-shadow: 1.98px 3.96px 18.73px 0px #00000033;">+4K</div>
                     <div class="-rotate-2 text-white px-5 py-2 font-bold  text-[31.61px] bg-[#F750BD] ">
                         discos vendidos
@@ -42,7 +42,7 @@
 
 
             <img src="https://i.ibb.co/4nHfPP5q/49f3389e94334976b46ba6a4d0aea0e8.png" alt="Disco menstrual"
-                class="absolute right-0 bottom-0 top-[100px] h-[830px] z-0 transform   " />
+                class="hidden 2xl:block absolute right-0 bottom-0 top-[150px] h-[700px] z-0 transform   " />
         </div>
     </div>
 </div>
