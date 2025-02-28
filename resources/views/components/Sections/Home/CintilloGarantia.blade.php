@@ -1,6 +1,6 @@
  <section class="bg-[#FF9900] text-white h-[164.178px] flex items-center">
-     <div class="px-[5%] mx-auto flex justify-between items-center gap-2" data-aos="fade-right" data-aos-duration="1000"
-         data-aos-easing="ease-in-out-quart">
+     <div class="px-[5%] lg:max-w-7xl lg:px-0 mx-auto flex justify-between items-center gap-2" data-aos="fade-right"
+         data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
 
          <div class="flex items-center w-max">
              <div class="bg-[#6745BA] rounded-full px-2 py-1">
@@ -16,7 +16,7 @@
          </div>
 
 
-         <p class="text-[23.3px] leading-[26.33px] tracking-[0.01em] w-5/12">
+         <p class="text-[20px] leading-[26.33px] tracking-[0.01em] w-5/12">
              Si encuentras una copa o disco certificado a un mejor
              precio,
              <strong> nosotros te mejoramos la oferta.</strong>

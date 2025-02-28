@@ -25,21 +25,23 @@
             class=" transition-all duration-300 sticky top-0 w-full z-40 font-font-general  text-white bg-transparent p-4">
             <div
                 class="md:px-[5%] lg:max-w-7xl mx-auto flex justify-between items-center font-medium text-[14.84px] leading-[18.55px]">
-                <nav class="flex gap-8 w-4/12">
+                <nav class="flex gap-8 ">
                     <a href="/catalogo">Tienda</a>
                     <a href="/como-usar">¿Cómo usar?</a>
                     <a href="/nosotros">Nosotros</a>
                     <a href="/quiz">Quiz</a>
                 </nav>
-                <a href="/" class="w-4/12 flex justify-start">
+                <a href="/" class="flex justify-start">
                     <img src="https://i.ibb.co/Z1H5rGzn/image.png" alt="Wefem"
                         class="h-[36.8px] w-[210.55px] object-cover object-top" />
                 </a>
-                <div class="flex space-x-4 w-4+/12">
-                    <a href="#">Escríbenos</a>
+                <div class="flex space-x-4 text-[22.93px] items-center">
+                    <a href="#" class="text-[14.84px]">Escríbenos</a>
                     <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+
                     <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 </div>
             </div>
@@ -48,12 +50,12 @@
 
         <div class="absolute inset-0 flex items-center justify-center text-center">
             <div class="text-white p-6">
-                <h1 class=" md:text-[78px] leading-[100px] font-bold max-w-4xl tracking-[0.01em]">¡Tener sexo
+                <h1 class=" md:text-[78.54px] leading-[90.81px] font-bold max-w-4xl tracking-[0.01em]">¡Tener sexo
                     con<br /> tu disco es posible!</h1>
                 <p class="text-[24.61px] leading-[36.92px]  my-2 tracking-[0.01em]">Copas y Discos menstruales weFem
                 </p>
                 <button
-                    class="mt-4 w-[371px]  h-[80px] bg-[#DDEC4C] text-[24.64px] hover:brightness-90 transition duration-300 text-lg font-semibold  rounded-[13.91px] text-[#5F48B7]">
+                    class="mt-4 w-[371px]  h-[80px] bg-[#DDEC4C] text-[24.64px] hover:brightness-90 transition duration-300  font-semibold  rounded-[13.91px] text-[#5F48B7]">
                     ¡Realiza el cambio!
                 </button>
             </div>

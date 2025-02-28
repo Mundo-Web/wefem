@@ -11,14 +11,14 @@
  </style>
 
 
- <section class="py-10 px-[5%] mx-auto font-font-general bg-white" data-aos="fade-up" data-aos-duration="1000"
+ <section class="py-16 px-[5%] mx-auto font-font-general bg-white" data-aos="fade-up" data-aos-duration="1000"
      data-aos-easing="ease-in-out-quart">
      <h2
          class="text-[36.25px] leading-[29.36px] font-bold text-[#212529] my-6 text-center flex gap-2 items-center justify-center">
          @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])
          El más vendido
          @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])</h2>
-     <div class="mx-auto flex justify-center items-center  mt-4 gap-8">
+     <div class="mx-auto flex justify-center items-center  my-4 gap-8">
 
          <!-- Image -->
          <div class="w-[620.81px] h-[620.81px] overflow-hidden">
@@ -77,32 +77,36 @@
              <div class="">
                  {{-- Selector de Color --}}
                  <div class="flex justify-between items-center my-2">
-                     <div className="flex items-center gap-2">
-                         <label className="text-[13.05px] leading-[13.05px] font-bold">Color:</label>
-                         <div className="flex gap-2 mt-2">
+                     <div class="flex items-center gap-2">
+                         <p class="text-[13.05px] leading-[13.05px] font-bold">Color:</p>
+                         <div class="flex items-center gap-2">
                              <button onclick="setSelectedColor('purple')" id="color-purple"
-                                 class="rounded-full p-1 border border-[#222222]">
-                                 <span class="block w-[22.15px] h-[22.15px] rounded-full mx-auto bg-[#C196E8]"></span>
+                                 class="rounded-full flex items-center justify-center p-1 border border-[#222222]">
+                                 <span class="w-[22px] h-[22px] rounded-full bg-[#C196E8]"></span>
                              </button>
                              <button onclick="setSelectedColor('pink')" id="color-pink"
-                                 class="rounded-full p-1 border border-[#DDDDDD]">
-                                 <span class="block w-[22.15px] h-[22.15px] rounded-full mx-auto bg-[#EF62BA]"></span>
+                                 class="rounded-full flex items-center justify-center p-1 border border-[#DDDDDD]">
+                                 <span class="w-[22px] h-[22px] rounded-full bg-[#EF62BA]"></span>
                              </button>
                          </div>
                      </div>
+
                      {{-- Botón de Guía de Tallas --}}
                      <div class="text-right">
                          <button
-                             class="inline-flex gap-2 items-center justify-center w-[192.45px] h-[34.02px]  font-medium  text-[15.57px] leading-[15.95px] bg-[#5F48B7] text-white rounded-[8.51px]">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 fill-white mr-2"
-                                 viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                                 <path
-                                     d="M0 336c0 26.5 21.5 48 48 48l544 0c26.5 0 48-21.5 48-48l0-160c0-26.5-21.5-48-48-48l-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0c-26.5 0-48 21.5-48 48L0 336z" />
+                             class="inline-flex gap-2 items-center justify-center w-[192.45px] h-[34.02px] font-medium text-[15.57px] leading-[15.95px] bg-[#5F48B7] text-white rounded-[8.51px]">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 fill-white mr-2" viewBox="0 0 640 512">
+                                 <path d="M0 336c0 26.5 21.5 48 48 48l544 0c26.5 0 48-21.5
+                48-48l0-160c0-26.5-21.5-48-48-48l-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0
+                8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0
+                8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0c-26.5
+                0-48 21.5-48 48L0 336z" />
                              </svg>
                              ¿Cuál es mi talla?
                          </button>
                      </div>
                  </div>
+
 
                  {{-- Selector de Talla --}}
                  <div class="mb-6">

@@ -1,6 +1,6 @@
 <div class="relative overflow-hidden pt-8 bg-[#F2F2F2]">
     <div class="bg-[#6745BA]">
-        <div class="relative mx-auto text-white py-10 px-6 flex flex-col items-center text-center">
+        <div class="relative lg:max-w-7xl mx-auto text-white py-10 px-6 lg:px-0 flex flex-col items-center text-center">
             <div class="max-w-2xl mx-auto relative z-10">
                 <h2 class="text-[27.65px] leading-[33.18px] font-bold">Una copa o disco menstrual en 5 años</h2>
                 <div class="flex justify-center gap-10 mt-4">
@@ -21,9 +21,9 @@
                 </div>
             </div>
             <img src="https://i.ibb.co/bj6rNvs7/1bc2a501a327fe55cf37f78fd57747ca.png" alt="Copa menstrual"
-                class="absolute -left-4 bottom-0 top-[-100px] h-[570px] z-0 transform scale-x-[-1]" />
+                class="absolute -left-4 lg:-left-16 bottom-0 top-[-100px] h-[570px] z-0 transform scale-x-[-1]" />
             <img src="https://i.ibb.co/4nHfPP5q/49f3389e94334976b46ba6a4d0aea0e8.png" alt="Disco menstrual"
-                class="absolute right-0 bottom-0 top-[-60px] h-[500px] z-0 transform scale-x-[-1] -rotate-12" />
+                class="absolute right-0 lg:-right-12 bottom-0 top-[-60px] h-[500px] z-0 transform scale-x-[-1] -rotate-[8deg]" />
         </div>
     </div>
 </div>

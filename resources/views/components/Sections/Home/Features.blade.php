@@ -26,9 +26,9 @@
 
 
 
- <section class="bg-[#F2F2F2]   py-6 overflow-hidden">
-     <div class="px-[5%] mx-auto relative" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
-         <div class="flex w-full gap-4 whitespace-nowrap transition-none">
+ <section class="bg-[#F2F2F2]   py-10 overflow-hidden">
+     <div class="px-[5%]  mx-auto relative" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
+         <div class="flex w-full lg:max-w-7xl mx-auto gap-4 lg:gap-6 whitespace-nowrap transition-none">
              @foreach ($features as $feature)
                  <div class="flex items-center gap-3 justify-start w-1/4">
                      <div class="relative z-10 w-2/12 ">

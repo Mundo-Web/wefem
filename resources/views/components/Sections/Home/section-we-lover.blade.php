@@ -10,6 +10,7 @@
             'image' => 'https://i.ibb.co/3mhCpVtC/image.png',
         ],
     ];
+    $testimonials = array_merge($testimonials, $testimonials); // Duplicar para tener más elementos
 @endphp
 
 
@@ -20,7 +21,7 @@
 
 <div class=" py-16 px-4"
     style="background: rgb(82,46,170);
-background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%);">
+background: linear-gradient(180deg, #6745BA 0%, #522EAA 100%);">
     <div class="max-w-6xl mx-auto" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
         <!-- Heading -->
         <h2
@@ -41,7 +42,7 @@ background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%)
                             <div
                                 class="relative rounded-xl overflow-hidden transition-all duration-300 h-[600px] w-[355px]">
                                 <img src="{{ $testimonial['image'] }}" alt="Testimonial {{ $index + 1 }}"
-                                    class="w-full h-full object-cover">
+                                    class="w-[355.91px] h-[627px] object-cover">
                                 <!-- Video overlay with play button and counter -->
                                 <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white">
                                     <div
@@ -75,7 +76,7 @@ background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%)
         const swiper = new Swiper('.testimonialSwiper', {
 
             slidesPerView: 1.5,
-            spaceBetween: 10,
+            spaceBetween: 0,
             centeredSlides: true,
             loop: true,
             autoplay: false,

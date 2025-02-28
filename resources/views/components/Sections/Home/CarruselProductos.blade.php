@@ -52,7 +52,7 @@
         </div>
 
         <!-- Carousel -->
-        <div class="relative overflow-hidden">
+        <div class="relative overflow-hidden max-w-7xl mx-auto">
             <!-- Previous button -->
             <button id="prevSlide"
                 class="absolute -left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center">
@@ -66,7 +66,7 @@
             <!-- Products container -->
             <div class="overflow-hidden py-4">
                 <div id="productSlider"
-                    class="flex items-center justify-center transition-all duration-300 ease-in-out px-4">
+                    class="flex items-center justify-center transition-all duration-300 lg:gap-4 ease-in-out px-4">
                     @foreach ($products as $product)
                         @include('components.Sections.Home.CardProducto', ['product' => $product])
                     @endforeach
