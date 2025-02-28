@@ -39,7 +39,7 @@
                     <a href="#">Escríbenos</a>
                     <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
                     <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
                     <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 </div>
             </div>
