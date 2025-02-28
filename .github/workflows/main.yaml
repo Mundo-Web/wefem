@@ -3,7 +3,7 @@ name: Deploy WeFem to MundoWeb
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Execute Docker Commands on Server
+      - name: Pulling and migrating WeFem in MundoWeb
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
