@@ -26,18 +26,19 @@
 
 
 
- <section class="bg-[#F2F2F2]   py-10 overflow-hidden">
+ <section class="bg-[#F2F2F2] md:py-6  2xl:py-10 overflow-hidden">
      <div class="px-[5%]  mx-auto relative" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
-         <div class="flex w-full lg:max-w-7xl mx-auto gap-4 lg:gap-6 whitespace-nowrap transition-none">
+         <div class="flex w-full md:max-w-5xl 2xl:max-w-7xl mx-auto gap-4 lg:gap-6 whitespace-nowrap transition-none">
              @foreach ($features as $feature)
                  <div class="flex items-center gap-3 justify-start w-1/4">
                      <div class="relative z-10 w-2/12 ">
                          <img src="{{ $feature['image'] }}" alt="Feature 1" class="w-full h-auto  object-cover" />
                      </div>
                      <div class="w-11/12">
-                         <h3 class="text-[17.4px] font-bold leading-[20.88px]  w-full text-[#212529]">
+                         <h3 class="md:text-[13.33px] text-[17.4px] font-bold leading-[20.88px]  w-full text-[#212529]">
                              {{ $feature['title'] }}</h3>
-                         <p class="text-[14.33px] leading-[18.42px] break-words whitespace-normal text-[#444444]">
+                         <p
+                             class="md:text-[10.33px] 2xl:text-[14.33px] leading-[18.42px] break-words whitespace-normal text-[#444444]">
                              {{ $feature['subtitle'] }}</p>
                      </div>
                  </div>

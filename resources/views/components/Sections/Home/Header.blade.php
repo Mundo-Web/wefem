@@ -53,12 +53,15 @@
 
         <div class="absolute inset-0 flex items-center justify-center text-center">
             <div class="text-white p-6">
-                <h1 class=" md:text-[78.54px] leading-[90.81px] font-bold max-w-4xl tracking-[0.01em]">¡Tener sexo
+                <h1
+                    class="md:text-[58.54px] 2xl:text-[78.54px] leading-[60.81px] 2xl:leading-[90.81px] font-bold max-w-4xl tracking-[0.01em]">
+                    ¡Tener sexo
                     con<br /> tu disco es posible!</h1>
-                <p class="text-[24.61px] leading-[36.92px]  my-2 tracking-[0.01em]">Copas y Discos menstruales weFem
+                <p class=" md:text-[20.61px] 2xl:text-[24.61px] leading-[36.92px]  my-2 tracking-[0.01em]">Copas y
+                    Discos menstruales weFem
                 </p>
                 <button
-                    class="mt-4 w-[371px]  h-[80px] bg-[#DDEC4C] text-[24.64px] hover:brightness-90 transition duration-300  font-semibold  rounded-[13.91px] text-[#5F48B7]">
+                    class="mt-4  w-[350px]  2xl:w-[371px] h-[60px] 2xl:h-[80px] bg-[#DDEC4C] text-[20.64px] 2xl:text-[24.64px] hover:brightness-90 transition duration-300  font-semibold  rounded-[13.91px] text-[#5F48B7]">
                     ¡Realiza el cambio!
                 </button>
             </div>
