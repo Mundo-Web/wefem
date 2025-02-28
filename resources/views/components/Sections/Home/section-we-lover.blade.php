@@ -40,7 +40,7 @@ background: linear-gradient(180deg, #6745BA 0%, #522EAA 100%);">
                     <div class="swiper-slide">
                         <div class="pb-10 px-4">
                             <div
-                                class="relative rounded-xl overflow-hidden transition-all duration-300 h-[600px] w-[355px]">
+                                class="relative rounded-[33.42px] overflow-hidden transition-all duration-300 h-[600px] w-[355px]">
                                 <img src="{{ $testimonial['image'] }}" alt="Testimonial {{ $index + 1 }}"
                                     class="w-[355.91px] h-[627px] object-cover">
                                 <!-- Video overlay with play button and counter -->
@@ -114,10 +114,10 @@ background: linear-gradient(180deg, #6745BA 0%, #522EAA 100%);">
             slides.forEach((slide, index) => {
                 if (index === swiper.activeIndex) {
                     slide.style.transform = 'scale(1)';
-                    slide.style.filter = 'brightness(1)';
+                    slide.style.filter = 'opacity(1)';
                 } else {
                     slide.style.transform = 'scale(0.85)';
-                    slide.style.filter = 'brightness(0.5)';
+                    slide.style.filter = 'opacity(0.5)';
                 }
             });
         }
