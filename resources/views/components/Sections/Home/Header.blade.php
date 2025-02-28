@@ -24,7 +24,7 @@
         <header
             class=" transition-all duration-300 sticky top-0 w-full z-40 font-font-general  text-white bg-transparent p-4">
             <div
-                class="md:px-[5%] mx-auto flex justify-between items-center font-medium text-[14.84px] leading-[18.55px]">
+                class="md:px-[5%] lg:max-w-7xl mx-auto flex justify-between items-center font-medium text-[14.84px] leading-[18.55px]">
                 <nav class="flex gap-8 w-4/12">
                     <a href="/catalogo">Tienda</a>
                     <a href="/como-usar">¿Cómo usar?</a>
@@ -37,8 +37,8 @@
                 </a>
                 <div class="flex space-x-4 w-4+/12">
                     <a href="#">Escríbenos</a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fas fa-shopping-cart"></i></a>
                 </div>
@@ -53,7 +53,7 @@
                 <p class="text-[24.61px] leading-[36.92px]  my-2 tracking-[0.01em]">Copas y Discos menstruales weFem
                 </p>
                 <button
-                    class="mt-4 w-[371px] h-[80px] bg-[#DDEC4C] text-[24.64px] hover:brightness-90 transition duration-300 text-lg font-semibold  rounded-[13.91px] text-[#5F48B7]">
+                    class="mt-4 w-[371px]  h-[80px] bg-[#DDEC4C] text-[24.64px] hover:brightness-90 transition duration-300 text-lg font-semibold  rounded-[13.91px] text-[#5F48B7]">
                     ¡Realiza el cambio!
                 </button>
             </div>
