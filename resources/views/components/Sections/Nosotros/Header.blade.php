@@ -7,10 +7,10 @@
 
 
 
-    <section class="relative w-full h-screen 2xl:h-[730px]">
+    <section class="relative w-full md:h-screen 2xl:h-[730px]">
 
         <img src="https://i.ibb.co/3mPwq5gH/7597f2cb62a9b3b354850510320d3167.png"
-            class="absolute inset-0 w-full h-screen 2xl:h-[730px] object-cover" />
+            class="absolute inset-0 w-full md:h-screen 2xl:h-[730px] object-cover" />
 
 
 
@@ -51,7 +51,8 @@
 
         <div class="absolute inset-0 flex items-center justify-center text-center">
             <div class="text-white p-6">
-                <h1 class=" md:text-[72.21px] leading-[90.32px] font-bold max-w-5xl tracking-[0.01em]">
+                <h1
+                    class="md:text-[58.21px] 2xl:text-[72.21px] md:leading-[65.32px] 2xl:leading-[90.32px] font-bold max-w-5xl tracking-[0.01em]">
                     ¡Tu mejor aliadx en <br />
                     el cuidado menstrual!
                 </h1>

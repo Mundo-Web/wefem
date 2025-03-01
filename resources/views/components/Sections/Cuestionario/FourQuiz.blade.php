@@ -1,15 +1,15 @@
 <div class="flex w-full justify-between gap-8 bg-[#EFE5FF]  items-center">
     <div class="flex  flex-col w-full md:w-1/2 justify-center text-[#212529]">
-        <div class="px-[5%] max-w-2xl lg:px-0 mx-auto text-center">
+        <div class="px-[5%] md:px-0 md:max-w-lg 2xl:max-w-2xl  mx-auto text-center">
 
-            <h2 class="text-[27px] 2xl:text-[32.21px] leading-[46.12px] tracking-[0.01em] font-semibold mb-4 gap-2">
+            <h2 class="text-[25px] 2xl:text-[32.21px] leading-[46.12px] tracking-[0.01em] font-semibold mb-4 gap-2">
                 ¡Genial! Hemos
                 encontrado el producto
                 menstrual perfecto para ti @include('components.Emoji.EmojiApple', [
                     'emojiCode' => '1f497',
                     'class' => 'h-[30.75px] inline-flex',
                 ])</h2>
-            <p class="mb-8 text-[18.77px] 2xl:text-[23.77px] leading-[31.81px] tracking-[0.01em]">
+            <p class="mb-8 text-[17.77px] 2xl:text-[23.77px] leading-[31.81px] tracking-[0.01em]">
                 Ingresa tu email para obtener tus resultados y recibir un
                 email con un <strong>cupón exclusivo de 10% OFF</strong> ¡ solo para ti!
             </p>
@@ -25,7 +25,7 @@
             </p>
             <div class="space-x-4 w-full flex justify-center">
                 <button onclick="showCard(6)"
-                    class="bg-white hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold py-4 px-6 rounded-[20px] text-[20.94px] tracking-[0.01em] transition-colors w-[393px] h-[94px] border-2 border-[#FF9900] duration-300">
+                    class="bg-white hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold py-4 px-6 rounded-[20px] md:text-[18.13px]  2xl:text-[23.13px] tracking-[0.01em] transition-colors w-[393px] md:h-[74px] 2xl:h-[94px] border-2 border-[#FF9900] duration-300">
                     ¡Obtener mis resultados!
                 </button>
             </div>
@@ -39,6 +39,6 @@
 
     <div class="flex justify-end  w-full md:w-1/2">
         <img src="https://i.ibb.co/3yHQRrpx/image.png" alt="weFem productos"
-            class="min-w-[873px] h-[789px] w-full object-cover object-center flex-shrink-0">
+            class="md:w-full md:h-[600px]  2xl:min-w-[873px] 2xl:h-[789px] w-full object-cover object-center flex-shrink-0">
     </div>
 </div>
