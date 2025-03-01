@@ -92,11 +92,11 @@
         @include('components.Sections.ComoUsar.WeDisk')
         <div class="mx-w-7xl mx-auto px-4 py-8">
             <h2
-                class="text-[36.25px] leading-[29.36px] font-bold text-[#212529] my-6 text-center flex gap-2 items-center justify-center">
+                class="md:text-[32.25px] 2xl:text-[36.25px] leading-[29.36px] font-bold text-[#212529] my-6 text-center flex gap-2 items-center justify-center">
                 @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])
                 Más productos
                 @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])</h2>
-            <div class="flex  gap-6 max-w-7xl mx-auto mt-8 mb-8">
+            <div class="flex  gap-6 md:max-w-5xl 2xl:max-w-7xl mx-auto mt-8 mb-8">
                 <!-- Grid de productos -->
                 <div class=" grid grid-cols-3 gap-8 gap-y-8">
                     <!-- Producto 1 (Con fondo destacado) -->

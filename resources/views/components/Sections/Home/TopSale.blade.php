@@ -29,7 +29,7 @@
          <!-- Product Details -->
          <div class="md:w-[405px] 2xl:w-[475px] text-[#333333]">
 
-             <h3 class="lg:text-[45.38px] 2xl:text-[54.38px] leading-[40.78px] font-bold">wePack</h3>
+             <h3 class="md:text-[45.38px] 2xl:text-[54.38px] leading-[40.78px] font-bold">wePack</h3>
              <p class="md:text-[20.81px] 2xl:text-[30.81px] leading-[40.78px] mt-2 font-normal">(Disco + Esterilizador)
              </p>
              <p class="md:text-xs 2xl:text-[14.05px] leading-[21.75px] mt-2">
@@ -65,8 +65,8 @@
              </div>
              <p
                  class="md:text-[35.33px]  2xl:text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">
-                 $/. 169.90</p>
-             <p class="md:text-[20.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes $/. 255</del>
+                 S/. 169.90</p>
+             <p class="md:text-[20.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes S/. 255</del>
              </p>
              <div class="flex items-center mt-2">
                  <span class="text-[#FF9900] flex gap-1 text-base">

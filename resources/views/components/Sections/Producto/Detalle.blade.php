@@ -12,23 +12,36 @@
 
 
  <section class="py-10 bg-[#EFE5FF]" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
+     <p
+         class="px-[5%] mx-auto md:max-w-6xl 2xl:max-w-6xl md:px-0 md:text-[18.31px]  2xl:text-[23.31px] leading-[29.44px] ">
+         Home / Tienda we Fem
+         /
+         <strong>wePack</strong>
+     </p>
+     <div
+         class="px-[5%] mx-auto md:max-w-6xl 2xl:max-w-6xl  md:px-0  flex items-start flex-col md:flex-row  mt-4 gap-2 ">
 
-     <div class="px-[5%] lg:max-w-7xl lg:px-0 mx-auto flex flex-col md:flex-row  mt-4 gap-2 ">
-         <div class="w-full md:w-1/12 pr-4">
-             <img src="https://i.ibb.co/1tsnJxPj/image.png" alt="wePack Product" class="w-full h-auto object-cover "
-                 loading="lazy" />
+
+
+         <div class="w-max h-max md:w-1/12 pr-2 2xl:pr-4">
+             <img src="https://i.ibb.co/d4b37qjh/f7dbf1c4b1c1c7a425856f6ebcbcbce8.png" alt="wePack Product"
+                 class="w-full h-auto object-cover " loading="lazy" />
          </div>
          <!-- Image -->
-         <div class="w-full md:w-6/12 pr-4">
-             <img src="https://i.ibb.co/1tsnJxPj/image.png" alt="wePack Product"
-                 class="w-[638.72px] h-[638.72px] object-cover " loading="lazy" />
+         <div class="w-max h-max md:w-[580.81px] md:h-[580.81px] 2xl:h-[638.72px] 2xl:w-[638.72px] pr-2 2xl:pr-4 ">
+             <img src="https://i.ibb.co/d4b37qjh/f7dbf1c4b1c1c7a425856f6ebcbcbce8.png" alt="wePack Product"
+                 class="md:w-[580.81px] md:h-[580.81px]  2xl:h-[638.72px] 2xl:w-[638.72px] object-cover  2xl:object-cover "
+                 loading="lazy" />
          </div>
          <!-- Product Details -->
          <div class="w-[472px] text-[#333333]">
 
-             <h3 class="text-[54.38px] leading-[40.78px] font-bold">wePack</h3>
-             <p class="text-[30.81px] leading-[40.78px] mt-2 font-normal">(Disco + Esterilizador)</p>
-             <p class="text-[14.05px] leading-[21.75px] mt-2">
+             <h3 class="md:text-[45.38px] 2xl:text-[54.38px] md:leading-[34.78px] 2xl:leading-[40.78px] font-bold">
+                 wePack</h3>
+             <p class="md:text-[20.81px] 2xl:text-[30.81px]  2xl:leading-[40.78px] 2xl:mt-2 font-normal">(Disco +
+                 Esterilizador)
+             </p>
+             <p class="md:text-xs 2xl:text-[14.05px] leading-[21.75px] mt-2">
                  @include('components.Emoji.EmojiApple', [
                      'emojiCode' => '1f338',
                      'class' => 'h-[14.05px] inline-flex',
@@ -59,8 +72,11 @@
                      ])
                  </p>
              </div>
-             <p class="text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">$/. 169.90</p>
-             <p class="text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes $/. 255</del></p>
+             <p
+                 class="md:text-[35.33px]  2xl:text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">
+                 $/. 169.90</p>
+             <p class="md:text-[20.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes $/. 255</del>
+             </p>
              <div class="flex items-center mt-2">
                  <span class="text-[#FF9900] flex gap-1 text-base">
                      @for ($i = 0; $i < 5; $i++)
