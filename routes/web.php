@@ -22,6 +22,9 @@ Route::get('/nosotros', function () {
 Route::get('/producto', function () {
     return view('producto');
 });
+Route::get('/checkout', function () {
+    return view('Checkout');
+});
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

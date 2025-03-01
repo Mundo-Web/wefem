@@ -11,7 +11,8 @@
  </style>
 
 
- <section class="py-10 bg-[#EFE5FF]" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
+ <section class="relative py-10 bg-[#EFE5FF]" data-aos="fade-up" data-aos-duration="1000"
+     data-aos-easing="ease-in-out-quart">
      <p
          class="px-[5%] mx-auto md:max-w-6xl 2xl:max-w-6xl md:px-0 md:text-[18.31px]  2xl:text-[23.31px] leading-[29.44px] ">
          Home / Tienda we Fem
@@ -74,8 +75,8 @@
              </div>
              <p
                  class="md:text-[35.33px]  2xl:text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">
-                 $/. 169.90</p>
-             <p class="md:text-[20.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes $/. 255</del>
+                 S/. 169.90</p>
+             <p class="md:text-[20.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes S/. 255</del>
              </p>
              <div class="flex items-center mt-2">
                  <span class="text-[#FF9900] flex gap-1 text-base">
@@ -158,7 +159,7 @@
                  </div>
 
                  {{-- Botón Añadir al Carrito --}}
-                 <button
+                 <button id="btn-buy"
                      class="relative w-full h-[39.88px]  text-[13.59px] leading-[13.59px] bg-[#FC58BE] text-white  rounded-[2.72px] border-[1.81px] border-[#FC58BE]  flex items-center justify-center">
                      <span class="">Añadir al carrito</span>
                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
@@ -194,4 +195,74 @@
 
          </div>
      </div>
+     <div id="modal" class="fixed inset-0 flex hidden  items-center justify-center z-50 bg-[#00000080] min-h-screen"
+         style="backdrop-filter: blur(10px)">
+         <div class="relative flex items-center justify-center">
+             <div
+                 class="bg-white  rounded-[48.58px] md:w-[619px] md:h-[605.40px] 2xl:w-[819px] 2xl:h-[805.40px] flex flex-col items-center justify-center ">
+
+                 <div
+                     class="mx-auto font-bold flex items-center justify-center bg-[#FF9900] text-white md:text-[20px] 2xl:text-[35.85px] 2xl:leading-[53.78px] md:h-[50.26px] md:w-[342.05px] 2xl:h-[59.26px] 2xl:w-[442.05px] rounded-full">
+                     Solo por 00 : 10 : 58
+                 </div>
+
+                 <p class="text-[#404040] md:text-[29.29px] 2xl:text-[39.29px] leading-[58.94px] font-bold pt-6">¿Te
+                     gustaría añadir a tu
+                     pedido?
+                 </p>
+
+                 <div class=" gap-4 flex items-center justify-between mt-4">
+                     <img class="md:w-[238.05px] md:h-[401.16px] 2xl:w-[338.05px] 2xl:h-[501.16px] object-contain"
+                         src="https://i.ibb.co/MkgMJPzG/63d3b57a154aa23fe06f27206861c787.png" />
+                     <div
+                         class="font-mont flex items-start justify-start flex-col md:w-[290.05px] 2xl:w-[400.05px] md:gap-2 2xl:gap-4">
+                         <p
+                             class="text-[#000000]  md:text-[40.24px] 2xl:text-[55.24px] md:leading-[50.05px] 2xl:leading-[69.05px] font-mont font-semibold">
+                             Lubricante
+                         </p>
+                         <p
+                             class="text-[#000000] md:text-[16.1px] 2xl:text-[22.1px] leading-[27.63px] tracking-[0.28px] font-mont">
+                             Te
+                             ayudará a colocar más
+                             fácil tu copa o disco @include('components.Emoji.EmojiApple', [
+                                 'emojiCode' => '1f4a7',
+                                 'class' => 'md:h-[18.1px] 2xl:h-[22.05px] inline-flex',
+                             ])</p>
+                         <p
+                             class="md:text-[78.2px] 2xl:text-[93.2px] md:leading-[90.5px]  2xl:leading-[116.5px] tracking-[-2.18px] text-[#FC58BE] font-black">
+                             S/25
+                         </p>
+                         <p
+                             class="md:text-[20.4px] 2xl:text-[33.4px] leading-[41.75px] tracking-[0.42px] text-[#000000]">
+                             P. regular S/30</p>
+                         <a href="/checkout"
+                             class="inline-flex text-white  items-center justify-center md:h-[70px] 2xl:h-[108px] md:w-[250px] 2xl:w-[338px] bg-[#FC58BE] md:mt-4 2xl:mt-0 md:rounded-[12.58px] 2xl:rounded-[19.58px] md:text-[22.99px]  2xl:text-[32.99px] leading-[41.24px] tracking-[0.41px] font-bold ">¡Lo
+                             quiero!</a>
+
+                     </div>
+
+                 </div>
+                 <button id="close-modal"
+                     class=" z-10 px-4 py-2  absolute top-2 right-4 text-3xl font-bold text-[#9577B9]">x</button>
+             </div>
+         </div>
+         <script>
+             document.getElementById("btn-buy").addEventListener("click", function() {
+                 let modal = document.getElementById("modal");
+                 if (modal) {
+                     modal.classList.remove("hidden"); // Mostrar el modal si estaba oculto
+                 } else {
+                     console.error("No se encontró el modal con id='modal'");
+                 }
+             });
+
+             // Cerrar el modal (agregar en el botón de cerrar dentro del modal)
+             document.getElementById("close-modal").addEventListener("click", function() {
+                 let modal = document.getElementById("modal");
+                 if (modal) {
+                     modal.classList.add("hidden"); // Ocultar el modal
+                 }
+             });
+         </script>
+
  </section>
