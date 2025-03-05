@@ -50,7 +50,7 @@
                  ])
              </p>
              <div
-                 class="w-[155px] md:h-[20px] 2xl:h-[25px] bg-[#212529]  text-white rounded-[5.44px] my-4 flex items-center justify-center 2xl:text-[10.88px] leading-[21.75px]">
+                 class="md:w-[120px]  2xl:w-[155px] md:h-[20px] 2xl:h-[25px] bg-[#212529]  text-white rounded-[5.44px] my-4 flex items-center justify-center md:text-[8.88px] 2xl:text-[10.88px] leading-[21.75px]">
                  <p className="flex items-center justify-center gap-2">
 
                      @include('components.Emoji.EmojiApple', [
@@ -65,16 +65,16 @@
                  </p>
              </div>
              <p
-                 class="md:text-[35.33px]  2xl:text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">
+                 class="md:text-[35.33px]  2xl:text-[49.33px] md:leading-[42.31px] 2xl:leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">
                  S/ 169.90</p>
-             <p class="md:text-[20.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes S/ 255</del>
+             <p class="md:text-[18.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes S/ 255</del>
              </p>
              <div class="flex items-center mt-2">
                  <span class="text-[#FF9900] flex gap-1 text-base">
                      @for ($i = 0; $i < 5; $i++)
                          @include('components.Emoji.EmojiApple', [
                              'emojiCode' => '2b50',
-                             'class' => 'h-[18.13px] inline-flex',
+                             'class' => 'md:h-[14.13px] 2xl:h-[18.13px] inline-flex',
                          ])
                      @endfor
                  </span>
@@ -84,7 +84,7 @@
                  {{-- Selector de Color --}}
                  <div class="flex justify-between items-center my-2 relative">
                      <div class="flex items-start gap-2">
-                         <p class="text-[13.05px] leading-[13.05px] mt-1 font-bold">Color:</p>
+                         <p class=" md:text-[10.05px] 2xl:text-[13.05px] leading-[13.05px] mt-1 font-bold">Color:</p>
                          <div class="flex items-center gap-2">
                              <button onclick="setSelectedColor('purple')" id="color-purple"
                                  class="rounded-full flex items-center justify-center p-1 border border-[#222222]">
@@ -100,7 +100,7 @@
                      {{-- Botón de Guía de Tallas --}}
                      <div class="text-right absolute right-0 top-6 ">
                          <button
-                             class="inline-flex md:gap-2 2xl:gap-0 items-center justify-center w-[200.45px] h-[34.02px] font-medium text-[15.57px] leading-[15.95px] bg-[#5F48B7] text-white rounded-[8.51px]">
+                             class="inline-flex md:gap-2 2xl:gap-0 items-center justify-center md:w-[180.45px] 2xl:w-[187.45px] h-[34.02px] font-medium md:text-[12.05px] 2xl:text-[15.57px] leading-[15.95px] bg-[#5F48B7] text-white rounded-[8.51px]">
                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 fill-white mr-2" viewBox="0 0 640 512">
                                  <path d="M0 336c0 26.5 21.5 48 48 48l544 0c26.5 0 48-21.5
                 48-48l0-160c0-26.5-21.5-48-48-48l-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0
@@ -115,11 +115,12 @@
 
 
                  {{-- Selector de Talla --}}
-                 <div class="mb-6">
-                     <label class="text-[13.05px] leading-[13.05px] font-bold">Selecciona tu talla:</label>
+                 <div class="mb-4 2xl:mb-6">
+                     <label class="md:text-[10.05px] 2xl:text-[13.05px] leading-[13.05px] font-bold">Selecciona tu
+                         talla:</label>
                      <div class="relative mt-2">
                          <select
-                             class="w-full h-[42.94px] 2xl:h-[48.94px] text-[14.05px] px-4 bg-[#EFEDF8] rounded-[5.44px] appearance-none  outline-none ring-0 border-0 cursor-pointer focus:outline-none">
+                             class="w-full h-[40.94px] 2xl:h-[48.94px] md:text-[12.05px] 2xl:text-[14.05px] px-4 bg-[#EFEDF8] rounded-[5.44px] appearance-none  outline-none ring-0 border-0 cursor-pointer focus:outline-none">
                              <option>Talla A</option>
                              <option>Talla B</option>
                              <option>Talla C</option>
@@ -131,12 +132,12 @@
 
 
                  {{-- Selector de Cantidad --}}
-                 <div class="mb-6">
+                 <div class="mb-4 2xl:mb-6">
                      <div
                          class="flex h-[37.16px] text-[#000000]  bg-[#EFEDF8] items-center justify-around  rounded-[5.44px] ">
                          <button onclick="changeQuantity(-1)"
                              class="w-8 h-8 flex items-center justify-center text-[17.84px] text-[#444444]">-</button>
-                         <span id="quantity" class="md:text-lg 2xl:text-xl font-medium">1</span>
+                         <span id="quantity" class="md:text-base 2xl:text-xl font-medium">1</span>
                          <button onclick="changeQuantity(1)"
                              class="w-8 h-8 flex items-center justify-center text-[17.84px] text-[#444444]">+</button>
                      </div>
@@ -144,7 +145,7 @@
 
                  {{-- Botón Añadir al Carrito --}}
                  <button
-                     class="relative w-full h-[39.88px]  text-[13.59px] leading-[13.59px] bg-[#FC58BE] text-white  rounded-[2.72px] border-[1.81px] border-[#FC58BE]  flex items-center justify-center">
+                     class="relative w-full h-[39.88px] md:text-[10.59px]  2xl:text-[13.59px] leading-[13.59px] bg-[#FC58BE] text-white  rounded-[2.72px] border-[1.81px] border-[#FC58BE]  flex items-center justify-center">
                      <span class="">Añadir al carrito</span>
                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
                          class="fill-white h-3 absolute  top-1/2 -translate-y-1/2  right-16 ">
