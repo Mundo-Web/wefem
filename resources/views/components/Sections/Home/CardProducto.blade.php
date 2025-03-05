@@ -34,10 +34,11 @@
 
             <div class="flex justify-between">
                 <h3
-                    class="md:text-[25.44px] 2xl:text-[29.44px] leading-[41.64px] text-[#212529] font-semibold  line-clamp-2">
+                    class="md:text-[25.44px] 2xl:text-[29.44px] md:leading-[20.64px] 2xl:leading-[41.64px] text-[#212529] font-semibold  line-clamp-2">
                     {{ $product['name'] }}
                 </h3>
-                <span class="md:text-[27.56px] 2xl:text-[32.56px] leading-[39.79px] font-bold text-[#FC58BE]">
+                <span
+                    class="md:text-[27.56px] 2xl:text-[32.56px] md:leading-[20.64px] 2xl:leading-[39.79px] font-bold text-[#FC58BE]">
                     S/ {{ number_format($product['final_price'], 2) }}
                 </span>
 

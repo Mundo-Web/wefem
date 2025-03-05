@@ -7,7 +7,7 @@
 
 
 
-    <section class="relative w-full h-screen">
+    <section class="relative w-full h-[550px]">
 
 
         <video autoplay loop muted class="absolute inset-0 w-full h-full object-cover object-top">
@@ -18,9 +18,7 @@
 
 
 
-        <div class="absolute inset-0 "
-            style="background: linear-gradient(180deg, rgba(95, 72, 183, 0.75) 6.08%, rgba(96, 72, 183, 0.525) 100%);
-">
+        <div class="absolute inset-0 bg-[rgba(95,72,183,0.4)]">
         </div>
 
 
@@ -61,7 +59,7 @@
                     Discos menstruales weFem
                 </p>
                 <button
-                    class="mt-4  w-[350px]  2xl:w-[371px] h-[60px] 2xl:h-[80px] bg-[#DDEC4C] text-[20.64px] 2xl:text-[24.64px] hover:brightness-90 transition duration-300  font-semibold  rounded-[13.91px] text-[#5F48B7]">
+                    class="mt-4  w-[350px]  2xl:w-[371px] h-[70px] 2xl:h-[80px] bg-[#DDEC4C] text-[20.64px] 2xl:text-[24.64px] hover:brightness-90 transition duration-300  font-semibold  rounded-[13.91px] text-[#5F48B7]">
                     ¡Realiza el cambio!
                 </button>
             </div>

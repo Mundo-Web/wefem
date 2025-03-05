@@ -11,10 +11,9 @@
  </style>
 
 
- <section class="py-16 px-[5%] mx-auto font-font-general bg-white" data-aos="fade-up" data-aos-duration="1000"
-     data-aos-easing="ease-in-out-quart">
+ <section class="py-10 px-[5%] mx-auto font-font-general bg-white">
      <h2
-         class="md:text-[30.25px] 2xl:text-[36.25px] leading-[29.36px] font-bold text-[#212529] my-6 text-center flex gap-2 items-center justify-center">
+         class="md:text-[30.25px] 2xl:text-[36.25px] leading-[29.36px] font-bold text-[#212529] mt-6 mb-10 text-center flex gap-2 items-center justify-center">
          @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])
          El más vendido
          @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])</h2>
@@ -32,7 +31,7 @@
              <h3 class="md:text-[45.38px] 2xl:text-[54.38px] leading-[40.78px] font-bold">wePack</h3>
              <p class="md:text-[20.81px] 2xl:text-[30.81px] leading-[40.78px] mt-2 font-normal">(Disco + Esterilizador)
              </p>
-             <p class="md:text-xs 2xl:text-[14.05px] leading-[21.75px] mt-2">
+             <p class="md:text-xs 2xl:text-[14.05px] md:leading-[22.75px] 2xl:leading-[21.75px] mt-2">
                  @include('components.Emoji.EmojiApple', [
                      'emojiCode' => '1f338',
                      'class' => 'h-[14.05px] inline-flex',
@@ -65,8 +64,8 @@
              </div>
              <p
                  class="md:text-[35.33px]  2xl:text-[49.33px] leading-[62.31px] tracking-[-0.01em] font-bold text-[#FC58BE]">
-                 S/. 169.90</p>
-             <p class="md:text-[20.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes S/. 255</del>
+                 S/ 169.90</p>
+             <p class="md:text-[20.84px] 2xl:text-[24.84px] leading-[31.37px] text-[#B4B4B4]"><del>Antes S/ 255</del>
              </p>
              <div class="flex items-center mt-2">
                  <span class="text-[#FF9900] flex gap-1 text-base">
@@ -81,9 +80,9 @@
 
              <div class="">
                  {{-- Selector de Color --}}
-                 <div class="flex justify-between items-center my-2">
-                     <div class="flex items-center gap-2">
-                         <p class="text-[13.05px] leading-[13.05px] font-bold">Color:</p>
+                 <div class="flex justify-between items-center my-2 relative">
+                     <div class="flex items-start gap-2">
+                         <p class="text-[13.05px] leading-[13.05px] mt-1 font-bold">Color:</p>
                          <div class="flex items-center gap-2">
                              <button onclick="setSelectedColor('purple')" id="color-purple"
                                  class="rounded-full flex items-center justify-center p-1 border border-[#222222]">
@@ -97,9 +96,9 @@
                      </div>
 
                      {{-- Botón de Guía de Tallas --}}
-                     <div class="text-right">
+                     <div class="text-right absolute right-0 top-6 ">
                          <button
-                             class="inline-flex gap-2 items-center justify-center w-[192.45px] h-[34.02px] font-medium text-[15.57px] leading-[15.95px] bg-[#5F48B7] text-white rounded-[8.51px]">
+                             class="inline-flex md:gap-2 2xl:gap-0 items-center justify-center w-[200.45px] h-[34.02px] font-medium text-[15.57px] leading-[15.95px] bg-[#5F48B7] text-white rounded-[8.51px]">
                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 fill-white mr-2" viewBox="0 0 640 512">
                                  <path d="M0 336c0 26.5 21.5 48 48 48l544 0c26.5 0 48-21.5
                 48-48l0-160c0-26.5-21.5-48-48-48l-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0
@@ -118,19 +117,12 @@
                      <label class="text-[13.05px] leading-[13.05px] font-bold">Selecciona tu talla:</label>
                      <div class="relative mt-2">
                          <select
-                             class="w-full h-[48.94px] text-[14.05px] px-4 bg-[#EFEDF8] rounded-[5.44px] appearance-none cursor-pointer focus:outline-none">
+                             class="w-full h-[42.94px] 2xl:h-[48.94px] text-[14.05px] px-4 bg-[#EFEDF8] rounded-[5.44px] appearance-none  outline-none ring-0 border-0 cursor-pointer focus:outline-none">
                              <option>Talla A</option>
                              <option>Talla B</option>
                              <option>Talla C</option>
                          </select>
-                         <div
-                             class="absolute right-4 top-1/2 -translate-y-1/2 transition-transform duration-300 text-[#5F48B7] ">
-                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                 <path d="M4 6L8 10L12 6" stroke="#9747FF" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" />
-                             </svg>
-                         </div>
+
                      </div>
                  </div>
 
@@ -142,7 +134,7 @@
                          class="flex h-[37.16px] text-[#000000]  bg-[#EFEDF8] items-center justify-around  rounded-[5.44px] ">
                          <button onclick="changeQuantity(-1)"
                              class="w-8 h-8 flex items-center justify-center text-[17.84px] text-[#444444]">-</button>
-                         <span id="quantity" class="text-xl font-medium">1</span>
+                         <span id="quantity" class="md:text-lg 2xl:text-xl font-medium">1</span>
                          <button onclick="changeQuantity(1)"
                              class="w-8 h-8 flex items-center justify-center text-[17.84px] text-[#444444]">+</button>
                      </div>

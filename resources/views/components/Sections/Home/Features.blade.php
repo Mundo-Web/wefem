@@ -7,7 +7,7 @@
          ],
          [
              'title' => 'Protege hasta 12 horas',
-             'subtitle' => 'Siéntete más segura de díae y de noche.',
+             'subtitle' => 'Siéntete más segura de días y de noche.',
              'image' => 'https://i.ibb.co/jkr7chNC/34b597fc8a9f1835a421906cc5c3b744.png',
          ],
          [
@@ -26,19 +26,19 @@
 
 
 
- <section class="bg-[#F2F2F2] md:py-6  2xl:py-10 overflow-hidden">
-     <div class="px-[5%]  mx-auto relative" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
-         <div class="flex w-full md:max-w-5xl 2xl:max-w-7xl mx-auto gap-4 lg:gap-6 whitespace-nowrap transition-none">
+ <section class="bg-[#EFE5FF] md:py-8  2xl:py-10 overflow-hidden">
+     <div class="px-[5%]  mx-auto relative">
+         <div class="flex w-full md:max-w-5xl 2xl:max-w-7xl mx-auto gap-4 lg:gap-8 whitespace-nowrap transition-none">
              @foreach ($features as $feature)
-                 <div class="flex items-center gap-3 justify-start w-1/4">
+                 <div class="flex items-center gap-3 justify-start w-auto">
                      <div class="relative z-10 w-2/12 ">
                          <img src="{{ $feature['image'] }}" alt="Feature 1" class="w-full h-auto  object-cover" />
                      </div>
-                     <div class="w-11/12">
-                         <h3 class="md:text-[13.33px] text-[17.4px] font-bold leading-[20.88px]  w-full text-[#212529]">
+                     <div class="w-9/12">
+                         <h3 class="md:text-[15.33px] text-[18.4px] font-bold leading-[20.88px]  w-full text-[#212529]">
                              {{ $feature['title'] }}</h3>
                          <p
-                             class="md:text-[10.33px] 2xl:text-[14.33px] leading-[18.42px] break-words whitespace-normal text-[#444444]">
+                             class="md:text-[12.3px] 2xl:text-[15.33px] leading-[18.42px] break-words whitespace-normal text-[#444444]">
                              {{ $feature['subtitle'] }}</p>
                      </div>
                  </div>
