@@ -17,7 +17,8 @@
          </div>
 
 
-         <p class="md:text-[16px]  2xl:text-[20px] leading-[26.33px] tracking-[0.01em] w-5/12">
+         <p
+             class="md:text-[15px]  2xl:text-[20px] md:leading-[20.33px]  2xl:leading-[26.33px] tracking-[0.01em] w-[38%]">
              Si encuentras una copa o disco certificado a un mejor
              precio,
              <strong> nosotros te mejoramos la oferta.</strong>
@@ -25,7 +26,7 @@
 
 
          <button
-             class="w-2/12 bg-transparent text-white font-semibold  border border-white rounded-xl shadow h-[47.36px] flex items-center justify-center">
+             class="w-[268.06px] bg-transparent text-white font-semibold  border border-white rounded-xl shadow h-[47.36px] flex items-center justify-center">
              ¡Escríbenos aquí!
          </button>
      </div>

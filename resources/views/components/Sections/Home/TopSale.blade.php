@@ -17,21 +17,23 @@
          @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])
          El más vendido
          @include('components.Emoji.EmojiApple', ['emojiCode' => '1f525', 'class' => 'h-[25px]'])</h2>
-     <div class="mx-auto flex justify-center items-center  my-4 gap-8">
+     <div class="mx-auto  flex justify-center items-center  my-4 gap-8">
 
          <!-- Image -->
-         <div class="md:w-[580.81px] md:h-[580.81px]  2xl:w-[620.81px] 2xl:h-[620.81px] overflow-hidden">
+         <div class="md:w-[500.81px] md:h-[500.81px]  2xl:w-[620.81px] 2xl:h-[620.81px] overflow-hidden">
              <img src="https://i.ibb.co/1tsnJxPj/image.png" alt="wePack Product"
-                 class="md:w-[580.81px] md:h-[580.81px]  2xl:w-[620.81px] 2xl:h-[620.81px] object-cover rounded-lg"
+                 class="md:w-[500.81px] md:h-[500.81px]  2xl:w-[620.81px] 2xl:h-[620.81px] object-cover rounded-lg"
                  loading="lazy" />
          </div>
          <!-- Product Details -->
-         <div class="md:w-[405px] 2xl:w-[475px] text-[#333333]">
+         <div class="md:w-[386px] 2xl:w-[475px] text-[#333333]">
 
-             <h3 class="md:text-[45.38px] 2xl:text-[54.38px] leading-[40.78px] font-bold">wePack</h3>
-             <p class="md:text-[20.81px] 2xl:text-[30.81px] leading-[40.78px] mt-2 font-normal">(Disco + Esterilizador)
+             <h3 class="md:text-[40.38px] 2xl:text-[54.38px] md:leading-[30.78px] 2xl:leading-[40.78px] font-bold">wePack
+             </h3>
+             <p class="md:text-[16.81px] 2xl:text-[30.81px] 2xl:leading-[40.78px] mt-2 font-normal">(Disco +
+                 Esterilizador)
              </p>
-             <p class="md:text-xs 2xl:text-[14.05px] md:leading-[22.75px] 2xl:leading-[21.75px] mt-2">
+             <p class="md:text-[11px] 2xl:text-[14.05px] md:leading-[18.75px] 2xl:leading-[21.75px] mt-2">
                  @include('components.Emoji.EmojiApple', [
                      'emojiCode' => '1f338',
                      'class' => 'h-[14.05px] inline-flex',
@@ -48,7 +50,7 @@
                  ])
              </p>
              <div
-                 class="w-[155px] h-[25px] bg-[#212529]  text-white rounded-[5.44px] my-4 flex items-center justify-center text-[10.88px] leading-[21.75px]">
+                 class="w-[155px] md:h-[20px] 2xl:h-[25px] bg-[#212529]  text-white rounded-[5.44px] my-4 flex items-center justify-center 2xl:text-[10.88px] leading-[21.75px]">
                  <p className="flex items-center justify-center gap-2">
 
                      @include('components.Emoji.EmojiApple', [
