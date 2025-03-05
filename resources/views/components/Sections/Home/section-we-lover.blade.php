@@ -10,6 +10,7 @@
             'image' => 'https://i.ibb.co/3mhCpVtC/image.png',
         ],
     ];
+    $testimonials = array_merge($testimonials, $testimonials); // Duplicar para tener más elementos
 @endphp
 
 
@@ -20,11 +21,12 @@
 
 <div class=" py-16 px-4"
     style="background: rgb(82,46,170);
-background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%);">
-    <div class="max-w-6xl mx-auto" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-in-out-quart">
+background: linear-gradient(180deg, #6745BA 0%, #522EAA 100%);">
+    <div class=" md:max-w-5xl 2xl:max-w-6xl mx-auto" data-aos="fade-left" data-aos-duration="1000"
+        data-aos-easing="ease-in-out-quart">
         <!-- Heading -->
         <h2
-            class="text-white text-center text-[55.41px]  leading-[83.11px] tracking-[0.01em] font-bold mb-12 flex items-center justify-center gap-2">
+            class="text-white text-center md:text-[45.41px] 2xl:text-[55.41px]  leading-[83.11px] tracking-[0.01em] font-bold mb-12 flex items-center justify-center gap-2">
             Nuestras weLovers
             @include('components.Emoji.EmojiApple', ['emojiCode' => '2728', 'class' => 'h-[55px]'])
             <span class="whitespace-nowrap">lo afirman</span>
@@ -39,9 +41,9 @@ background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%)
                     <div class="swiper-slide">
                         <div class="pb-10 px-4">
                             <div
-                                class="relative rounded-xl overflow-hidden transition-all duration-300 h-[600px] w-[355px]">
+                                class="relative md:rounded-[28.42px] 2xl:rounded-[33.42px] overflow-hidden transition-all duration-300 md:w-[340.91px] md:h-[570px]  2xl:h-[600px] 2xl:w-[355px]">
                                 <img src="{{ $testimonial['image'] }}" alt="Testimonial {{ $index + 1 }}"
-                                    class="w-full h-full object-cover">
+                                    class="md:w-[340.91px] md:h-[570px] 2xl:w-[355.91px] 2xl:h-[627px] object-cover">
                                 <!-- Video overlay with play button and counter -->
                                 <div class="absolute bottom-4 left-4 flex items-center gap-2 text-white">
                                     <div
@@ -75,7 +77,7 @@ background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%)
         const swiper = new Swiper('.testimonialSwiper', {
 
             slidesPerView: 1.5,
-            spaceBetween: 10,
+            spaceBetween: 0,
             centeredSlides: true,
             loop: true,
             autoplay: false,
@@ -113,10 +115,10 @@ background: linear-gradient(0deg, rgba(82,46,170,1) 0%, rgba(103,69,186,1) 100%)
             slides.forEach((slide, index) => {
                 if (index === swiper.activeIndex) {
                     slide.style.transform = 'scale(1)';
-                    slide.style.filter = 'brightness(1)';
+                    slide.style.filter = 'opacity(1)';
                 } else {
                     slide.style.transform = 'scale(0.85)';
-                    slide.style.filter = 'brightness(0.5)';
+                    slide.style.filter = 'opacity(0.5)';
                 }
             });
         }

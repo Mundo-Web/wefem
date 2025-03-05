@@ -1,19 +1,21 @@
-   <div class="px-[5%] mx-auto py-8 font-poppins ">
+   <div class="px-[5%] md:max-w-5xl 2xl:max-w-7xl md:px-0 mx-auto py-10 font-poppins ">
 
        <div class=" flex gap-8 ">
            <div class="w-1/2 overflow-hidden relative flex items-center justify-center ">
-               <div class="text-[#EFEDF8] text-[150.92px] leading-[122.24px] font-bold space-y-1">
+               <div
+                   class="text-[#EFEDF8] md:text-[100.92px] 2xl:text-[150.92px]  md:leading-[100.24px] 2xl:leading-[122.24px] font-bold space-y-1">
                    <p>weDisk</p>
                    <p>weDisk</p>
                    <p>weDisk</p>
                </div>
-               <img class="rotate-[5deg] absolute inset-0 top-1/2 -translate-y-1/2 h-[825.57px] w-auto object-cover"
+               <img class="rotate-[5deg] absolute inset-0 top-1/2 -translate-y-1/2  md:h-[625.57px] 2xl:h-[825.57px] w-auto object-cover"
                    src="https://i.ibb.co/LdX1NpQb/image.png" />
            </div>
            <!-- Card de características -->
            <div
-               class=" bg-[#DDEC4C] w-[545px] h-[520px] rounded-[70px]  font-poppins text-[25px] leading-[28.07px]  p-10">
-               <h2 class="font-bold mb-6 text-[73.2px] leading-[78.55px] text-center">WeDisk</h2>
+               class=" bg-[#DDEC4C] md:w-[470px] md:h-[450px] 2xl:w-[545px] 2xl:h-[520px] lg:rounded-[40px]  2xl:rounded-[70px]  font-poppins md:text-[19px] 2xl:text-[25px] leading-[28.07px] md:py-6 md:px-10  2xl:p-10">
+               <h2 class="font-bold mb-2 2xl:mb-6 md:text-[53.2px] 2xl:text-[73.2px] leading-[78.55px] text-center">
+                   WeDisk</h2>
                <ul class="space-y-4">
                    <li class="flex items-center gap-3">
                        <img src="https://s3-alpha-sig.figma.com/img/6332/485e/ea4fc08050d5279b7756c0a51b740a44?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=TIvj6ZQCyK5ucmbUyFaoI0PE1iDw-hrImYjb~ruvvOE1dTIP4cvNcaEKEAlWYbLVFRicwYcJ6NZb4rEORb6WgyKP1VmhTXcZasqZl-l01bkURa8rMx0ybX2GyDYl5TKWimuiMRNJyIj6oB2ueuL998KqWYWnBCMbPA131xuRSG1bl6b9WFBKoDv6XNiiArXxvn0aerRDZlqIZ~FmzxJn1FeNs5pt8Y1Vmg1BeCEJn7~giAHUPJxusPH2HHzaBH2GY0BnrBcW-0m8baTtB5~BBF1i~7GGwDkNd1F9DVideZmm0zTPPA5dhjX1eX1~pKnwCGluzySjyMjazNyOY-89Cg__"
@@ -52,7 +54,7 @@
 
 
 
-       <nav class="weDisk mb-8 mt-12 text-[34.48px] font-bebas ">
+       <nav class="mb-8 mt-12 md:text-[28.48px] 2xl:text-[34.48px] font-bebas ">
            <ul class="flex font-bold justify-between border-b text-[34.48px] font-bebas">
                <li class="text-[#5F48B7] border-b-4 border-[#5F48B7] px-4 font-medium text-[34.48px] font-bebas">
                    ANTES DE EMPEZAR</li>
@@ -65,17 +67,18 @@
        <!-- Contenido del paso -->
        <div class="grid md:grid-cols-2 gap-8 mb-12 px-12 py-8">
            <div class=" rounded-lg bg-text-pattern">
-               <video autoplay loop muted class="pt-10 lg:pt-0 w-[495px] h-[495px] object-cover">
+               <video autoplay loop muted
+                   class="pt-10 lg:pt-0 md:w-[405px] md:h-[405px] 2xl:w-[495px] 2xl:h-[495px] object-cover">
                    <source src="{{ asset('como-usar-1.mp4') }}" type="video/mp4" class="mx-auto">
                    Tu navegador no soporta la reproducción de video.
                </video>
            </div>
            <div class="flex flex-col justify-center">
-               <h2 class="text-[52.75px] leading-[42.73px] font-bold mb-4">Paso 1:</h2>
+               <h2 class="md:text-[42.75px]  2xl:text-[52.75px] leading-[42.73px] font-bold mb-4">Paso 1:</h2>
                <div class="inline-block bg-[#DDEC4C] px-4 py-1 rounded-full mb-6 w-max">
-                   <span class=" text-[27.57px]">Esteriliza tu disco</span>
+                   <span class="md:text-[20.57px] 2xl:text-[27.57px] leading-[30.88px]">Esteriliza tu disco</span>
                </div>
-               <p class="text-[24px] leading-[33px]">
+               <p class=" md:text-[18px] 2xl:text-[24px] leading-[33px]">
                    Antes de usar tu weCup por primera vez, desinféctala en una olla o en tu shakerCup con agua hirviendo
                    durante 2:30 minutos.
 
@@ -88,23 +91,24 @@
        <div class="flex w-full items-center  justify-center gap-8">
 
            <div class="text-center">
-               <div class="w-[400px] h-[400px] object-cover ">
+               <div class="md:w-[300px] md:h-[300px]  2xl:w-[400px] 2xl:h-[400px] object-cover ">
                    <img src="https://i.ibb.co/tPWr83VQ/image.png" alt="Talla A"
-                       class="h-auto w-[400px] object-cover" />
+                       class="h-auto md:w-[300px] 2xl:w-[400px] object-cover" />
                </div>
-               <h3 class="text-[45px] font-bold mb-2">Talla A</h3>
-               <p class="text-[22px] leading-[17.98px] font-light">
+               <h3 class="md:text-[35px]  2xl:text-[45px] font-bold mb-2 2xl:mt-6">Talla A</h3>
+               <p class="md:text-[18px] 2xl:text-[22px] leading-[17.98px] font-light">
                    Capacidad 30ml<br>
                    igual a 4 tampones
                </p>
 
            </div>
            <div class="text-center">
-               <div class="w-[400px] h-[400px] object-cover "><img src="https://i.ibb.co/fGpPpkQ4/image.png"
-                       alt="Talla B" class="h-auto w-[400px] object-cover" />
+               <div class="md:w-[300px] md:h-[300px] 2xl:w-[400px] 2xl:h-[400px] object-cover "><img
+                       src="https://i.ibb.co/fGpPpkQ4/image.png" alt="Talla B"
+                       class="h-auto md:w-[300px] 2xl:w-[400px] object-cover" />
                </div>
-               <h3 class="text-[45px] font-bold mb-2">Talla B</h3>
-               <p class="text-[22px] leading-[17.98px] font-light">
+               <h3 class="md:text-[35px]  2xl:text-[45px] font-bold mb-2 2xl:mt-6">Talla B</h3>
+               <p class="md:text-[18px] 2xl:text-[22px] leading-[17.98px] font-light">
                    Capacidad 50ml<br>
                    igual a 6 tampones
                </p>

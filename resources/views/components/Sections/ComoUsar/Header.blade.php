@@ -49,10 +49,11 @@
 
         <div class="absolute inset-0 flex items-end justify-center text-center">
             <div class="text-white text-center p-6">
-                <h1 class=" md:text-[78.54px] leading-[117.81px] font-bold max-w-4xl text-center tracking-[0.01em]">
+                <h1
+                    class=" md:text-[58.54px] 2xl:text-[78.54px]  md:leading-[90.81px]  2xl:leading-[117.81px] font-bold max-w-4xl text-center tracking-[0.01em]">
                     ¿Cómo usar?
                 </h1>
-                <p class="text-[24.61px] leading-[36.92px]  my-2 tracking-[0.01em]">
+                <p class="md:text-[20.61px] 2xl:text-[24.61px] leading-[36.92px]  my-2 tracking-[0.01em]">
                     Nuestra prioridad es promover la educación y libertad menstrual, por<br />
                     eso <strong class="text-[#DDEC4C]">aquí te enseñamos más sobre cómo usar tus copas y discos</strong>
 

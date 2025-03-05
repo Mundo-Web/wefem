@@ -33,21 +33,6 @@
         .font-poppins {
             font-family: "Poppins", serif;
         }
-
-        .icon-circle {
-            width: 200px;
-            height: 200px;
-            border: 1px solid white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease;
-        }
-
-        .icon-circle:hover {
-            transform: scale(1.05);
-        }
     </style>
 </head>
 
@@ -62,9 +47,9 @@
 
     <main class="">
         @include('components.Sections.Home.Features')
-        <div class="flex gap-6 px-[5%] mx-auto py-12">
+        <div class="flex gap-8 px-[5%] md:max-w-5xl 2xl:max-w-7xl md:px-0 mx-auto py-12">
 
-            <p class="font-poppins text-[26.45px] leading-[30.67px] text-justify">
+            <p class="font-poppins md:text-[18.45px] 2xl:text-[26.45px] leading-[30.67px] text-justify">
                 weFem se enorgullece de contar con los más altos estándares de calidad y seguridad en la fabricación
                 de todos nuestros productos menstruales. Poseemos el prestigioso registro sanitario de la FDA,
                 asegurando que nuestros productos cumplen con las estrictas normas de salud y seguridad de los
@@ -87,10 +72,13 @@
             style="background: rgb(128,113,182);
 background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 100%);">
             <div class="px-[5%] justify-around flex mx-auto gap-6">
-                <img id="imagen1" class=" brightness-0 grayscale-0 invert"
+                <img id="imagen1"
+                    class=" brightness-0 grayscale-0 invert md:w-[150.97px] h-auto  2xl:w-[226.97px] 2xl:h-[169.95px] object-contain"
                     src="https://i.ibb.co/931mypkH/image.png" />
-                <img class=" brightness-0 grayscale-0 invert" src="https://i.ibb.co/NgMJf8d8/image.png" />
-                <img id="imagen2" class=" brightness-0 grayscale-0 invert"
+                <img class=" brightness-0 grayscale-0 invert md:w-[300.23px] h-auto 2xl:w-[428.23px] 2xl:h-[136.41px] object-contain"
+                    src="https://i.ibb.co/NgMJf8d8/image.png" />
+                <img id="imagen2"
+                    class=" brightness-0 grayscale-0 invert md:w-[100.07px] h-auto 2xl:w-[171.07px] 2xl:h-[171.07px] object-contain"
                     src="https://i.ibb.co/sdGcCP7B/image.png" />
             </div>
         </div>
@@ -99,10 +87,11 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
             <div class="bg-[#FC58BE] py-12 flex items-center justify-center p-4">
                 <div class=" flex flex-wrap justify-center gap-8  mx-auto">
                     <!-- Icono 1 -->
-                    <div class="icon-item flex flex-col items-center text-center">
+                    <div
+                        class="md:w-[170px] md:h-[170px] 2xl:w-[200px] 2xl:h-[200px] border border-white rounded-full flex items-center justify-center transition-transform duration-300 ease-in-out flex-col  text-center hover:scale-105 cursor-pointer">
                         <div class="icon-circle mb-4 flex flex-col gap-4">
-                            <i class="fas fa-graduation-cap text-white text-[53px]"></i>
-                            <p class="text-white text-[21.81px] leading-[24.41px] max-w-[150px]">
+                            <i class="fas fa-graduation-cap text-white md:text-[40px] 2xl:text-[53px]"></i>
+                            <p class="text-white md:text-[18.81px] 2xl:text-[21.81px] leading-[24.41px] max-w-[150px]">
                                 Accesabilidad<br>y educación
                             </p>
                         </div>
@@ -110,10 +99,11 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
                     </div>
 
                     <!-- Icono 2 -->
-                    <div class="icon-item flex flex-col items-center text-center">
+                    <div
+                        class="md:w-[170px] md:h-[170px] 2xl:w-[200px] 2xl:h-[200px] border border-white rounded-full flex items-center justify-center transition-transform duration-300 ease-in-out flex-col  text-center hover:scale-105 cursor-pointer">
                         <div class="icon-circle mb-4 flex flex-col gap-4">
-                            <i class="fas fa-lightbulb  text-white text-[53px]"></i>
-                            <p class="text-white text-[21.81px] leading-tight max-w-[150px]">
+                            <i class="fas fa-lightbulb  text-white md:text-[40px] 2xl:text-[53px]"></i>
+                            <p class="text-white md:text-[18.81px] 2xl:text-[21.81px] leading-tight max-w-[150px]">
                                 Innovación<br>continua
                             </p>
                         </div>
@@ -121,10 +111,11 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
                     </div>
 
                     <!-- Icono 3 -->
-                    <div class="icon-item flex flex-col items-center text-center">
+                    <div
+                        class="md:w-[170px] md:h-[170px] 2xl:w-[200px] 2xl:h-[200px] border border-white rounded-full flex items-center justify-center transition-transform duration-300 ease-in-out  flex-col  text-center hover:scale-105 cursor-pointer">
                         <div class="icon-circle mb-4 flex flex-col gap-4">
-                            <i class="fas fa-seedling  text-white text-[53px]"></i>
-                            <p class="text-white text-[21.81px] leading-tight max-w-[150px]">
+                            <i class="fas fa-seedling  text-white md:text-[40px] 2xl:text-[53px]"></i>
+                            <p class="text-white md:text-[18.81px] 2xl:text-[21.81px] leading-tight max-w-[150px]">
                                 Accesabilidad<br>y educación
                             </p>
                         </div>
@@ -132,10 +123,11 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
                     </div>
 
                     <!-- Icono 4 -->
-                    <div class="icon-item flex flex-col items-center text-center">
+                    <div
+                        class="md:w-[170px] md:h-[170px] 2xl:w-[200px] 2xl:h-[200px] border border-white rounded-full flex items-center justify-center transition-transform duration-300 ease-in-out  flex-col  text-center hover:scale-105 cursor-pointer">
                         <div class="icon-circle mb-4 flex flex-col gap-4">
-                            <i class="fas fa-venus  text-white text-[53px]"></i>
-                            <p class="text-white text-[21.81px] leading-tight max-w-[150px]">
+                            <i class="fas fa-venus  text-white md:text-[40px] 2xl:text-[53px]"></i>
+                            <p class="text-white md:text-[18.81px] 2xl:text-[21.81px]leading-tight max-w-[150px]">
                                 Sostenibilidad<br>ambiental
                             </p>
                         </div>
@@ -143,10 +135,11 @@ background: linear-gradient(90deg, rgba(128,113,182,1) 0%, rgba(192,175,225,1) 1
                     </div>
 
                     <!-- Icono 5 -->
-                    <div class="icon-item flex flex-col items-center text-center">
+                    <div
+                        class=" md:w-[170px] md:h-[170px] 2xl:w-[200px] 2xl:h-[200px] border border-white rounded-full flex items-center justify-center transition-transform duration-300 ease-in-out flex-col text-center hover:scale-105 cursor-pointer">
                         <div class="icon-circle mb-4 flex flex-col gap-4">
-                            <i class="fas fa-shield-alt  text-white text-[53px]"></i>
-                            <p class="text-white text-[21.81px] leading-tight max-w-[150px]">
+                            <i class="fas fa-shield-alt  text-white md:text-[40px] 2xl:text-[53px]"></i>
+                            <p class="text-white md:text-[18.81px] 2xl:text-[21.81px] leading-tight max-w-[150px]">
                                 Calidad y<br>seguridad
                             </p>
                         </div>

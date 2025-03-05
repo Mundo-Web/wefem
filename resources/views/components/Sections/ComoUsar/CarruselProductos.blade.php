@@ -36,27 +36,23 @@
 @endphp
 
 <section class="py-16 bg-white  text-[#212529]">
-    <div class="mx-auto px-[5%]  text-center">
+    <div class="mx-auto px-[5%] text-center" data-aos="fade-up" data-aos-duration="1000"
+        data-aos-easing="ease-in-out-quart">
         <!-- Header -->
-        <div class="flex flex-col  items-center  pb-4 ">
-            <h2 class="md:text-3xl 2xl:text-4xl font-bold flex md:gap-4 items-start justify-center">
-                @include('components.Emoji.EmojiApple', [
-                    'class' => 'md:h-[33.53px] 2xl:h-[39.53px] w-auto object-contain',
-                    'emojiCode' => '1f497',
-                ]) Preferidos por nosotrxs @include('components.Emoji.EmojiApple', [
-                    'class' => 'md:h-[33.53px] 2xl:h-[39.53px] w-auto object-contain',
-                    'emojiCode' => '1f497',
-                ])</h2>
-            <p class="text-[19.3px] leading-[19.77px] mt-4 ">¿Estás listx para el cambio?</p>
+        <div class="flex flex-col  items-center mb-8 pb-4 ">
+            <h2 class="md:text-3xl 2xl:text-4xl font-bold flex gap-4 items-start justify-center">
+                ¿Te sientes lista? Compra aquí </h2>
+
         </div>
 
         <!-- Carousel -->
         <div class="relative overflow-hidden md:max-w-5xl 2xl:max-w-7xl mx-auto">
             <!-- Previous button -->
             <button id="prevSlide"
-                class="absolute -left-2 2xl:left-12 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center">
-                <svg class="w-8 h-8 text-[#5F48B7] " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                class="absolute -left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center">
+                <svg class="w-8 h-8 text-[#5F48B7] " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"
+                    stroke-linejoin="round">
                     <path d="M15 18l-6-6 6-6" />
                 </svg>
             </button>
@@ -64,7 +60,7 @@
             <!-- Products container -->
             <div class="overflow-hidden py-4">
                 <div id="productSlider"
-                    class="flex items-center justify-center transition-all duration-300 md:gap-4 2xl:gap-2 ease-in-out px-4">
+                    class="flex items-center justify-center transition-all duration-300 lg:gap-4 ease-in-out px-4">
                     @foreach ($products as $product)
                         @include('components.Sections.Home.CardProducto', ['product' => $product])
                     @endforeach
@@ -73,7 +69,7 @@
 
             <!-- Next button -->
             <button id="nextSlide"
-                class="absolute -right-2 2xl:right-12  top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center ">
+                class="absolute -right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center ">
                 <svg class="w-8 h-8 text-[#5F48B7]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"
                     stroke-linejoin="round">
@@ -82,7 +78,7 @@
             </button>
         </div>
 
-        <div class="flex justify-center">
+        <div class="flex justify-center mt-6">
             <a href="/catalogo"
                 class="group bg-white md:h-[55.59px] 2xl:h-[60.59px] md:w-[300px] 2xl:w-[331px] text-[#FF9900] border-[0.9px] border-[#FF9900] md:text-[16.37px] 2xl:text-[19.37px] rounded-[13.57px] font-semibold flex items-center justify-center gap-3 leading-[29.05px] hover:bg-[#FF9900] hover:text-white transition-colors duration-300">
                 Ver más productos
