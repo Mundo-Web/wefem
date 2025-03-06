@@ -76,10 +76,36 @@ use App\Models\Template;
 |
 */
 
+
 /* Las rutas publicas */
 
-Route::get('/', [IndexController::class, 'index'])->name('index');
-Route::get('/nosotros', [IndexController::class, 'nosotros'])->name('nosotros');
+Route::get('/', function () {
+    return view('welcome');
+});
+Route::get('/quiz', function () {
+    return view('cuestionario');
+});
+
+Route::get('/como-usar', function () {
+    return view('comousar');
+});
+Route::get('/catalogo', function () {
+    return view('catalogo');
+});
+Route::get('/nosotros', function () {
+    return view('nosotros');
+});
+Route::get('/producto', function () {
+    return view('producto');
+});
+Route::get('/checkout', function () {
+    return view('Checkout');
+});
+
+
+/*
+Route::get('/', [IndexController::class, 'index'])->name('index');*/
+//Route::get('/nosotros', [IndexController::class, 'nosotros'])->name('nosotros');
 Route::get('/innovaciones', [IndexController::class, 'innovaciones'])->name('innovaciones');
 Route::get('/servicios', [IndexController::class, 'servicios'])->name('servicios');
 // routes/web.php
