@@ -81,7 +81,7 @@ use App\Models\Template;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');
 Route::get('/quiz', function () {
     return view('cuestionario');
 });
@@ -94,7 +94,7 @@ Route::get('/catalogo', function () {
 });
 Route::get('/nosotros', function () {
     return view('nosotros');
-});
+})->name('nosotros');
 Route::get('/producto', function () {
     return view('producto');
 });
