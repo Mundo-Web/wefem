@@ -23,7 +23,7 @@
 
 
         <header
-            class=" transition-all duration-300 sticky top-0 w-full z-40 font-font-general  text-white bg-transparent p-4">
+            class="hidden lg:block transition-all duration-300 sticky top-0 w-full z-40 font-font-general  text-white bg-transparent p-4">
             <div
                 class="md:px-[5%] lg:max-w-7xl mx-auto flex justify-between items-center font-medium text-[14.84px] leading-[18.55px]">
                 <nav class="flex gap-8 ">
@@ -48,18 +48,42 @@
             </div>
         </header>
 
+        <header
+            class=" lg:hidden transition-all duration-300 sticky top-0 w-full z-40 font-font-general  text-white bg-transparent p-4">
+            <div
+                class="md:px-[5%] lg:max-w-7xl mx-auto flex justify-between items-center font-medium text-[14.84px] leading-[18.55px]">
+
+                <div class="flex gap-2 sm:gap-4 items-center">
+                    <button class="h-6">
+                        <i class="fa-solid fa-bars  fa-lg"></i>
+                    </button>
+                    <a href="/" class="flex justify-start">
+                        <img src="https://i.ibb.co/Z1H5rGzn/image.png" alt="Wefem"
+                            class="h-[27.8px] w-[150.55px] sm:h-[36.8px] sm:w-[210.55px] object-cover object-top" />
+                    </a>
+                </div>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <a href="/quiz">Quiz</a>
+                    <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                </div>
+            </div>
+        </header>
+
 
         <div class="absolute inset-0 flex items-center justify-center text-center">
             <div class="text-white p-6">
                 <h1
-                    class="md:text-[58.54px] 2xl:text-[78.54px] leading-[60.81px] 2xl:leading-[90.81px] font-bold max-w-4xl tracking-[0.01em]">
+                    class="text-[40.66px] leading-[100%] tracking-[1%] md:text-[58.54px] 2xl:text-[78.54px] md:leading-[60.81px] 2xl:leading-[90.81px] font-bold max-w-4xl ">
                     ¡Tener sexo
                     con<br /> tu disco es posible!</h1>
-                <p class=" md:text-[20.61px] 2xl:text-[24.61px] leading-[36.92px]  my-2 tracking-[0.01em]">Copas y
+                <p
+                    class="text-[17.13px] mt-4 md:mt-0 leading-[100%]  md:text-[20.61px] 2xl:text-[24.61px] md:leading-[36.92px]  my-2 tracking-[1%]">
+                    Copas y
                     Discos menstruales weFem
                 </p>
                 <button
-                    class="mt-4  w-[350px]  2xl:w-[371px] h-[70px] 2xl:h-[80px] bg-[#DDEC4C] text-[20.64px] 2xl:text-[24.64px] hover:brightness-90 transition duration-300  font-semibold  rounded-[13.91px] text-[#5F48B7]">
+                    class="mt-4 w-[240.19px] h-[50.67px] md:w-[258.19px] md:h-[55.67px] xl:w-[350px]  2xl:w-[371px] xl:h-[70px] 2xl:h-[80px] bg-[#DDEC4C] md:text-[17.15px] xl:text-[20.64px] 2xl:text-[24.64px] hover:brightness-90 transition duration-300  font-semibold  rounded-[13.91px] text-[#5F48B7] tracking-[1%]">
                     ¡Realiza el cambio!
                 </button>
             </div>

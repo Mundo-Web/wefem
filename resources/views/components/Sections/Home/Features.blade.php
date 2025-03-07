@@ -28,7 +28,8 @@
 
  <section class="bg-[#EFE5FF] md:py-8  2xl:py-10 overflow-hidden">
      <div class="px-[5%]  mx-auto relative">
-         <div class="flex w-full md:max-w-5xl 2xl:max-w-7xl mx-auto gap-4 lg:gap-8 whitespace-nowrap transition-none">
+         <div
+             class="grid grid-cols-1 my-6 gap-6 sm:my-0 sm:grid-cols-2 sm:max-w-xl  xl:flex w-full xl:max-w-5xl 2xl:max-w-7xl mx-auto sm:gap-4 lg:gap-8 whitespace-nowrap transition-none">
              @foreach ($features as $feature)
                  <div class="flex items-center gap-3 justify-start w-auto">
                      <div class="relative z-10 w-2/12 ">

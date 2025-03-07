@@ -21,10 +21,10 @@
                 @endif
 
                 <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
-                    class="md:w-[300.38px] md:h-[300.38px] 2xl:w-[346.38px] 2xl:h-[346.38px] object-cover  group-hover:brightness-100 transition-all duration-300"
+                    class="w-[300.38px] md:w-[300.38px] md:h-[300.38px] 2xl:w-[346.38px] 2xl:h-[346.38px] object-cover  group-hover:brightness-100 transition-all duration-300"
                     loading="lazy" />
                 <div
-                    class=" absolute bottom-0 rounded-xl left-0 w-full h-full bg-[#00000080] group-hover:bg-transparent transition-colors duration-300">
+                    class="hidden xl:block absolute bottom-0 rounded-xl left-0 w-full h-full bg-[#00000080] group-hover:bg-transparent transition-colors duration-300">
                 </div>
             </div>
         </div>
@@ -34,11 +34,11 @@
 
             <div class="flex justify-between">
                 <h3
-                    class="md:text-[25.44px] 2xl:text-[29.44px] md:leading-[20.64px] 2xl:leading-[41.64px] text-[#212529] font-semibold  line-clamp-2">
+                    class="text-[25.44px] 2xl:text-[29.44px] md:leading-[20.64px] 2xl:leading-[41.64px] text-[#212529] font-semibold  line-clamp-2">
                     {{ $product['name'] }}
                 </h3>
                 <span
-                    class="md:text-[27.56px] 2xl:text-[32.56px] md:leading-[20.64px] 2xl:leading-[39.79px] font-bold text-[#FC58BE]">
+                    class="text-[27.56px] 2xl:text-[32.56px] md:leading-[20.64px] 2xl:leading-[39.79px] font-bold text-[#FC58BE]">
                     S/ {{ number_format($product['final_price'], 2) }}
                 </span>
 
@@ -46,11 +46,11 @@
 
             <!-- Precio -->
             <div class="flex justify-between items-baseline gap-2 ">
-                <h4 class="md:text-[14.28px] 2xl:text-[16.28px] text-[#212529]    line-clamp-2 leading-[29.18px]">
+                <h4 class="text-[14.28px] 2xl:text-[16.28px] text-[#212529]    line-clamp-2 leading-[29.18px]">
                     ({{ $product['description'] }})
                 </h4>
                 @if (isset($product['discount']) && is_numeric($product['discount']))
-                    <span class="md:text-[14.28px]  2xl:text-[16.8px] text-[#9F9F9F]  line-through">
+                    <span class="text-[14.28px]  2xl:text-[16.8px] text-[#9F9F9F]  line-through">
                         S/{{ number_format($product['price'], 2) }}
                     </span>
                 @endif
