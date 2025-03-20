@@ -32,13 +32,13 @@ const About = ({ about, showSlogan = true }) => {
             <Header
                 showSlogan={showSlogan}
                 backgroundType="image"
-                backgroundSrc="https://i.ibb.co/3mPwq5gH/7597f2cb62a9b3b354850510320d3167.png"
-                backgroundHeight="h-[65vh]"
-                backgroundPosition="object-center blur-sm "
+                backgroundSrc="assets/img/about_wefem.png"
+                backgroundHeight="h-[40vh] md:h-[85vh]"
+                backgroundPosition="object-center blur-[2px]"
             >
-                <div className="absolute inset-0 flex items-center justify-center text-center ">
+                <div className="absolute inset-0 flex items-end md:items-center justify-center text-center ">
                     <div className="text-white p-6">
-                        <h1 className="md:text-[58.21px] 2xl:text-[72.21px] md:leading-[65.32px] 2xl:leading-[90.32px] font-bold max-w-5xl tracking-[0.01em]">
+                        <h1 className="text-[30.66px] md:text-[58.21px] 2xl:text-[72.21px] md:leading-[65.32px] 2xl:leading-[90.32px] font-bold max-w-5xl tracking-[0.01em]">
                             ¡Tu mejor aliadx en <br />
                             el cuidado menstrual!
                         </h1>

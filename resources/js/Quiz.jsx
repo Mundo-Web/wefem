@@ -78,16 +78,16 @@ const Quiz = ({ showSlogan = true }) => {
 // Componente
 const InitQuiz = ({ setCurrentStep }) => {
     return (
-        <div className="flex flex-col lg:flex-row w-full justify-between lg:gap-16 2xl:gap-20 bg-[#EFE5FF]  items-center">
-            <div className="flex py-10 lg:py-0 order-1  lg:order-none  flex-col w-full lg:w-1/2 justify-center items-center lg:items-end text-[#212529]">
-                <div className="px-[5%] max-w-[44rem] lg:px-0  lg:pl-[5%]   lg:max-w-lg 2xl:max-w-2xl text-center ">
-                    <h1 className="text-[50.64px] md:text-[65.64px] lg:text-[48.92px] 2xl:text-[68.92px] leading-[103.38px] font-bold  text-[#212529] tracking-[0.01em]">
+        <div className="flex flex-col md:flex-row w-full justify-between bg-[#EFE5FF]  items-center h-[85vh]">
+            <div className="flex py-10 lg:py-0 order-1  md:order-none  flex-col w-full md:w-1/2 justify-center items-center lg:items-center text-[#212529]">
+                <div className="px-[5%] max-w-[44rem] lg:px-0  lg:max-w-lg 2xl:max-w-2xl text-center ">
+                    <h1 className="text-3xl md:text-4xl lg:text-[48.92px] 2xl:text-[68.92px] leading-[103.38px] font-bold  text-[#212529] tracking-[0.01em]">
                         weFem Quiz!
                     </h1>
-                    <h2 className="text-[18.29px] md:text-[29.29px] lg:text-[25.92px]  2xl:text-[30.75px] leading-[46.12px] tracking-[1%] font-semibold ">
+                    <h2 className="text-base md:text-lg lg:text-xl  2xl:text-[30.75px] leading-[46.12px] tracking-[1%] font-semibold ">
                         ¿Qué producto es perfecto para ti?
                     </h2>
-                    <p className="text-[15.05px] md:text-[21.05px]  2xl:text-[22.1px] leading-[140%] tracking-[1%] mb-6 md:my-8 ">
+                    <p className="text-base md:text-lg  2xl:text-xl leading-[140%] tracking-[1%] mb-6 md:my-8 ">
                         Cada cuerpo es único. Tu flujo y estilo de vida pueden
                         afectar el ajuste y la sensación de tu copa o disco.
                         Responde nuestro cuestionario de 2 minutos para
@@ -103,11 +103,11 @@ const InitQuiz = ({ setCurrentStep }) => {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-end  w-full lg:w-1/2 ">
+            <div className="flex justify-end  w-full md:w-1/2 ">
                 <img
                     src="https://i.ibb.co/3mPwq5gH/7597f2cb62a9b3b354850510320d3167.png"
                     alt="weFem productos"
-                    className="   w-full h-[256px]   md:h-[356px] lg:h-[600px]  2xl:min-w-[873px] 2xl:h-[789px]  object-cover object-center flex-shrink-0"
+                    className="   w-full h-[50vh]  md:h-[85vh]  object-cover object-center flex-shrink-0"
                 />
             </div>
         </div>
