@@ -12,7 +12,11 @@ export default {
                 bebas: ["Bebas Neue", "serif"],
                 poppins: ["Poppins", "serif"],
             },
-            // Puedes agregar personalizaciones aquí si es necesario
+            screens: {
+                
+                "3xs": "500px",
+                
+            },
         },
     },
     plugins: [
