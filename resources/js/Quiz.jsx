@@ -78,9 +78,9 @@ const Quiz = ({ showSlogan = true }) => {
 // Componente
 const InitQuiz = ({ setCurrentStep }) => {
     return (
-        <div className="flex flex-col md:flex-row w-full justify-between bg-[#EFE5FF]  items-center md:h-[85vh]">
-            <div className="flex py-10 lg:py-0 order-1  md:order-none  flex-col w-full md:w-1/2 justify-center items-center lg:items-center text-[#212529]">
-                <div className="px-[5%] max-w-[44rem] lg:px-0  lg:max-w-lg 2xl:max-w-2xl text-center flex flex-col gap-5 2xl:gap-10">
+        <div className="flex flex-col md:flex-row w-full justify-between bg-[#EFE5FF] items-center md:h-[85vh]">
+            <div className="flex py-10 lg:py-0 order-1 md:order-none flex-col w-full md:w-1/2 justify-center items-center lg:items-center text-[#212529]">
+                <div className="px-[5%] max-w-[44rem] lg:px-0 lg:max-w-lg 2xl:max-w-2xl text-center flex flex-col gap-5 2xl:gap-10">
                     <h1 className="text-3xl md:text-4xl lg:text-[48.92px] 2xl:text-[68.92px]  font-bold  text-[#212529] tracking-[0.01em]">
                         weFem Quiz!
                     </h1>
@@ -105,7 +105,7 @@ const InitQuiz = ({ setCurrentStep }) => {
             </div>
             <div className="flex justify-end  w-full md:w-1/2">
                 <img
-                    src="https://i.ibb.co/3mPwq5gH/7597f2cb62a9b3b354850510320d3167.png"
+                    src="assets/img/quizz/quiz_1.png"
                     alt="weFem productos"
                     className="w-full aspect-square 3xs:h-[50vh] md:h-[85vh] object-cover object-center flex-shrink-0"
                 />
@@ -116,9 +116,9 @@ const InitQuiz = ({ setCurrentStep }) => {
 
 const FirstQuiz = ({ setCurrentStep, handleAnswer }) => {
     return (
-        <div className="flex flex-col md:flex-row w-full justify-between bg-[#EFE5FF]  items-center md:h-[85vh]">
-            <div className="flex py-10 lg:py-0 order-1  md:order-none  flex-col w-full md:w-1/2 justify-center items-center lg:items-center text-[#212529]">
-                <div className="px-[5%] w-full lg:px-0  lg:pl-[5%]   lg:max-w-lg 2xl:max-w-[46rem] text-center flex flex-col gap-5 2xl:gap-10">
+        <div className="flex flex-col md:flex-row w-full justify-between bg-[#EFE5FF] items-center md:h-[85vh]">
+            <div className="flex py-10 lg:py-0 order-1 md:order-none  flex-col w-full md:w-1/2 justify-center items-center lg:items-center text-[#212529]">
+                <div className="px-[5%] max-w-[44rem] lg:px-0 lg:max-w-lg 2xl:max-w-2xl text-center flex flex-col gap-5 2xl:gap-10">
                     <h1 className="text-3xl md:text-4xl lg:text-[48.92px] 2xl:text-[68.92px]  font-bold  text-[#212529] tracking-[0.01em]">
                         weFem Quiz!
                     </h1>
@@ -191,7 +191,7 @@ const FirstQuiz = ({ setCurrentStep, handleAnswer }) => {
 
             <div className="flex justify-end  w-full md:w-1/2">
                 <img
-                    src="https://i.ibb.co/Nd0JBkBk/image.png"
+                    src="assets/img/quizz/quiz_2.png"
                     alt="weFem productos"
                     className="w-full aspect-square 3xs:h-[50vh] md:h-[85vh] object-cover object-center flex-shrink-0"
                 />
@@ -202,13 +202,13 @@ const FirstQuiz = ({ setCurrentStep, handleAnswer }) => {
 
 const SecondQuiz = ({ setCurrentStep, handleAnswer }) => {
     return (
-        <div className="flex flex-col lg:flex-row w-full justify-between lg:gap-16 2xl:gap-20 bg-[#EFE5FF]  items-center">
-            <div className="flex py-10 lg:py-0 order-1  lg:order-none  flex-col w-full lg:w-1/2 justify-center items-center lg:items-end text-[#212529]">
-                <div className="px-[5%] max-w-[44rem] lg:px-0  lg:pl-[5%]   lg:max-w-xl 2xl:max-w-2xl text-center ">
-                    <h1 className="text-[50.64px] md:text-[65.64px] lg:text-[48.92px] 2xl:text-[68.92px] leading-[103.38px] font-bold  text-[#212529] tracking-[0.01em]">
+        <div className="flex flex-col md:flex-row w-full justify-between bg-[#EFE5FF] items-center md:h-[85vh]">
+            <div className="flex py-10 lg:py-0 order-1  md:order-none  flex-col w-full md:w-1/2 justify-center items-center lg:items-center text-[#212529]">
+                <div className="px-[5%] w-full lg:px-0  lg:max-w-lg 2xl:max-w-[46rem] text-center flex flex-col gap-5 2xl:gap-10">
+                    <h1 className="text-3xl md:text-4xl lg:text-[48.92px] 2xl:text-[68.92px]  font-bold  text-[#212529] tracking-[0.01em]">
                         weFem Quiz!
                     </h1>
-                    <h2 className="text-[29.81px]  2xl:text-[30.75px] md:leading-[36.12px] 2xl:leading-[46.12px]  tracking-[0.01em] font-semibold mb-4 gap-2">
+                    <h2 className="text-xl lg:text-2xl 2xl:text-3xl font-semibold gap-2">
                         ¿Cual es tu tipo de flujo?{" "}
                         <img
                             src="/assets/img/emojis/drop-of-blood.png"
@@ -217,30 +217,30 @@ const SecondQuiz = ({ setCurrentStep, handleAnswer }) => {
                         />
                     </h2>
 
-                    <div className="gap-4 w-full flex flex-col md:flex-row items-center justify-center mt-12">
+                    <div className="w-full flex flex-col gap-4 lg:flex-row  items-center justify-center mt-6">
                         <button
                             onClick={() => handleAnswer(2, 1)}
-                            className="bg-white hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold  px-6 rounded-[20px] text-[20.94px] tracking-[0.01em] transition-colors w-full  md:w-[203px] h-[74px]  2xl:h-[94px] border-2 border-[#FF9900] duration-300"
+                            className="bg-white hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold  px-6 rounded-[20px] text-base lg:text-lg 2xl:text-xl tracking-[0.01em] transition-colors w-full  md:w-[203px] h-[50px] lg:h-[74px]  2xl:h-[94px] border-2 border-[#FF9900] duration-300"
                         >
                             Leve
                         </button>
                         <button
                             onClick={() => handleAnswer(2, 2)}
-                            className="bg-white hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold px-6 rounded-[20px] text-[20.94px] tracking-[0.01em] transition-colors w-full  md:w-[203px] h-[74px]  2xl:h-[94px] border-2 border-[#FF9900] duration-300"
+                            className="bg-white hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold px-6 rounded-[20px] text-base lg:text-lg 2xl:text-xl tracking-[0.01em] transition-colors w-full  md:w-[203px] h-[50px] lg:h-[74px]  2xl:h-[94px] border-2 border-[#FF9900] duration-300"
                         >
                             Moderado
                         </button>
                         <button
                             onClick={() => handleAnswer(2, 3)}
-                            className="bg-white hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold  px-6 rounded-[20px] text-[20.94px] tracking-[0.01em] transition-colors w-full md:w-[203px] h-[74px]  2xl:h-[94px] border-2 border-[#FF9900] duration-300"
+                            className="bg-white hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold  px-6 rounded-[20px] text-base lg:text-lg 2xl:text-xl tracking-[0.01em] transition-colors w-full md:w-[203px] h-[50px] lg:h-[74px]  2xl:h-[94px] border-2 border-[#FF9900] duration-300"
                         >
                             Abundante
                         </button>
                     </div>
-                    <div className="flex flex-row justify-between mt-12 mx-auto max-w-xl lg:w-full">
+                    <div className="flex flex-row justify-between mt-6 mx-auto max-w-xl w-full">
                         <button
                             onClick={() => setCurrentStep(2)}
-                            className=" hover:opacity-90 font-semibold flex items-center gap-2 text-[#5F48B7] text-[22.12px] lg:text-[18.13px]  2xl:text-[23.13px] leading-[34.69px] tracking-[0.01em]"
+                            className=" hover:opacity-90 font-semibold flex items-center gap-2 text-[#5F48B7] text-base lg:text-[18.13px]  2xl:text-[23.13px] leading-[34.69px] tracking-[0.01em]"
                         >
                             <span className="rotate-180">
                                 <svg
@@ -260,7 +260,7 @@ const SecondQuiz = ({ setCurrentStep, handleAnswer }) => {
                         </button>
                         <button
                             onClick={() => setCurrentStep(4)}
-                            className="text-[#5F48B7] hover:opacity-90 font-semibold flex gap-2 items-center md:text-[18.13px]  2xl:text-[23.13px]  leading-[34.69px] tracking-[0.01em]"
+                            className="hover:opacity-90 font-semibold flex items-center gap-2 text-[#5F48B7] text-base lg:text-[18.13px]  2xl:text-[23.13px] leading-[34.69px] tracking-[0.01em]"
                         >
                             Siguiente{" "}
                             <svg
@@ -280,11 +280,11 @@ const SecondQuiz = ({ setCurrentStep, handleAnswer }) => {
                 </div>
             </div>
 
-            <div className="flex justify-end  w-full lg:w-1/2">
+            <div className="flex justify-end  w-full md:w-1/2">
                 <img
-                    src="https://i.ibb.co/twC7bmTR/image.png"
+                    src="assets/img/quizz/quiz_3.png"
                     alt="weFem productos"
-                    className="w-full h-[256px]   md:h-[356px] lg:h-[600px]  2xl:min-w-[873px] 2xl:h-[789px]  object-cover object-center flex-shrink-0"
+                    className="w-full aspect-square 3xs:h-[50vh] md:h-[85vh] object-cover object-center flex-shrink-0"
                 />
             </div>
         </div>
@@ -293,13 +293,13 @@ const SecondQuiz = ({ setCurrentStep, handleAnswer }) => {
 
 const ThreeQuiz = ({ setCurrentStep, handleAnswer }) => {
     return (
-        <div className="flex flex-col lg:flex-row w-full justify-between lg:gap-16 2xl:gap-20 bg-[#EFE5FF]  items-center">
-            <div className="flex py-10 lg:py-0 order-1  lg:order-none  flex-col w-full lg:w-1/2 justify-center items-center lg:items-end text-[#212529]">
-                <div className="px-[5%] w-full max-w-[40rem] lg:px-0  lg:pl-[5%] lg:w-[46rem]   lg:max-w-xl 2xl:max-w-2xl text-center ">
-                    <h1 className="text-[50.64px] md:text-[65.64px] lg:text-[48.92px] 2xl:text-[68.92px] leading-[103.38px] font-bold  text-[#212529] tracking-[0.01em]">
+        <div className="flex flex-col md:flex-row w-full justify-between bg-[#EFE5FF] items-center md:h-[85vh]">
+            <div className="flex py-10 lg:py-0 order-1  md:order-none  flex-col w-full md:w-1/2 justify-center items-center lg:items-center text-[#212529]">
+                <div className="px-[5%] w-full lg:px-0  lg:max-w-lg 2xl:max-w-[46rem] text-center flex flex-col gap-5 2xl:gap-10">
+                    <h1 className="text-3xl md:text-4xl lg:text-[48.92px] 2xl:text-[68.92px]  font-bold  text-[#212529] tracking-[0.01em]">
                         weFem Quiz!
                     </h1>
-                    <h2 className="text-[18.81px]   md:text-[29.81px]   lg:text-[20.1px] 2xl:text-[30.75px] md:leading-[36.12px] 2xl:leading-[46.12px] tracking-[0.01em] font-semibold mb-4 gap-2">
+                    <h2 className="text-xl lg:text-2xl 2xl:text-3xl font-semibold gap-2">
                         ¿Te interesaría tener relaciones con <br /> la regla sin
                         que manche?{" "}
                         <img
@@ -309,10 +309,10 @@ const ThreeQuiz = ({ setCurrentStep, handleAnswer }) => {
                         />
                     </h2>
 
-                    <div className="gap-4 w-full flex flex-col md:flex-row md:mt-8 2xl:mt-12">
+                    <div className="w-full flex flex-col gap-4 lg:flex-row  items-center justify-center mt-6">
                         <button
                             onClick={() => handleAnswer(3, 1)}
-                            className="bg-white w-full md:w-1/2 hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold py-4 px-6 rounded-[20px] text-[20.94px] lg:text-[18.94px] 2xl:text-[20.94px] tracking-[0.01em] transition-colors h-[94px]  lg:h-[74px]  2xl:h-[94px] border-2 border-[#FF9900] duration-300"
+                            className="bg-white w-full lg:w-1/2 hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold py-3 px-6 rounded-[20px] text-base lg:text-lg 2xl:text-xl tracking-[0.01em] transition-colors  h-[60px] lg:h-[74px]  2xl:h-[94px] border-2 border-[#FF9900] duration-300"
                         >
                             ¡Sí! Sería lo max{" "}
                             <img
@@ -323,7 +323,7 @@ const ThreeQuiz = ({ setCurrentStep, handleAnswer }) => {
                         </button>
                         <button
                             onClick={() => handleAnswer(3, 2)}
-                            className="bg-white w-full md:w-1/2 hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold py-4 px-6 rounded-[20px] text-[20.94px] lg:text-[18.94px] 2xl:text-[20.94px] tracking-[0.01em] transition-colors  h-[94px] lg:h-[74px]  2xl:h-[94px] border-2 border-[#FF9900] duration-300"
+                            className="bg-white w-full lg:w-1/2 hover:bg-[#FF9900]  text-[#FF9900] hover:text-white font-semibold py-3 px-6 rounded-[20px] text-base lg:text-lg 2xl:text-xl tracking-[0.01em] transition-colors   h-[60px] lg:h-[74px]  2xl:h-[94px] border-2 border-[#FF9900] duration-300"
                         >
                             No, me da igual{" "}
                             <img
@@ -333,10 +333,10 @@ const ThreeQuiz = ({ setCurrentStep, handleAnswer }) => {
                             />
                         </button>
                     </div>
-                    <div className="flex flex-row justify-between mt-12 mx-auto max-w-xl lg:w-full">
+                    <div className="flex flex-row justify-between mt-6 mx-auto max-w-xl w-full">
                         <button
                             onClick={() => setCurrentStep(4)}
-                            className=" hover:opacity-90 font-semibold flex items-center gap-2 text-[#5F48B7] text-[22.12px] lg:text-[18.13px]  2xl:text-[23.13px] leading-[34.69px] tracking-[0.01em]"
+                            className="hover:opacity-90 font-semibold flex items-center gap-2 text-[#5F48B7] text-base lg:text-[18.13px]  2xl:text-[23.13px] leading-[34.69px] tracking-[0.01em]"
                         >
                             <span className="rotate-180">
                                 <svg
@@ -356,7 +356,7 @@ const ThreeQuiz = ({ setCurrentStep, handleAnswer }) => {
                         </button>
                         <button
                             onClick={() => setCurrentStep(5)}
-                            className="text-[#5F48B7] hover:opacity-90 font-semibold flex gap-2 items-center text-[22.12px] lg:text-[18.13px]   2xl:text-[23.13px]  leading-[34.69px] tracking-[0.01em]"
+                            className="hover:opacity-90 font-semibold flex items-center gap-2 text-[#5F48B7] text-base lg:text-[18.13px]  2xl:text-[23.13px] leading-[34.69px] tracking-[0.01em]"
                         >
                             Siguiente{" "}
                             <svg
@@ -376,11 +376,11 @@ const ThreeQuiz = ({ setCurrentStep, handleAnswer }) => {
                 </div>
             </div>
 
-            <div className="flex justify-end  w-full lg:w-1/2">
+            <div className="flex justify-end  w-full md:w-1/2">
                 <img
-                    src="https://i.ibb.co/7xKxbRz0/image.png"
+                    src="assets/img/quizz/quiz_4.png"
                     alt="weFem productos"
-                    className="w-full h-[256px]   md:h-[356px] lg:h-[600px]  2xl:min-w-[873px] 2xl:h-[789px]  object-cover object-center flex-shrink-0"
+                    className="w-full aspect-square 3xs:h-[50vh] md:h-[85vh] object-cover object-center flex-shrink-0"
                 />
             </div>
         </div>
@@ -429,7 +429,7 @@ const FourQuiz = ({ setCurrentStep, handleResult }) => {
 
             <div className="flex justify-end  w-full lg:w-1/2">
                 <img
-                    src="https://i.ibb.co/3yHQRrpx/image.png"
+                    src="assets/img/quizz/quiz_5.png"
                     alt="weFem productos"
                     className="w-full h-[256px]   md:h-[356px] lg:h-[600px]  2xl:min-w-[873px] 2xl:h-[789px]  object-cover object-center flex-shrink-0"
                 />
